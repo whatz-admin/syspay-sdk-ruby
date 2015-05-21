@@ -52,9 +52,27 @@ describe Syspay::SDK::Client do
       should respond_to(:generate_auth_header)
   end
 
+  it "should respond to generate_digest_for_auth_header" do
+      should respond_to(:generate_digest_for_auth_header)
+  end
+
+  describe "generate_digest_for_auth_header" do
+    it "returns a digest based on the nonce, timestamp and passphrase passed in as parameters" do
+      require "base64"
+      require 'digest/sha1'
+
+      nonce = rand()
+      timestamp = Time.now.to_i
+      passphrase = "123abc456def"
+      result = Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{passphrase}"))
+      subject.generate_digest_for_auth_header(nonce, timestamp, passphrase).should eq(result)
+    end
+  end
+
   describe "generate_auth_header" do
     it "returns a properly formatted x-wsse Header" do
-      subject.generate_auth_header.should match(/AuthToken MerchantAPILogin=".*", PasswordDigest=".*", Nonce=".*", Created="\d*"/)
+      Config.config.syspay_id = "123abc456def"
+      Syspay::SDK::Client.new.generate_auth_header.should match(/AuthToken MerchantAPILogin='123abc456def', PasswordDigest='.*', Nonce='.*', Created='\d*'/)
     end
   end
 end

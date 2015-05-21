@@ -1,3 +1,6 @@
+require "base64"
+require 'digest'
+
 module Syspay
   module SDK
     class Client
@@ -11,17 +14,18 @@ module Syspay
 
       # Generates the x-wsse header
       def generate_auth_header
-        'AuthToken MerchantAPILogin="%s", PasswordDigest="%s", Nonce="%s", Created="1"'
-        # nonce = md5(rand(), true)
-        # created = Time.now.to_i
-        # digest = base64_encode(sha1(nonce . created . secret, true));
-        # $b64nonce = base64_encode($nonce);
-        # return sprintf(
-        #   $username,
-        #   $digest,
-        #   $b64nonce,
-        #   $created
-        #   );
+        timestamp = Time.now.to_i
+
+        nonce = Digest::MD5.hexdigest(rand().to_s)
+        b64nonce = Base64.strict_encode64(nonce)
+
+        digest = generate_digest_for_auth_header(nonce, timestamp, self.syspay_passphrase)
+
+        "AuthToken MerchantAPILogin='#{self.syspay_id}', PasswordDigest='#{digest}', Nonce='#{nonce}', Created='#{timestamp}'"
+      end
+
+      def generate_digest_for_auth_header nonce, timestamp, passphrase
+        Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{passphrase}"))
       end
     end
   end
