@@ -30,7 +30,7 @@ module Syspay::SDK
     include Logging
     include Exceptions
 
-    attr_accessor :syspay_mode, :syspay_id, :syspay_passphrase, :syspay_threatmetrix_code, :syspay_js_key
+    attr_accessor :syspay_mode, :syspay_id, :syspay_passphrase, :syspay_threatmetrix_code, :syspay_js_key, :syspay_base_url
 
     def initialize(options)
       merge!(options)

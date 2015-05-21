@@ -1,36 +1,32 @@
 module Syspay
   module SDK
     class Client
-      BASE_URL_SANDBOX = "https://app-sandbox.syspay.com"
-      BASE_URL_PROD = "https://app.syspay.com"
+      attr_accessor :syspay_id, :syspay_passphrase, :syspay_base_url, :response_body, :response_headers, :response_data, :request_body, :request_headers, :request_params, :request_id
+
+      def initialize
+        self.syspay_id = Syspay::SDK::Config.config.syspay_id
+        self.syspay_passphrase = Syspay::SDK::Config.config.syspay_passphrase
+        self.syspay_base_url = Syspay::SDK::Config.config.syspay_base_url
+      end
+
+      # Generates the x-wsse header
+      def generate_auth_header
+        'AuthToken MerchantAPILogin="%s", PasswordDigest="%s", Nonce="%s", Created="1"'
+        # nonce = md5(rand(), true)
+        # created = Time.now.to_i
+        # digest = base64_encode(sha1(nonce . created . secret, true));
+        # $b64nonce = base64_encode($nonce);
+        # return sprintf(
+        #   $username,
+        #   $digest,
+        #   $b64nonce,
+        #   $created
+        #   );
+      end
     end
   end
 end
-#     const BASE_URL_PROD    = 'https://app.syspay.com';
-#     const BASE_URL_SANDBOX = 'https://app-sandbox.syspay.com';
-#     protected $username;
-#     protected $secret;
-#     protected $baseUrl;
-#     protected $responseBody    = null;
-#     protected $responseHeaders = array();
-#     protected $responseData    = null;
-#     protected $requestBody     = null;
-#     protected $requestHeaders  = array();
-#     protected $requestParams   = null;
-#     protected $requestId       = null;
 
-#     /**
-#      * Creates a new client object
-#      * @param string $username The Syspay API username
-#      * @param string $secret   The Syspay API shared secret
-#      * @param string $baseUrl  The base URL the request should be made to (optional, defaults to prod environment)
-#      */
-#     public function __construct($username, $secret, $baseUrl = null)
-#     {
-#         $this->username = $username;
-#         $this->secret   = $secret;
-#         $this->baseUrl  = (null === $baseUrl)?self::BASE_URL_PROD:$baseUrl;
-#     }
 #     /**
 #      * Generates the x-wsse header
 #      *

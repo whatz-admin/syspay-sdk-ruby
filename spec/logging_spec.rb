@@ -24,5 +24,4 @@ describe Syspay::SDK::Logging do
     @logger_file.rewind
     @logger_file.read.should match test_message
   end
-
 end
