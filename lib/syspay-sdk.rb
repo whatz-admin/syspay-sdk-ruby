@@ -6,6 +6,7 @@ module Syspay
     autoload :Logging,        "syspay-sdk/logging"
     autoload :Exceptions,     "syspay-sdk/exceptions"
     autoload :Client,         "syspay-sdk/client"
+    autoload :AbstractClass,  "syspay-sdk/abstract_class"
 
     class << self
       def configure(options = {}, &block)

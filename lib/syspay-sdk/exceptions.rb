@@ -25,6 +25,14 @@ module Syspay::SDK
       end
     end
 
+    # Raised when a calling an abstract method
+    class NotImplementedError < StandardError
+      def initialize(message)
+        @message = message
+      end
+      def to_s; @message ;end
+    end
+
     # Raised when a Timeout::Error occurs.
     class TimeoutError < ConnectionError
       def initialize(message)
