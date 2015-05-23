@@ -95,6 +95,9 @@ module SyspaySDK::Entities
       end
 
       hash[:recipients] = []
+      self.recipient_map.each do |recipient|
+        hash[:recipients].push recipient.to_hash
+      end unless recipient_map.nil?
 
       hash
     end

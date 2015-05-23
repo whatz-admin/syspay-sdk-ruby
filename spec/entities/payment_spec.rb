@@ -231,7 +231,7 @@ describe SyspaySDK::Entities::Payment do
 
   describe "#set_recipient_map" do
     it "sets the instance recipient_map attribute properly" do
-      recipient_map = [SyspaySDK::Entities::PaymentRecipient.new]
+      recipient_map = [SyspaySDK::Entities::PaymentRecipient.new, SyspaySDK::Entities::PaymentRecipient.new]
       subject.set_recipient_map(recipient_map)
 
       subject.recipient_map.should eq(recipient_map)
@@ -308,14 +308,15 @@ describe SyspaySDK::Entities::Payment do
       subject.to_hash[:recipients].should eq([])
     end
 
-    xit 'should include the recipients with one hash per recipient' do
+    it 'should include the recipients with one hash per recipient' do
       recipient1 = SyspaySDK::Entities::PaymentRecipient.new
       recipient2 = SyspaySDK::Entities::PaymentRecipient.new
       recipients_map = [recipient1, recipient2]
 
-      subject.add_recipient recipient1
+      subject.set_recipient_map recipients_map
 
       subject.to_hash[:recipients].should include(recipient1.to_hash)
+      subject.to_hash[:recipients].should include(recipient2.to_hash)
     end
   end
 end
@@ -338,20 +339,4 @@ end
 #             $paymentMethod = Syspay_Merchant_Entity_PaymentMethod::buildFromResponse($response->payment_method);
 #             $payment->setPaymentMethod($paymentMethod);
 #         }
-#     }
-
-#     /**
-#      * {@inheritDoc}
-#      */
-#     public function toArray()
-#     {
-#         $data = parent::toArray();
-#         if (!empty($data['recipient_map']) && is_array($data['recipient_map'])) {
-#             for ($i = 0; $i < count($data['recipient_map']); $i++) {
-#                 $data['recipient_map'][$i] = $data['recipient_map'][$i]->toArray();
-#             }
-#         } else {
-#             unset($data['recipient_map']);
-#         }
-#         return $data;
 #     }
