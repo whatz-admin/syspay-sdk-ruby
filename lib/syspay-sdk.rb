@@ -4,8 +4,9 @@ module SyspaySDK
   autoload :Configuration,  "syspay-sdk/config"
   autoload :Logging,        "syspay-sdk/logging"
   autoload :Exceptions,     "syspay-sdk/exceptions"
-  autoload :Client,         "syspay-sdk/client"
   autoload :AbstractClass,  "syspay-sdk/abstract_class"
+  autoload :Client,         "syspay-sdk/client"
+  autoload :Request,        "syspay-sdk/request"
 
   class << self
     def configure(options = {}, &block)
