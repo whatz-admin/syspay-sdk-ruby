@@ -87,22 +87,6 @@ describe SyspaySDK::Entities::Payment do
     it { should respond_to(:payment_method) }
   end
 
-  it "responds to ::build_from_response" do
-    SyspaySDK::Entities::Payment.should respond_to(:build_from_response)
-  end
-
-  describe "::build_from_response" do
-    it "doesn't raise an error when called" do
-      lambda do
-        SyspaySDK::Entities::Payment.build_from_response "test"
-      end.should_not raise_error
-    end
-
-    it "returns a Payment object" do
-      SyspaySDK::Entities::Payment.build_from_response("test").should be_a(SyspaySDK::Entities::Payment)
-    end
-  end
-
   it "responds to #get_type" do
     subject.should respond_to(:get_type)
   end
@@ -113,45 +97,174 @@ describe SyspaySDK::Entities::Payment do
     end
   end
 
-  # it "responds to #to_hash" do
-  #   subject.should respond_to(:to_hash)
-  # end
+  it "responds to ::build_from_response" do
+    SyspaySDK::Entities::Payment.should respond_to(:build_from_response)
+  end
 
-  # describe "#to_hash" do
-  #   it "returns the payment converted to a hash" do
-  #     subject.to_hash.should eq({})
-  #   end
-  # end
+  describe "::build_from_response" do
+    it "doesn't raise an error when called" do
+      lambda do
+        SyspaySDK::Entities::Payment.build_from_response({ test: "test" })
+      end.should_not raise_error
+    end
+
+    it "returns a Payment object" do
+      SyspaySDK::Entities::Payment.build_from_response({ test: "test" }).should be_a(SyspaySDK::Entities::Payment)
+    end
+
+    it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when anything but a hash is passed in" do
+      lambda do
+        SyspaySDK::Entities::Payment.build_from_response("test")
+      end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
+    end
+
+    let (:response) do
+      {
+        id: "id",
+        reference: "reference",
+        amount: "amount",
+        currency: "currency",
+        status: "status",
+        extra: "extra",
+        description: "description",
+        website: "website",
+        failure_category: "failure_category",
+        chip_and_pin_status: "chip_and_pin_status",
+        payment_type: "payment_type",
+        website_url: "website_url",
+        contract: "contract",
+        descriptor: "descriptor",
+        account_id: "account_id",
+        merchant_login: "merchant_login",
+        merchant_id: "merchant_id"
+      }
+    end
+
+    before(:each) do
+      @payment = SyspaySDK::Entities::Payment.build_from_response(response)
+    end
+
+    it "sets instance raw attribute to response" do
+      @payment.raw.should eq(response)
+    end
+
+    it "sets instance id attribute using value in response" do
+      @payment.id.should eq(response[:id])
+    end
+
+    it "sets instance reference attribute using value in response" do
+      @payment.reference.should eq(response[:reference])
+    end
+
+    it "sets instance amount attribute using value in response" do
+      @payment.amount.should eq(response[:amount])
+    end
+
+    it "sets instance currency attribute using value in response" do
+      @payment.currency.should eq(response[:currency])
+    end
+
+    it "sets instance status attribute using value in response" do
+      @payment.status.should eq(response[:status])
+    end
+
+    it "sets instance extra attribute using value in response" do
+      @payment.extra.should eq(response[:extra])
+    end
+
+    it "sets instance description attribute using value in response" do
+      @payment.description.should eq(response[:description])
+    end
+
+    it "sets instance website attribute using value in response" do
+      @payment.website.should eq(response[:website])
+    end
+
+    it "sets instance failure_category attribute using value in response" do
+      @payment.failure_category.should eq(response[:failure_category])
+    end
+
+    it "sets instance chip_and_pin_status attribute using value in response" do
+      @payment.chip_and_pin_status.should eq(response[:chip_and_pin_status])
+    end
+
+    it "sets instance payment_type attribute using value in response" do
+      @payment.payment_type.should eq(response[:payment_type])
+    end
+
+    it "sets instance website_url attribute using value in response" do
+      @payment.website_url.should eq(response[:website_url])
+    end
+
+    it "sets instance contract attribute using value in response" do
+      @payment.contract.should eq(response[:contract])
+    end
+
+    it "sets instance descriptor attribute using value in response" do
+      @payment.descriptor.should eq(response[:descriptor])
+    end
+
+    it "sets instance account_id attribute using value in response" do
+      @payment.account_id.should eq(response[:account_id])
+    end
+
+    it "sets instance merchant_login attribute using value in response" do
+      @payment.merchant_login.should eq(response[:merchant_login])
+    end
+
+    it "sets instance merchant_id attribute using value in response" do
+      @payment.merchant_id.should eq(response[:merchant_id])
+    end
+
+    it "sets instance settlement_date attribute using value in response" do
+      settlement_date = DateTime.new(2001,2,3)
+      response[:settlement_date] = settlement_date.to_time.to_i
+      SyspaySDK::Entities::Payment.build_from_response(response).settlement_date.should eq(settlement_date)
+    end
+
+    it "sets instance processing_time attribute using value in response" do
+      processing_time = DateTime.new(2001,2,3)
+      response[:processing_time] = processing_time.to_time.to_i
+      SyspaySDK::Entities::Payment.build_from_response(response).processing_time.should eq(processing_time)
+    end
+
+    it "sets instance billing_agreement attribute using value in response"
+
+    it "sets instance subscription attribute using value in response"
+
+    it "sets instance payment_method attribute using value in response"
+  end
+
+  it "responds to #set_recipient_map" do
+    subject.should respond_to(:set_recipient_map)
+  end
+
+  describe "#set_recipient_map" do
+    it "sets the instance recipient_map attribute properly"
+  end
+
+  it "responds to #add_recipient" do
+    subject.should respond_to(:add_recipient)
+  end
+
+  describe "#add_recipient" do
+    it "sets the instance recipient_map attribute properly"
+  end
+
+
+  it "responds to #to_hash" do
+    subject.should respond_to(:to_hash)
+  end
+
+  describe "#to_hash" do
+    it "returns the payment converted to a hash" do
+      subject.to_hash.should eq({})
+    end
+  end
 end
 
 #     public static function buildFromResponse(stdClass $response)
 #     {
-#         $payment = new self();
-#         $payment->setId(isset($response->id)?$response->id:null);
-#         $payment->setReference(isset($response->reference)?$response->reference:null);
-#         $payment->setAmount(isset($response->amount)?$response->amount:null);
-#         $payment->setCurrency(isset($response->currency)?$response->currency:null);
-#         $payment->setStatus(isset($response->status)?$response->status:null);
-#         $payment->setExtra(isset($response->extra)?$response->extra:null);
-#         $payment->setDescription(isset($response->description)?$response->description:null);
-#         $payment->setWebsite(isset($response->website)?$response->website:null);
-#         $payment->setFailureCategory(isset($response->failure_category)?$response->failure_category:null);
-#         $payment->setChipAndPinStatus(isset($response->chip_and_pin_status)?$response->chip_and_pin_status:null);
-#         $payment->setPaymentType(isset($response->payment_type)?$response->payment_type:null);
-#         $payment->setWebsiteUrl(isset($response->website_url)?$response->website_url:null);
-#         $payment->setContract(isset($response->contract)?$response->contract:null);
-#         $payment->setDescriptor(isset($response->descriptor)?$response->descriptor:null);
-#         $payment->setAccountId(isset($response->account_id)?$response->account_id:null);
-#         $payment->setMerchantLogin(isset($response->merchant_login)?$response->merchant_login:null);
-#         $payment->setMerchantId(isset($response->merchant_id)?$response->merchant_id:null);
-#         if (isset($response->settlement_date)
-#                 && !is_null($response->settlement_date)) {
-#             $payment->setSettlementDate(Syspay_Merchant_Utils::tsToDateTime($response->settlement_date));
-#         }
-#         if (isset($response->processing_time)
-#                 && !is_null($response->processing_time)) {
-#             $payment->setProcessingTime(Syspay_Merchant_Utils::tsToDateTime($response->processing_time));
-#         }
 #         if (isset($response->billing_agreement)
 #                 && ($response->billing_agreement instanceof stdClass)) {
 #             $billingAgreement =
@@ -168,8 +281,6 @@ end
 #             $paymentMethod = Syspay_Merchant_Entity_PaymentMethod::buildFromResponse($response->payment_method);
 #             $payment->setPaymentMethod($paymentMethod);
 #         }
-#         $payment->raw = $response;
-#         return $payment;
 #     }
 
 
