@@ -1,4 +1,4 @@
-module SyspaySDK
+module SyspaySDK::Utils
   module AbstractClass
     def self.included(base)
       base.extend(ClassMethods)

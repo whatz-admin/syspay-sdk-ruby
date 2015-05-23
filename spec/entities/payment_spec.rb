@@ -113,15 +113,15 @@ describe SyspaySDK::Entities::Payment do
     end
   end
 
-  it "responds to #to_hash" do
-    subject.should respond_to(:to_hash)
-  end
+  # it "responds to #to_hash" do
+  #   subject.should respond_to(:to_hash)
+  # end
 
-  describe "#to_hash" do
-    it "returns the payment converted to a hash" do
-      subject.to_hash.should eq({})
-    end
-  end
+  # describe "#to_hash" do
+  #   it "returns the payment converted to a hash" do
+  #     subject.to_hash.should eq({})
+  #   end
+  # end
 end
 
 #     public static function buildFromResponse(stdClass $response)

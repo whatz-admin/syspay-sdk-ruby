@@ -1,8 +1,6 @@
 module SyspaySDK::Entities
   class BaseClass
-    include SyspaySDK::AbstractClass
-
-    abstract_methods :to_hash
+    include SyspaySDK::Utils::AbstractClass
 
     attr_accessor :raw
 

@@ -4,7 +4,6 @@ module SyspaySDK
   autoload :Configuration,  "syspay-sdk/config"
   autoload :Logging,        "syspay-sdk/logging"
   autoload :Exceptions,     "syspay-sdk/exceptions"
-  autoload :AbstractClass,  "syspay-sdk/abstract_class"
   autoload :Client,         "syspay-sdk/client"
   autoload :Request,        "syspay-sdk/request"
 
@@ -33,6 +32,6 @@ module SyspaySDK
   end
 
   module Utils
-    autoload :Hashable,      "syspay-sdk/utils/hashable"
+    autoload :AbstractClass, "syspay-sdk/utils/abstract_class"
   end
 end

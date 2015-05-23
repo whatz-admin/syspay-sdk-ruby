@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe SyspaySDK::AbstractClass do
+describe SyspaySDK::Utils::AbstractClass do
   before(:each) do
     @klass = Class.new do
-      include SyspaySDK::AbstractClass
+      include SyspaySDK::Utils::AbstractClass
       abstract_methods :foo, :bar
     end
   end
