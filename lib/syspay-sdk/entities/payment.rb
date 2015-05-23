@@ -88,7 +88,15 @@ module SyspaySDK::Entities
     end
 
     def to_hash
-      {}
+      hash = {}
+
+      [:reference, :amount, :currency, :description, :extra, :preauth ].each do |attribute|
+        hash[attribute] = self.send(attribute)
+      end
+
+      hash[:recipients] = []
+
+      hash
     end
   end
 end

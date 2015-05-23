@@ -272,8 +272,50 @@ describe SyspaySDK::Entities::Payment do
   end
 
   describe "#to_hash" do
+    let (:response) do
+      {
+        id: "id",
+        reference: "reference",
+        amount: "amount",
+        currency: "currency",
+        status: "status",
+        extra: "extra",
+        description: "description",
+        website: "website",
+        failure_category: "failure_category",
+        chip_and_pin_status: "chip_and_pin_status",
+        payment_type: "payment_type",
+        website_url: "website_url",
+        contract: "contract",
+        descriptor: "descriptor",
+        account_id: "account_id",
+        merchant_login: "merchant_login",
+        merchant_id: "merchant_id"
+      }
+    end
+
+    let(:subject) {
+      SyspaySDK::Entities::Payment.build_from_response(response)
+    }
+
     it "returns the payment converted to a hash" do
-      subject.to_hash.should eq({})
+      subject.to_hash.should include(reference: response[:reference])
+      subject.to_hash.should include(amount: response[:amount])
+      subject.to_hash.should include(currency: response[:currency])
+      subject.to_hash.should include(description: response[:description])
+      subject.to_hash.should include(extra: response[:extra])
+      subject.to_hash.should include(preauth: response[:preauth])
+      subject.to_hash[:recipients].should eq([])
+    end
+
+    xit 'should include the recipients with one hash per recipient' do
+      recipient1 = SyspaySDK::Entities::PaymentRecipient.new
+      recipient2 = SyspaySDK::Entities::PaymentRecipient.new
+      recipients_map = [recipient1, recipient2]
+
+      subject.add_recipient recipient1
+
+      subject.to_hash[:recipients].should include(recipient1.to_hash)
     end
   end
 end
@@ -296,22 +338,6 @@ end
 #             $paymentMethod = Syspay_Merchant_Entity_PaymentMethod::buildFromResponse($response->payment_method);
 #             $payment->setPaymentMethod($paymentMethod);
 #         }
-#     }
-
-
-#     /**
-#      * Add a PaymentRecipient to the recipient map list
-#      *
-#      * @param Syspay_Merchant_Entity_PaymentRecipient $paymentRecipient
-#      *
-#      * @return self
-#      */
-#     public function addRecipient(Syspay_Merchant_Entity_PaymentRecipient $paymentRecipient)
-#     {
-#         if (!isset($this->recipient_map)) {
-#             $this->recipient_map = array();
-#         }
-#         array_push($this->recipient_map, $paymentRecipient);
 #     }
 
 #     /**

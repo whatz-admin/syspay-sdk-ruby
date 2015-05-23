@@ -27,4 +27,36 @@ describe SyspaySDK::Entities::PaymentRecipient do
     it { should respond_to(:currency) }
     it { should respond_to(:settlement_delay) }
   end
+
+  it "responds to #to_hash" do
+    subject.should respond_to(:to_hash)
+  end
+
+  describe "#to_hash" do
+    it "returns the PaymentRecipient converted to a hash" do
+      recipient = SyspaySDK::Entities::PaymentRecipient.new
+      params = {
+        user_id: 1,
+        account_id: 1,
+        calc_type: SyspaySDK::Entities::PaymentRecipient::CALC_TYPE_FIXED,
+        value: 1,
+        currency: "EUR",
+        settlement_delay: 1
+      }
+
+      recipient.user_id = params[:user_id]
+      recipient.account_id = params[:account_id]
+      recipient.calc_type = params[:calc_type]
+      recipient.value = params[:value]
+      recipient.currency = params[:currency]
+      recipient.settlement_delay = params[:settlement_delay]
+
+      recipient.to_hash.should include(user_id: params[:user_id])
+      recipient.to_hash.should include(account_id: params[:account_id])
+      recipient.to_hash.should include(calc_type: params[:calc_type])
+      recipient.to_hash.should include(value: params[:value])
+      recipient.to_hash.should include(currency: params[:currency])
+      recipient.to_hash.should include(settlement_delay: params[:settlement_delay])
+    end
+  end
 end
