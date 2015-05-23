@@ -1,4 +1,3 @@
-require 'rubygems'
 require 'spec_helper'
 
 describe SyspaySDK::AbstractClass do

@@ -25,4 +25,10 @@ module SyspaySDK
       Config.logger = log
     end
   end
+
+  module Entities
+    autoload :BaseClass,      "syspay-sdk/entities/base_class"
+    autoload :ReturnedEntity, "syspay-sdk/entities/returned_entity"
+    autoload :Payment,        "syspay-sdk/entities/payment"
+  end
 end

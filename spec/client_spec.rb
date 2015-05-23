@@ -48,11 +48,11 @@ describe SyspaySDK::Client do
     should respond_to(:request_id)
   end
 
-  it "should respond to generate_auth_header" do
+  it "responds to generate_auth_header" do
       should respond_to(:generate_auth_header)
   end
 
-  it "should respond to generate_digest_for_auth_header" do
+  it "responds to generate_digest_for_auth_header" do
       should respond_to(:generate_digest_for_auth_header)
   end
 
