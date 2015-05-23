@@ -1,18 +1,18 @@
 require 'rubygems'
 require 'spec_helper'
 
-describe Syspay::SDK::AbstractClass do
+describe SyspaySDK::AbstractClass do
   before(:each) do
     @klass = Class.new do
-      include Syspay::SDK::AbstractClass
+      include SyspaySDK::AbstractClass
       abstract_methods :foo, :bar
     end
   end
 
-  it "raises Syspay::SDK::Exceptions::NotImplementedError when an abstract method is called" do
+  it "raises SyspaySDK::Exceptions::NotImplementedError when an abstract method is called" do
     proc {
       @klass.new.foo
-    }.should raise_error(Syspay::SDK::Exceptions::NotImplementedError)
+    }.should raise_error(SyspaySDK::Exceptions::NotImplementedError)
   end
 
   it "can be overridden" do

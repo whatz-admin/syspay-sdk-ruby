@@ -5,11 +5,11 @@ require 'syspay-sdk/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "syspay-sdk"
-  gem.version       = Syspay::SDK::VERSION
+  gem.version       = SyspaySDK::VERSION
   gem.authors       = ["Fabien Anthonioz"]
   gem.email         = ["fabien.anthonioz@neteden.fr"]
-  gem.summary       = %q{The Syspay REST SDK provides Ruby APIs to create, process and manage payment.}
-  gem.description   = %q{The Syspay REST SDK provides Ruby APIs to create, process and manage payment.}
+  gem.summary       = %q{The Syspay SDK provides Ruby APIs to create, process and manage payments and subscriptions.}
+  gem.description   = %q{The Syspay SDK provides Ruby APIs to create, process and manage payments and subscriptions.}
   gem.homepage      = "https://app.syspay.com/"
 
   gem.files         = Dir["{spec,lib}/**/*"] + ["Rakefile", "README.md", "Gemfile"]

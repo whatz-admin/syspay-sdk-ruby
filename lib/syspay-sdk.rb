@@ -1,29 +1,27 @@
-module Syspay
-  module SDK
-    autoload :VERSION,        "syspay-sdk/version"
-    autoload :Config,         "syspay-sdk/config"
-    autoload :Configuration,  "syspay-sdk/config"
-    autoload :Logging,        "syspay-sdk/logging"
-    autoload :Exceptions,     "syspay-sdk/exceptions"
-    autoload :Client,         "syspay-sdk/client"
-    autoload :AbstractClass,  "syspay-sdk/abstract_class"
+module SyspaySDK
+  autoload :VERSION,        "syspay-sdk/version"
+  autoload :Config,         "syspay-sdk/config"
+  autoload :Configuration,  "syspay-sdk/config"
+  autoload :Logging,        "syspay-sdk/logging"
+  autoload :Exceptions,     "syspay-sdk/exceptions"
+  autoload :Client,         "syspay-sdk/client"
+  autoload :AbstractClass,  "syspay-sdk/abstract_class"
 
-    class << self
-      def configure(options = {}, &block)
-        Config.configure(options, &block)
-      end
+  class << self
+    def configure(options = {}, &block)
+      Config.configure(options, &block)
+    end
 
-      def load(*args)
-        Config.load(*args)
-      end
+    def load(*args)
+      Config.load(*args)
+    end
 
-      def logger
-        Config.logger
-      end
+    def logger
+      Config.logger
+    end
 
-      def logger=(log)
-        Config.logger = log
-      end
+    def logger=(log)
+      Config.logger = log
     end
   end
 end

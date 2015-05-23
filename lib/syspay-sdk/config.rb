@@ -1,7 +1,7 @@
 require 'erb'
 require 'yaml'
 
-module Syspay::SDK
+module SyspaySDK
   module Configuration
     def config
       @config ||= Config.config
@@ -37,7 +37,7 @@ module Syspay::SDK
     end
 
     def logfile=(filename)
-      logger.warn '`logfile=` is deprecated, Please use `Syspay::SDK::Config.logger = Logger.new(STDERR)`'
+      logger.warn '`logfile=` is deprecated, Please use `SyspaySDK::Config.logger = Logger.new(STDERR)`'
     end
 
     def redirect_url=(redirect_url)

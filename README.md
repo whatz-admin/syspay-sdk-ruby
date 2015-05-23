@@ -1,1 +1,1 @@
-# merchant-sdk-ruby
+# syspay-sdk-ruby

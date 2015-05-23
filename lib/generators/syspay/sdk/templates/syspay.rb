@@ -1,2 +1,2 @@
-Syspay::SDK.load("config/syspay.yml", Rails.env)
-Syspay::SDK.logger = Rails.logger
+SyspaySDK.load("config/syspay.yml", Rails.env)
+SyspaySDK.logger = Rails.logger

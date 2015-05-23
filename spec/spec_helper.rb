@@ -9,15 +9,15 @@ if ENV['COVERAGE']
 end
 
 Bundler.require :default, :test
-Syspay::SDK::Config.load(File.expand_path('../config/syspay.yml', __FILE__), 'test')
+SyspaySDK::Config.load(File.expand_path('../config/syspay.yml', __FILE__), 'test')
 
 require 'syspay-sdk'
 
-include Syspay::SDK::Logging
+include SyspaySDK::Logging
 
 require 'logger'
 
-Syspay::SDK.logger = Logger.new(STDERR)
+SyspaySDK.logger = Logger.new(STDERR)
 
 # Set logger for http
 # http_log = File.open(File.expand_path('../log/http.log', __FILE__), "w")

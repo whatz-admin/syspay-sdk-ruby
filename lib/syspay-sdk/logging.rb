@@ -1,6 +1,6 @@
 require 'logger'
 
-module Syspay::SDK
+module SyspaySDK
   module Logging
     def logger
       @logger ||= Logging.logger

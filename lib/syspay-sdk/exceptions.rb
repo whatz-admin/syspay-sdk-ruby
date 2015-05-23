@@ -1,7 +1,7 @@
 require 'json'
 require 'pp'
 
-module Syspay::SDK
+module SyspaySDK
   module Exceptions
     class ConnectionError < StandardError
       attr_reader :response

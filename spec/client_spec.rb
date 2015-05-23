@@ -1,8 +1,8 @@
 require "spec_helper"
 
-describe Syspay::SDK::Client do
+describe SyspaySDK::Client do
   it "is initialized with the values set in configuration" do
-    client = Syspay::SDK::Client.new
+    client = SyspaySDK::Client.new
     client.syspay_id.should eq(Config.config.syspay_id)
     client.syspay_passphrase.should eq(Config.config.syspay_passphrase)
     client.syspay_base_url.should eq(Config.config.syspay_base_url)
@@ -72,7 +72,7 @@ describe Syspay::SDK::Client do
   describe "generate_auth_header" do
     it "returns a properly formatted x-wsse Header" do
       Config.config.syspay_id = "123abc456def"
-      Syspay::SDK::Client.new.generate_auth_header.should match(/AuthToken MerchantAPILogin='123abc456def', PasswordDigest='.*', Nonce='.*', Created='\d*'/)
+      SyspaySDK::Client.new.generate_auth_header.should match(/AuthToken MerchantAPILogin='123abc456def', PasswordDigest='.*', Nonce='.*', Created='\d*'/)
     end
   end
 end

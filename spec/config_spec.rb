@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Syspay::SDK::Config do
-  Config = Syspay::SDK::Config
+describe SyspaySDK::Config do
+  Config = SyspaySDK::Config
 
   it "loads configuration file and default environment" do
     lambda do
@@ -110,16 +110,16 @@ describe Syspay::SDK::Config do
     Config.logger.should eq(my_logger)
   end
 
-  it "has access to Syspay::SDK methods" do
-    Syspay::SDK.configure.should eq(Syspay::SDK::Config.config)
-    Syspay::SDK.logger.should eq(Syspay::SDK::Config.logger)
-    Syspay::SDK.logger = Syspay::SDK.logger
-    Syspay::SDK.logger.should eq(Syspay::SDK::Config.logger)
+  it "has access to SyspaySDK methods" do
+    SyspaySDK.configure.should eq(SyspaySDK::Config.config)
+    SyspaySDK.logger.should eq(SyspaySDK::Config.logger)
+    SyspaySDK.logger = SyspaySDK.logger
+    SyspaySDK.logger.should eq(SyspaySDK::Config.logger)
   end
 
   describe "::Configuration" do
     class TestConfig
-      include Syspay::SDK::Configuration
+      include SyspaySDK::Configuration
     end
 
     it "gets default configuration" do

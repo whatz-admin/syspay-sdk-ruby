@@ -1,8 +1,8 @@
 require 'spec_helper'
 require 'stringio'
 
-describe Syspay::SDK::Logging do
-  Logging = Syspay::SDK::Logging
+describe SyspaySDK::Logging do
+  Logging = SyspaySDK::Logging
 
   class TestLogging
     include Logging

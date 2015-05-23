@@ -1,32 +1,43 @@
 require "base64"
 require 'digest'
 
-module Syspay
-  module SDK
-    class Client
-      attr_accessor :syspay_id, :syspay_passphrase, :syspay_base_url, :response_body, :response_headers, :response_data, :request_body, :request_headers, :request_params, :request_id
+# Base API client
+# @see https://app.syspay.com/bundles/emiuser/doc/merchant_api.html#emerchant-rest-api
 
-      def initialize
-        self.syspay_id = Syspay::SDK::Config.config.syspay_id
-        self.syspay_passphrase = Syspay::SDK::Config.config.syspay_passphrase
-        self.syspay_base_url = Syspay::SDK::Config.config.syspay_base_url
-      end
+module SyspaySDK
+  class Client
+    attr_accessor :syspay_id,
+    :syspay_passphrase,
+    :syspay_base_url,
+    :response_body,
+    :response_headers,
+    :response_data,
+    :request_body,
+    :request_headers,
+    :request_params,
+    :request_id
 
-      # Generates the x-wsse header
-      def generate_auth_header
-        timestamp = Time.now.to_i
+    # Creates a new Client object initialized with Config parameters
+    def initialize
+      self.syspay_id = SyspaySDK::Config.config.syspay_id
+      self.syspay_passphrase = SyspaySDK::Config.config.syspay_passphrase
+      self.syspay_base_url = SyspaySDK::Config.config.syspay_base_url
+    end
 
-        nonce = Digest::MD5.hexdigest(rand().to_s)
-        b64nonce = Base64.strict_encode64(nonce)
+    # Generates the x-wsse header
+    def generate_auth_header
+      timestamp = Time.now.to_i
 
-        digest = generate_digest_for_auth_header(nonce, timestamp, self.syspay_passphrase)
+      nonce = Digest::MD5.hexdigest(rand().to_s)
+      b64nonce = Base64.strict_encode64(nonce)
 
-        "AuthToken MerchantAPILogin='#{self.syspay_id}', PasswordDigest='#{digest}', Nonce='#{nonce}', Created='#{timestamp}'"
-      end
+      digest = generate_digest_for_auth_header(nonce, timestamp, self.syspay_passphrase)
 
-      def generate_digest_for_auth_header nonce, timestamp, passphrase
-        Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{passphrase}"))
-      end
+      "AuthToken MerchantAPILogin='#{self.syspay_id}', PasswordDigest='#{digest}', Nonce='#{nonce}', Created='#{timestamp}'"
+    end
+
+    def generate_digest_for_auth_header nonce, timestamp, passphrase
+      Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{passphrase}"))
     end
   end
 end
