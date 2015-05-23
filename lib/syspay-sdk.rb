@@ -31,4 +31,8 @@ module SyspaySDK
     autoload :ReturnedEntity, "syspay-sdk/entities/returned_entity"
     autoload :Payment,        "syspay-sdk/entities/payment"
   end
+
+  module Utils
+    autoload :Hashable,      "syspay-sdk/utils/hashable"
+  end
 end

@@ -1,7 +1,15 @@
 require 'spec_helper'
 
 describe SyspaySDK::Entities::Payment do
+  it "is a SyspaySDK::Entities::ReturnedEntity" do
+    subject.should be_a(SyspaySDK::Entities::ReturnedEntity)
+  end
+
   describe "Failure constants" do
+    it "has a TYPE class constant set to 'payment'" do
+      SyspaySDK::Entities::Payment::TYPE.should eq('payment')
+    end
+
     it "has a FAILURE_CARD_FLAGGED class constant set to 'card_flagged'" do
       SyspaySDK::Entities::Payment::FAILURE_CARD_FLAGGED.should eq('card_flagged')
     end
@@ -92,6 +100,26 @@ describe SyspaySDK::Entities::Payment do
 
     it "returns a Payment object" do
       SyspaySDK::Entities::Payment.build_from_response("test").should be_a(SyspaySDK::Entities::Payment)
+    end
+  end
+
+  it "responds to #get_type" do
+    subject.should respond_to(:get_type)
+  end
+
+  describe "#get_type" do
+    it "returns 'payment'" do
+      subject.get_type.should eq('payment')
+    end
+  end
+
+  it "responds to #to_hash" do
+    subject.should respond_to(:to_hash)
+  end
+
+  describe "#to_hash" do
+    it "returns the payment converted to a hash" do
+      subject.to_hash.should eq({})
     end
   end
 end

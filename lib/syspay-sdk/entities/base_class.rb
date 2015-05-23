@@ -7,7 +7,7 @@ module SyspaySDK::Entities
     attr_accessor :raw
 
     def get_type
-      self::TYPE
+      self.class::TYPE
     end
   end
 end

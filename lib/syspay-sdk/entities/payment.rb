@@ -1,6 +1,6 @@
 module SyspaySDK::Entities
-  class Payment
-    include SyspaySDK::Entities::ReturnedEntity
+  class Payment < SyspaySDK::Entities::ReturnedEntity
+    TYPE = 'payment'
 
     FAILURE_CARD_FLAGGED = 'card_flagged'
     FAILURE_DECLINED = 'declined'
@@ -15,34 +15,38 @@ module SyspaySDK::Entities
     FAILURE_TECHNICAL_ERROR = 'technical_error'
     FAILURE_UNSUPPORTED = 'unsupported'
 
-    attr_accessor :id,
-    :status,
-    :chip_and_pin_status,
-    :failure_category,
-    :reference,
+    attr_accessor :account_id,
     :amount,
+    :billing_agreement,
+    :chip_and_pin_status,
+    :contract,
     :currency,
     :description,
+    :descriptor,
     :extra,
+    :failure_category,
+    :id,
+    :merchant_id,
+    :merchant_login,
+    :payment_method,
+    :payment_type,
     :preauth,
-    :website,
-    :billing_agreement,
-    :subscription,
-    :redirect,
     :processing_time,
     :recipient_map,
-    :payment_type,
-    :website_url,
-    :contract,
-    :descriptor,
-    :account_id,
-    :merchant_login,
-    :merchant_id,
+    :redirect,
+    :reference,
     :settlement_date,
-    :payment_method
+    :status,
+    :subscription,
+    :website,
+    :website_url
 
     def self.build_from_response response
       payment = self.new
+    end
+
+    def to_hash
+      {}
     end
   end
 end
