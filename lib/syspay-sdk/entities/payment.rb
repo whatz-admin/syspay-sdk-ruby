@@ -74,10 +74,17 @@ module SyspaySDK::Entities
       payment
     end
 
-    def set_recipient_map
+    def set_recipient_map recipient_map
+      recipient_map.each do |recipient|
+        raise SyspaySDK::Exceptions::BadArgumentTypeError.new('set_recipient_map expects an array of SyspaySDK::Entities::PaymentRecipient') unless recipient.is_a?(SyspaySDK::Entities::PaymentRecipient)
+      end
+      self.recipient_map = recipient_map
     end
 
-    def add_recipient
+    def add_recipient recipient
+      raise SyspaySDK::Exceptions::BadArgumentTypeError.new('add_recipient expects a SyspaySDK::Entities::PaymentRecipient') unless recipient.is_a?(SyspaySDK::Entities::PaymentRecipient)
+      self.recipient_map ||= []
+      self.recipient_map.push recipient
     end
 
     def to_hash

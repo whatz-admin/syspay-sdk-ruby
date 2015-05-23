@@ -5,7 +5,7 @@ describe SyspaySDK::Entities::Payment do
     subject.should be_a(SyspaySDK::Entities::ReturnedEntity)
   end
 
-  describe "Failure constants" do
+  describe "Constants" do
     it "has a TYPE class constant set to 'payment'" do
       SyspaySDK::Entities::Payment::TYPE.should eq('payment')
     end
@@ -85,16 +85,6 @@ describe SyspaySDK::Entities::Payment do
     it { should respond_to(:merchant_id) }
     it { should respond_to(:settlement_date) }
     it { should respond_to(:payment_method) }
-  end
-
-  it "responds to #get_type" do
-    subject.should respond_to(:get_type)
-  end
-
-  describe "#get_type" do
-    it "returns 'payment'" do
-      subject.get_type.should eq('payment')
-    end
   end
 
   it "responds to ::build_from_response" do
@@ -240,7 +230,20 @@ describe SyspaySDK::Entities::Payment do
   end
 
   describe "#set_recipient_map" do
-    it "sets the instance recipient_map attribute properly"
+    it "sets the instance recipient_map attribute properly" do
+      recipient_map = [SyspaySDK::Entities::PaymentRecipient.new]
+      subject.set_recipient_map(recipient_map)
+
+      subject.recipient_map.should eq(recipient_map)
+    end
+
+    it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when recipient_map doesn't contain only PaymentRecipient" do
+      recipient_map = [SyspaySDK::Entities::PaymentRecipient.new, SyspaySDK::Entities::Payment.new]
+
+      lambda do
+        subject.set_recipient_map(recipient_map)
+      end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
+    end
   end
 
   it "responds to #add_recipient" do
@@ -248,7 +251,19 @@ describe SyspaySDK::Entities::Payment do
   end
 
   describe "#add_recipient" do
-    it "sets the instance recipient_map attribute properly"
+    it "adds a recipient to the instance recipient_map array" do
+      recipient = SyspaySDK::Entities::PaymentRecipient.new
+      subject.add_recipient recipient
+      subject.recipient_map.should include(recipient)
+    end
+
+    it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when recipient is not a PaymentRecipient" do
+      recipient = "Not a PaymentRecipient"
+
+      lambda do
+        subject.add_recipient recipient
+      end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
+    end
   end
 
 
@@ -283,26 +298,6 @@ end
 #         }
 #     }
 
-
-#     /**
-#      * Sets the value of recipient_map.
-#      *
-#      * @param array $recipientMap An array of Syspay_Merchant_Entity_PaymentRecipient
-#      *
-#      * @return self
-#      */
-#     public function setRecipientMap(array $recipientMap)
-#     {
-#         foreach ($recipientMap as $r) {
-#             if (!$r instanceof Syspay_Merchant_Entity_PaymentRecipient) {
-#                 throw new InvalidArgumentException(
-#                     'The given array must only contain Syspay_Merchant_Entity_PaymentRecipient instances'
-#                 );
-#             }
-#         }
-#         $this->recipient_map = $recipientMap;
-#         return $this;
-#     }
 
 #     /**
 #      * Add a PaymentRecipient to the recipient map list

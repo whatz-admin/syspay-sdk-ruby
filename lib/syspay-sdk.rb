@@ -26,9 +26,10 @@ module SyspaySDK
   end
 
   module Entities
-    autoload :BaseClass,      "syspay-sdk/entities/base_class"
-    autoload :ReturnedEntity, "syspay-sdk/entities/returned_entity"
-    autoload :Payment,        "syspay-sdk/entities/payment"
+    autoload :BaseClass,          "syspay-sdk/entities/base_class"
+    autoload :ReturnedEntity,     "syspay-sdk/entities/returned_entity"
+    autoload :Payment,            "syspay-sdk/entities/payment"
+    autoload :PaymentRecipient,   "syspay-sdk/entities/payment_recipient"
   end
 
   module Utils
