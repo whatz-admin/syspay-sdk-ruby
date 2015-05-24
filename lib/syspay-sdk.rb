@@ -30,6 +30,7 @@ module SyspaySDK
     autoload :ReturnedEntity,     "syspay-sdk/entities/returned_entity"
     autoload :Payment,            "syspay-sdk/entities/payment"
     autoload :PaymentRecipient,   "syspay-sdk/entities/payment_recipient"
+    autoload :AstroPayBank,       "syspay-sdk/entities/astro_pay_bank"
   end
 
   module Utils
