@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe SyspaySDK::Requests::BillingAgreementCancellation do
+describe SyspaySDK::Requests::BillingAgreementInfo do
   it "is a SyspaySDK::Requests::BaseClass" do
     subject.should be_a(SyspaySDK::Requests::BaseClass)
   end
 
   describe "Constants" do
-    it "has a METHOD class constant set to 'POST'" do
-      SyspaySDK::Requests::BillingAgreementCancellation::METHOD.should eq('POST')
+    it "has a METHOD class constant set to 'GET'" do
+      SyspaySDK::Requests::BillingAgreementInfo::METHOD.should eq('GET')
     end
 
-    it "has a PATH class constant set to '/api/v1/merchant/billing-agreement/:billing_agreement_id/cancel'" do
-      SyspaySDK::Requests::BillingAgreementCancellation::PATH.should eq('/api/v1/merchant/billing-agreement/:billing_agreement_id/cancel')
+    it "has a PATH class constant set to '/api/v1/merchant/billing-agreement/_ba_id_/cancel'" do
+      SyspaySDK::Requests::BillingAgreementInfo::PATH.should eq('/api/v1/merchant/billing-agreement/')
     end
   end
 
@@ -21,12 +21,12 @@ describe SyspaySDK::Requests::BillingAgreementCancellation do
 
   describe "Initialize" do
     it "can be initialized with a billing_agreement_id parameter" do
-      billing_agreement_cancellation = SyspaySDK::Requests::BillingAgreementCancellation.new "test_country"
-      billing_agreement_cancellation.billing_agreement_id.should eq("test_country")
+      billing_agreement_cancellation = SyspaySDK::Requests::BillingAgreementInfo.new "id"
+      billing_agreement_cancellation.billing_agreement_id.should eq("id")
     end
 
     it "can be initialized without arguments" do
-      billing_agreement_cancellation = SyspaySDK::Requests::BillingAgreementCancellation.new
+      billing_agreement_cancellation = SyspaySDK::Requests::BillingAgreementInfo.new
       billing_agreement_cancellation.billing_agreement_id.should be_nil
     end
   end
@@ -35,7 +35,7 @@ describe SyspaySDK::Requests::BillingAgreementCancellation do
 
   describe "#get_method" do
     it "returns the METHOD constant" do
-      subject.get_method.should eq(SyspaySDK::Requests::BillingAgreementCancellation::METHOD)
+      subject.get_method.should eq(SyspaySDK::Requests::BillingAgreementInfo::METHOD)
     end
   end
 
@@ -43,11 +43,11 @@ describe SyspaySDK::Requests::BillingAgreementCancellation do
 
   describe "#get_path" do
     it "returns the PATH constant" do
-      subject.get_path.should eq(SyspaySDK::Requests::BillingAgreementCancellation::PATH)
+      subject.get_path.should eq(SyspaySDK::Requests::BillingAgreementInfo::PATH)
     end
     it "returns the PATH constant with billing_agreement_id if exists" do
-      with_billing_agreement_id = SyspaySDK::Requests::BillingAgreementCancellation.new "test_billing_agreement_id"
-      with_billing_agreement_id.get_path.should eq(SyspaySDK::Requests::BillingAgreementCancellation::PATH.gsub(/:billing_agreement_id/, "test_billing_agreement_id"))
+      with_billing_agreement_id = SyspaySDK::Requests::BillingAgreementInfo.new "test_billing_agreement_id"
+      with_billing_agreement_id.get_path.should eq("#{SyspaySDK::Requests::BillingAgreementInfo::PATH}test_billing_agreement_id")
     end
   end
 

@@ -48,6 +48,7 @@ module SyspaySDK
     autoload :AstroPayBank,                   "syspay-sdk/requests/astro_pay_bank"
     autoload :BillingAgreement,               "syspay-sdk/requests/billing_agreement"
     autoload :BillingAgreementCancellation,   "syspay-sdk/requests/billing_agreement_cancellation"
+    autoload :BillingAgreementInfo,           "syspay-sdk/requests/billing_agreement_info"
   end
 
   module Utils

@@ -1,7 +1,7 @@
 module SyspaySDK::Requests
-  class BillingAgreementCancellation < SyspaySDK::Requests::BaseClass
-    METHOD = "POST"
-    PATH = "/api/v1/merchant/billing-agreement/:billing_agreement_id/cancel"
+  class BillingAgreementInfo < SyspaySDK::Requests::BaseClass
+    METHOD = "GET"
+    PATH = "/api/v1/merchant/billing-agreement/"
 
     attr_accessor :billing_agreement_id
 
@@ -10,8 +10,7 @@ module SyspaySDK::Requests
     end
 
     def get_path
-      return PATH.gsub(/:billing_agreement_id/, self.billing_agreement_id) unless self.billing_agreement_id.nil?
-      return PATH
+      "#{PATH}#{self.billing_agreement_id}"
     end
 
     def build_response response
