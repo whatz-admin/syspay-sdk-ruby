@@ -98,15 +98,9 @@ describe SyspaySDK::Entities::Refund do
       SyspaySDK::Entities::Refund.build_from_response(response).processing_time.should eq(processing_time)
     end
 
-    it "sets instance payment attribute using value in response"
+    it "sets instance payment attribute using value in response"do
+      response[:payment] = {}
+      SyspaySDK::Entities::Refund.build_from_response(response).payment.should be_a(SyspaySDK::Entities::Payment)
+    end
   end
 end
-
-# <?php
-#     public static function buildFromResponse(stdClass $response)
-#     {
-#         if (isset($response->payment)) {
-#             $refund->setPayment(Syspay_Merchant_Entity_Payment::buildFromResponse($response->payment));
-#         }
-#     }
-#

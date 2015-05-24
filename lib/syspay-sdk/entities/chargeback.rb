@@ -21,6 +21,7 @@ module SyspaySDK::Entities
       chargeback.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time]).to_date
       chargeback.bank_time = (response[:bank_time].nil? or response[:bank_time] == "") ? nil : Time.at(response[:bank_time]).to_date
 
+      chargeback.payment = SyspaySDK::Entities::Payment.build_from_response(response[:payment]) unless response[:payment].nil?
 
       chargeback.raw = response
       chargeback

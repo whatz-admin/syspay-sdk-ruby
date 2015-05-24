@@ -27,6 +27,8 @@ module SyspaySDK::Entities
 
       refund.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time]).to_date
 
+      refund.payment = SyspaySDK::Entities::Payment.build_from_response(response[:payment]) unless response[:payment].nil?
+
       refund.raw = response
       refund
     end

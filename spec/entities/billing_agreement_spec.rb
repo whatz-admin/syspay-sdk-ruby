@@ -114,30 +114,14 @@ describe SyspaySDK::Entities::BillingAgreement do
       SyspaySDK::Entities::BillingAgreement.build_from_response(response).expiration_date.should eq(expiration_date)
     end
 
-    it "sets instance payment_method attribute using value in response"
-    it "sets instance customer attribute using value in response"
+    it "sets instance payment_method attribute using value in response" do
+      response[:payment_method] = {}
+      SyspaySDK::Entities::BillingAgreement.build_from_response(response).payment_method.should be_a(SyspaySDK::Entities::PaymentMethod)
+    end
+
+    it "sets instance customer attribute using value in response" do
+      response[:customer] = {}
+      SyspaySDK::Entities::BillingAgreement.build_from_response(response).customer.should be_a(SyspaySDK::Entities::Customer)
+    end
   end
 end
-#     /**
-#      * Build a billing agreement entity based on a json-decoded billing agreement stdClass
-#      *
-#      * @param  stdClass $response The billing agreement data
-#      * @return Syspay_Merchant_Entity_BillingAgreement The billing agreement object
-#      */
-#     public static function buildFromResponse(stdClass $response)
-#     {
-#         $billingAgreement = new self();
-#
-#         if (isset($response->payment_method)
-#                 && ($response->payment_method instanceof stdClass)) {
-#             $paymentMethod = Syspay_Merchant_Entity_PaymentMethod::buildFromResponse($response->payment_method);
-#             $billingAgreement->setPaymentMethod($paymentMethod);
-#         }
-#         if (isset($response->customer)
-#                 && ($response->customer instanceof stdClass)) {
-#             $customer = Syspay_Merchant_Entity_Customer::buildFromResponse($response->customer);
-#             $billingAgreement->setCustomer($customer);
-#         }
-#         $billingAgreement->raw = $response;
-#         return $billingAgreement;
-#     }

@@ -28,6 +28,8 @@ module SyspaySDK::Entities
 
       billing_agreement.expiration_date = (response[:expiration_date].nil? or response[:expiration_date] == "") ? nil : Time.at(response[:expiration_date]).to_date
 
+      billing_agreement.payment_method = SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
+      billing_agreement.customer = SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?
 
       billing_agreement.raw = response
       billing_agreement

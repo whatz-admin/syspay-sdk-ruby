@@ -93,27 +93,9 @@ describe SyspaySDK::Entities::Chargeback do
       SyspaySDK::Entities::Chargeback.build_from_response(response).bank_time.should eq(bank_time)
     end
 
-    it "sets instance payment attribute using value in response"
+    it "sets instance payment attribute using value in response" do
+      response[:payment] = {}
+      SyspaySDK::Entities::Chargeback.build_from_response(response).payment.should be_a(SyspaySDK::Entities::Payment)
+    end
   end
 end
-
-# <?php
-
-#     private $payment;
-#     private $processingTime;
-#     private $bankTime;
-
-#     /**
-#      * Build a payment entity based on a json-decoded payment stdClass
-#      *
-#      * @param  stdClass $response The payment data
-#      * @return Syspay_Merchant_Entity_Payment The payment object
-#      */
-#     public static function buildFromResponse(stdClass $response)
-#     {
-#         if (isset($response->payment)) {
-#             $chargeback->setPayment(Syspay_Merchant_Entity_Payment::buildFromResponse($response->payment));
-#         }
-#         $chargeback-raw = $response;
-#         return $chargeback;
-#     }
