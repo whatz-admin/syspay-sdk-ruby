@@ -57,24 +57,3 @@ describe SyspaySDK::Entities::CreditCard do
     end
   end
 end
-# <?php
-
-#     /**
-#      * {@inheritDoc}
-#      *
-#      * If a token is set, use it, otherwise use the full card data
-#      */
-#     public function toArray()
-#     {
-#         $data = array();
-#         if (true === empty($this->token)) {
-#             $data['number']     = $this->number;
-#             $data['cardholder'] = $this->cardholder;
-#             $data['cvc']        = $this->cvc;
-#             $data['exp_month']  = $this->exp_month;
-#             $data['exp_year']   = $this->exp_year;
-#         } else {
-#             $data['token']      = $this->token;
-#         }
-#         return $data;
-#     }
