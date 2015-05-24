@@ -40,6 +40,7 @@ module SyspaySDK
     autoload :Plan,               "syspay-sdk/entities/plan"
     autoload :Refund,             "syspay-sdk/entities/refund"
     autoload :Subscription,       "syspay-sdk/entities/subscription"
+    autoload :SubscriptionEvent,  "syspay-sdk/entities/subscription_event"
   end
 
   module Utils
