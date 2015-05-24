@@ -35,6 +35,7 @@ module SyspaySDK
     autoload :Chargeback,         "syspay-sdk/entities/chargeback"
     autoload :CreditCard,         "syspay-sdk/entities/credit_card"
     autoload :Customer,           "syspay-sdk/entities/customer"
+    autoload :Eterminal,          "syspay-sdk/entities/eterminal"
   end
 
   module Utils
