@@ -1,7 +1,3 @@
-#     protected $amount
-#     protected $currency
-#     protected $reasonCode
-
 module SyspaySDK::Entities
   class Chargeback < SyspaySDK::Entities::ReturnedEntity
     TYPE = "chargeback"

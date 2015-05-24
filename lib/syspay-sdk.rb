@@ -39,6 +39,7 @@ module SyspaySDK
     autoload :PaymentMethod,      "syspay-sdk/entities/payment_method"
     autoload :Plan,               "syspay-sdk/entities/plan"
     autoload :Refund,             "syspay-sdk/entities/refund"
+    autoload :Subscription,       "syspay-sdk/entities/subscription"
   end
 
   module Utils
