@@ -17,7 +17,7 @@ module SyspaySDK::Requests
       raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
       raise SyspaySDK::Exceptions::UnexpectedResponseError.new('Unable to retrieve "chargeback" data from response') if response[:chargeback].nil?
 
-      SyspaySDK::Entities::Chargeback::build_from_response(response[:chargeback]);
+      SyspaySDK::Entities::Chargeback::build_from_response(response[:chargeback])
     end
   end
 end
