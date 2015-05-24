@@ -37,6 +37,7 @@ module SyspaySDK
     autoload :Customer,           "syspay-sdk/entities/customer"
     autoload :Eterminal,          "syspay-sdk/entities/eterminal"
     autoload :PaymentMethod,      "syspay-sdk/entities/payment_method"
+    autoload :Plan,               "syspay-sdk/entities/plan"
   end
 
   module Utils
