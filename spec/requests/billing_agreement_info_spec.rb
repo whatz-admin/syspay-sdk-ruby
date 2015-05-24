@@ -10,7 +10,7 @@ describe SyspaySDK::Requests::BillingAgreementInfo do
       SyspaySDK::Requests::BillingAgreementInfo::METHOD.should eq('GET')
     end
 
-    it "has a PATH class constant set to '/api/v1/merchant/billing-agreement/_ba_id_/cancel'" do
+    it "has a PATH class constant set to '/api/v1/merchant/billing-agreement/'" do
       SyspaySDK::Requests::BillingAgreementInfo::PATH.should eq('/api/v1/merchant/billing-agreement/')
     end
   end
