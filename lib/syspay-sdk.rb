@@ -53,6 +53,7 @@ module SyspaySDK
     autoload :ChargebackInfo,                 "syspay-sdk/requests/chargeback_info"
     autoload :ChargebackList,                 "syspay-sdk/requests/chargeback_list"
     autoload :Confirm,                        "syspay-sdk/requests/confirm"
+    autoload :Eterminal,                      "syspay-sdk/requests/eterminal"
   end
 
   module Utils
