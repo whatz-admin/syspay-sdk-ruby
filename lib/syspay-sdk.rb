@@ -43,6 +43,10 @@ module SyspaySDK
     autoload :SubscriptionEvent,  "syspay-sdk/entities/subscription_event"
   end
 
+  module Requests
+    autoload :BaseClass,          "syspay-sdk/requests/base_class"
+  end
+
   module Utils
     autoload :AbstractClass, "syspay-sdk/utils/abstract_class"
   end

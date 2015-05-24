@@ -1,7 +1,8 @@
 require 'spec_helper'
 
-describe SyspaySDK::Request do
+describe SyspaySDK::Requests::BaseClass do
   it { should respond_to(:get_method) }
+
   it "raises a SyspaySDK::Exceptions::NotImplementedError when #get_method is called" do
     lambda do
       subject.get_method()
