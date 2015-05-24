@@ -66,9 +66,10 @@ module SyspaySDK::Entities
       payment.settlement_date = (response[:settlement_date].nil? or response[:settlement_date] == "") ? nil : Time.at(response[:settlement_date]).to_date
       payment.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time]).to_date
 
-      payment.billing_agreement = response[:billing_agreement]
-      payment.subscription = response[:subscription]
-      payment.payment_method = response[:payment_method]
+
+      payment.billing_agreement = SyspaySDK::Entities::BillingAgreement.build_from_response(response[:billing_agreement]) unless response[:billing_agreement].nil?
+      payment.subscription = SyspaySDK::Entities::Subscription.build_from_response(response[:subscription]) unless response[:subscription].nil?
+      payment.payment_method = SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
 
       payment.raw = response
       payment

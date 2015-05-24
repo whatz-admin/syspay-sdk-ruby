@@ -218,11 +218,20 @@ describe SyspaySDK::Entities::Payment do
       SyspaySDK::Entities::Payment.build_from_response(response).processing_time.should eq(processing_time)
     end
 
-    it "sets instance billing_agreement attribute using value in response"
+    it "sets instance subscription attribute using value in response" do
+      response[:subscription] = {}
+      SyspaySDK::Entities::Payment.build_from_response(response).subscription.should be_a(SyspaySDK::Entities::Subscription)
+    end
 
-    it "sets instance subscription attribute using value in response"
+    it "sets instance payment_method attribute using value in response" do
+      response[:payment_method] = {}
+      SyspaySDK::Entities::Payment.build_from_response(response).payment_method.should be_a(SyspaySDK::Entities::PaymentMethod)
+    end
 
-    it "sets instance payment_method attribute using value in response"
+    it "sets instance billing_agreement attribute using value in response" do
+      response[:billing_agreement] = {}
+      SyspaySDK::Entities::Payment.build_from_response(response).billing_agreement.should be_a(SyspaySDK::Entities::BillingAgreement)
+    end
   end
 
   it "responds to #set_recipient_map" do

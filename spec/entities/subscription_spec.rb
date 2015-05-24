@@ -209,42 +209,9 @@ describe SyspaySDK::Entities::Subscription do
       SyspaySDK::Entities::Subscription.build_from_response(response).plan.should be_a(SyspaySDK::Entities::Plan)
     end
 
-    it "sets instance next_event attribute using value in response"
+    it "sets instance next_event attribute using value in response" do
+      response[:next_event] = {}
+      SyspaySDK::Entities::Subscription.build_from_response(response).next_event.should be_a(SyspaySDK::Entities::SubscriptionEvent)
+    end
   end
 end
-
-# <?php
-
-
-
-#     /**
-#      * Build a subscription entity based on a json-decoded subscription stdClass
-#      *
-#      * @param  stdClass $response The subscription data
-#      * @return Syspay_Merchant_Entity_Subscription The subscription object
-#      */
-#     public static function buildFromResponse(stdClass $response)
-#     {
-#         $subscription = new self();
-#
-#         if (isset($response->payment_method)
-#                 && ($response->payment_method instanceof stdClass)) {
-#             $paymentMethod = Syspay_Merchant_Entity_PaymentMethod::buildFromResponse($response->payment_method);
-#             $subscription->setPaymentMethod($paymentMethod);
-#         }
-#         if (isset($response->customer)
-#                 && ($response->customer instanceof stdClass)) {
-#             $customer = Syspay_Merchant_Entity_Customer::buildFromResponse($response->customer);
-#             $subscription->setCustomer($customer);
-#         }
-#         if (isset($response->plan)
-#                 && ($response->plan instanceof stdClass)) {
-#             $plan = Syspay_Merchant_Entity_Plan::buildFromResponse($response->plan);
-#             $subscription->setPlan($plan);
-#         }
-#         if (isset($response->next_event)
-#                 && ($response->next_event instanceof stdClass)) {
-#             $nextEvent = Syspay_Merchant_Entity_SubscriptionEvent::buildFromResponse($response->next_event);
-#             $subscription->setNextEvent($nextEvent);
-#         }
-#     }

@@ -63,6 +63,7 @@ module SyspaySDK::Entities
       subscription.payment_method = SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
       subscription.customer = SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?
       subscription.plan = SyspaySDK::Entities::Plan.build_from_response(response[:plan]) unless response[:plan].nil?
+      subscription.next_event = SyspaySDK::Entities::SubscriptionEvent.build_from_response(response[:next_event]) unless response[:next_event].nil?
 
       subscription.raw = response
       subscription
