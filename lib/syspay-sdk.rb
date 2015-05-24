@@ -31,6 +31,7 @@ module SyspaySDK
     autoload :Payment,            "syspay-sdk/entities/payment"
     autoload :PaymentRecipient,   "syspay-sdk/entities/payment_recipient"
     autoload :AstroPayBank,       "syspay-sdk/entities/astro_pay_bank"
+    autoload :BillingAgreement,   "syspay-sdk/entities/billing_agreement"
   end
 
   module Utils
