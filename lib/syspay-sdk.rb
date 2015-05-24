@@ -44,9 +44,10 @@ module SyspaySDK
   end
 
   module Requests
-    autoload :BaseClass,          "syspay-sdk/requests/base_class"
-    autoload :AstroPayBank,       "syspay-sdk/requests/astro_pay_bank"
-    autoload :BillingAgreement,   "syspay-sdk/requests/billing_agreement"
+    autoload :BaseClass,                      "syspay-sdk/requests/base_class"
+    autoload :AstroPayBank,                   "syspay-sdk/requests/astro_pay_bank"
+    autoload :BillingAgreement,               "syspay-sdk/requests/billing_agreement"
+    autoload :BillingAgreementCancellation,   "syspay-sdk/requests/billing_agreement_cancellation"
   end
 
   module Utils
