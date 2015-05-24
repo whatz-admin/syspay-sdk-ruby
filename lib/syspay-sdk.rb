@@ -45,6 +45,7 @@ module SyspaySDK
 
   module Requests
     autoload :BaseClass,          "syspay-sdk/requests/base_class"
+    autoload :AstroPayBank,       "syspay-sdk/requests/astro_pay_bank"
   end
 
   module Utils
