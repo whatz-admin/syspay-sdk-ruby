@@ -54,6 +54,7 @@ module SyspaySDK
     autoload :ChargebackList,                 "syspay-sdk/requests/chargeback_list"
     autoload :Confirm,                        "syspay-sdk/requests/confirm"
     autoload :Eterminal,                      "syspay-sdk/requests/eterminal"
+    autoload :IpAddresses,                    "syspay-sdk/requests/ip_addresses"
   end
 
   module Utils
