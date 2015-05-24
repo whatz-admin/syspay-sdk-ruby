@@ -18,6 +18,15 @@ describe SyspaySDK::Entities::Customer do
     it { should respond_to(:mobile) }
   end
 
+  let (:response) do
+    {
+      email: "code",
+      language: "name",
+      ip: "url",
+      mobile: "mobile"
+    }
+  end
+
   describe "::build_from_response" do
     it "doesn't raise an error when called" do
       lambda do
@@ -33,15 +42,6 @@ describe SyspaySDK::Entities::Customer do
       lambda do
         SyspaySDK::Entities::Customer.build_from_response("test")
       end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
-    end
-
-    let (:response) do
-      {
-        email: "code",
-        language: "name",
-        ip: "url",
-        mobile: "mobile"
-      }
     end
 
     before(:each) do
@@ -66,6 +66,23 @@ describe SyspaySDK::Entities::Customer do
 
     it "sets instance mobile attribute using value in response" do
       @customer.mobile.should eq(response[:mobile])
+    end
+  end
+
+  it "responds to #to_hash" do
+    subject.should respond_to(:to_hash)
+  end
+
+  describe "#to_hash" do
+    let(:subject) {
+      SyspaySDK::Entities::Customer.build_from_response(response)
+    }
+
+    it "returns the payment converted to a hash" do
+      subject.to_hash.should include(email: response[:email])
+      subject.to_hash.should include(language: response[:language])
+      subject.to_hash.should include(ip: response[:ip])
+      subject.to_hash.should include(mobile: response[:mobile])
     end
   end
 end

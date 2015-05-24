@@ -18,5 +18,9 @@ module SyspaySDK::Entities
       customer.raw = response
       customer
     end
+
+    def to_hash
+      { email: self.email, language: self.language, ip: self.ip, mobile: self.mobile }
+    end
   end
 end

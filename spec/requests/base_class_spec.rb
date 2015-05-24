@@ -2,13 +2,7 @@ require 'spec_helper'
 
 describe SyspaySDK::Requests::BaseClass do
   it { should respond_to(:get_method) }
-
   it { should respond_to(:get_path) }
-  it "raises a SyspaySDK::Exceptions::NotImplementedError when #get_path is called" do
-    lambda do
-      subject.get_path()
-    end.should raise_error(SyspaySDK::Exceptions::NotImplementedError)
-  end
 
   it { should respond_to(:build_response) }
   it "raises a SyspaySDK::Exceptions::NotImplementedError when #build_response is called" do
