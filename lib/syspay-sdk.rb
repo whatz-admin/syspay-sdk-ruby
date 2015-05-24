@@ -50,6 +50,7 @@ module SyspaySDK
     autoload :BillingAgreementCancellation,   "syspay-sdk/requests/billing_agreement_cancellation"
     autoload :BillingAgreementInfo,           "syspay-sdk/requests/billing_agreement_info"
     autoload :BillingAgreementList,           "syspay-sdk/requests/billing_agreement_list"
+    autoload :ChargebackInfo,                 "syspay-sdk/requests/chargeback_info"
   end
 
   module Utils
