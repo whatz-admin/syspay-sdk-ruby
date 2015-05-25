@@ -8,15 +8,19 @@ module SyspaySDK
       self.skip_auth_check = skip_auth_check
     end
 
-    def validate_checksum result, merchant, checksum
+    def validate_checksum result, passphrase, checksum
+      raise SyspaySDK::Exceptions::MissingArgumentError.new("Missing Argument: result") if result.nil?
+      raise SyspaySDK::Exceptions::MissingArgumentError.new("Missing Argument: passphrase") if passphrase.nil?
+      raise SyspaySDK::Exceptions::MissingArgumentError.new("Missing Argument: checksum") if checksum.nil?
+
+      raise SyspaySDK::Exceptions::InvalidChecksumError.new('Invalid checksum') if Digest::SHA1.hexdigest("#{result}#{passphrase}") != checksum
     end
 
     def get_result source
       result   = source[:result]
-      merchant = source[:merchant]
       checksum = source[:checksum]
 
-      self.validate_checksum(result, merchant, checksum) unless self.skip_auth_check
+      self.validate_checksum(result, self.syspay_passphrase, checksum) unless self.skip_auth_check
 
       begin
         result = Base64.strict_decode64(result)

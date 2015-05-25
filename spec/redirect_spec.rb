@@ -21,7 +21,35 @@ describe SyspaySDK::Redirect do
   it { should respond_to(:validate_checksum) }
 
   describe "#validate_checksum" do
-    it "raises a SyspaySDK::Exceptions::MissingArgumentError when one of the three parameters is not set"
+    it "raises a SyspaySDK::Exceptions::MissingArgumentError when one of the three parameters is not set" do
+      lambda do
+        subject.validate_checksum(nil, "test", "test")
+      end.should raise_error(SyspaySDK::Exceptions::MissingArgumentError)
+      lambda do
+        subject.validate_checksum("test", nil, "test")
+      end.should raise_error(SyspaySDK::Exceptions::MissingArgumentError)
+      lambda do
+        subject.validate_checksum("test", "test", nil)
+      end.should raise_error(SyspaySDK::Exceptions::MissingArgumentError)
+    end
+
+    it "raises a SyspaySDK::Exceptions::InvalidChecksumError when the checksum doesn't match" do
+      result = "test"
+      passphrase = "test"
+      checksum = "test"
+      lambda do
+        subject.validate_checksum(result, passphrase, checksum)
+      end.should raise_error(SyspaySDK::Exceptions::InvalidChecksumError)
+    end
+
+    it "doesn't raise any error when the checksum matches" do
+      result = "test"
+      passphrase = "test"
+      checksum = Digest::SHA1.hexdigest("#{result}#{passphrase}")
+      lambda do
+        subject.validate_checksum(result, passphrase, checksum)
+      end.should_not raise_error
+    end
   end
 
   it { should respond_to(:get_result) }
@@ -39,7 +67,7 @@ describe SyspaySDK::Redirect do
       Base64.should receive(:strict_decode64).with(anything())
       JSON.should receive(:parse).with(anything()).and_return({payment: {} })
       subject.skip_auth_check = false
-      subject.should receive(:validate_checksum).with(source[:result], source[:merchant], source[:checksum])
+      subject.should receive(:validate_checksum).with(source[:result], subject.syspay_passphrase, source[:checksum])
       subject.get_result(source)
     end
 
@@ -93,64 +121,3 @@ describe SyspaySDK::Redirect do
     end
   end
 end
-# <?php
-# /**
-#  * Handle Redirections
-#  */
-# class Syspay_Merchant_Redirect
-# {
-#     public function getResult(array $source)
-#     {
-#         $result   = isset($source['result'])?$source['result']:null;
-#         $merchant = isset($source['merchant'])?$source['merchant']:null;
-#         $checksum = isset($source['checksum'])?$source['checksum']:null;
-
-#         if (!$this->skipAuthCheck) {
-#             $this->checkChecksum($result, $merchant, $checksum);
-#         }
-
-#         $result = base64_decode($result);
-#         if ($result === false) {
-#             throw new Syspay_Merchant_RedirectException(
-#                 'Unable to decode the result parameter',
-#                 Syspay_Merchant_RedirectException::CODE_INVALID_CONTENT
-#             );
-#         }
-
-#         $result = json_decode($result);
-#         if ($result === null || empty($result->payment)) {
-#             throw new Syspay_Merchant_RedirectException(
-#                 'Unable to decode the result parameter',
-#                 Syspay_Merchant_RedirectException::CODE_INVALID_CONTENT
-#             );
-#         }
-
-#         return Syspay_Merchant_Entity_Payment::buildFromResponse($result->payment);
-#     }
-
-#     /**
-#      * Validate the request's checksum
-#      * @throws Syspay_Merchant_RedirectException If the checksum didn't validate
-#      */
-#     private function checkChecksum($result, $merchant, $checksum)
-#     {
-#         if (empty($merchant) || empty($checksum) || empty($result)) {
-#             throw new Syspay_Merchant_RedirectException(
-#                 'Missing parameter',
-#                 Syspay_Merchant_RedirectException::CODE_MISSING_PARAM
-#             );
-#         }
-#         if (empty($this->secrets[$merchant])) {
-#             throw new Syspay_Merchant_RedirectException(
-#                 'Unknown merchant: ' . $merchant,
-#                 Syspay_Merchant_RedirectException::CODE_UNKNOWN_MERCHANT
-#             );
-#         }
-#         if (!Syspay_Merchant_Utils::checkChecksum($result, $this->secrets[$merchant], $checksum)) {
-#             throw new Syspay_Merchant_RedirectException(
-#                 'Invalid checksum',
-#                 Syspay_Merchant_RedirectException::CODE_INVALID_CHECKSUM
-#             );
-#         }
-#     }
-# }

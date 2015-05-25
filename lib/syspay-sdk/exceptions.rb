@@ -3,6 +3,14 @@ require 'pp'
 
 module SyspaySDK
   module Exceptions
+
+    class InvalidChecksumError < StandardError
+      def initialize(message)
+        @message = message
+      end
+      def to_s; @message ;end
+    end
+
     # Raised when an argument is missing
     class MissingArgumentError < StandardError
       def initialize(message)
