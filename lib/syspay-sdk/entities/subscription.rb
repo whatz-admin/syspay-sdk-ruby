@@ -68,5 +68,15 @@ module SyspaySDK::Entities
       subscription.raw = response
       subscription
     end
+
+    def to_hash
+      hash = {}
+
+      [ :ems_url, :redirect_url, :plan, :plan_id, :extra, :reference ].each do |attribute|
+        hash[attribute] = self.send(attribute)
+      end
+
+      hash
+    end
   end
 end
