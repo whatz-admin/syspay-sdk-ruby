@@ -21,13 +21,13 @@ describe SyspaySDK::Requests::BillingAgreementInfo do
 
   describe "Initialize" do
     it "can be initialized with a billing_agreement_id parameter" do
-      billing_agreement_cancellation = SyspaySDK::Requests::BillingAgreementInfo.new "id"
-      billing_agreement_cancellation.billing_agreement_id.should eq("id")
+      billing_agreement_info = SyspaySDK::Requests::BillingAgreementInfo.new "id"
+      billing_agreement_info.billing_agreement_id.should eq("id")
     end
 
     it "can be initialized without arguments" do
-      billing_agreement_cancellation = SyspaySDK::Requests::BillingAgreementInfo.new
-      billing_agreement_cancellation.billing_agreement_id.should be_nil
+      billing_agreement_info = SyspaySDK::Requests::BillingAgreementInfo.new
+      billing_agreement_info.billing_agreement_id.should be_nil
     end
   end
 
