@@ -6,6 +6,7 @@ module SyspaySDK
   autoload :Exceptions,     "syspay-sdk/exceptions"
   autoload :Client,         "syspay-sdk/client"
   autoload :Request,        "syspay-sdk/request"
+  autoload :Redirect,       "syspay-sdk/redirect"
 
   class << self
     def configure(options = {}, &block)

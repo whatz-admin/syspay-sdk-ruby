@@ -3,6 +3,14 @@ require 'pp'
 
 module SyspaySDK
   module Exceptions
+    # Raised when an argument is missing
+    class MissingArgumentError < StandardError
+      def initialize(message)
+        @message = message
+      end
+      def to_s; @message ;end
+    end
+
     # Raised when an argument passed to a function is not
     # of the expected type
     class InvalidArgumentError < StandardError
