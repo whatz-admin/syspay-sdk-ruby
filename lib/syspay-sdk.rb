@@ -56,6 +56,8 @@ module SyspaySDK
     autoload :Eterminal,                      "syspay-sdk/requests/eterminal"
     autoload :IpAddresses,                    "syspay-sdk/requests/ip_addresses"
     autoload :Payment,                        "syspay-sdk/requests/payment"
+    autoload :PaymentInfo,                    "syspay-sdk/requests/payment_info"
+
   end
 
   module Utils
