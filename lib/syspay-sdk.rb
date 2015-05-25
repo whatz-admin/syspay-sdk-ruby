@@ -58,6 +58,7 @@ module SyspaySDK
     autoload :Payment,                        "syspay-sdk/requests/payment"
     autoload :PaymentInfo,                    "syspay-sdk/requests/payment_info"
     autoload :PaymentList,                    "syspay-sdk/requests/payment_list"
+    autoload :Plan,                           "syspay-sdk/requests/plan"
 
   end
 

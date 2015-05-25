@@ -57,5 +57,25 @@ module SyspaySDK::Entities
       plan.raw = response
       plan
     end
+
+    def to_hash
+      hash = {}
+      hash[:ype] = self.type
+      hash[:name] = self.name
+      hash[:description] = self.description
+      hash[:currency] = self.currency
+      hash[:trial_amount] = self.trial_amount
+      hash[:trial_period] = self.trial_period
+      hash[:trial_period_unit] = self.trial_period_unit
+      hash[:trial_cycles] = self.trial_cycles
+      hash[:initial_amount] = self.initial_amount
+      hash[:billing_amount] = self.billing_amount
+      hash[:billing_period] = self.billing_period
+      hash[:billing_period_unit] = self.billing_period_unit
+      hash[:billing_cycles] = self.billing_cycles
+      hash[:retry_map_id] = self.retry_map_id
+      hash[:total_amount] = self.total_amount
+      hash
+    end
   end
 end
