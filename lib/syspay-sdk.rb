@@ -61,6 +61,7 @@ module SyspaySDK
     autoload :Plan,                           "syspay-sdk/requests/plan"
     autoload :PlanInfo,                       "syspay-sdk/requests/plan_info"
     autoload :PlanUpdate,                     "syspay-sdk/requests/plan_update"
+    autoload :Rebill,                         "syspay-sdk/requests/rebill"
 
   end
 
