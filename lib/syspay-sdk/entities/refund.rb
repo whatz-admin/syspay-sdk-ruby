@@ -32,5 +32,15 @@ module SyspaySDK::Entities
       refund.raw = response
       refund
     end
+
+    def to_hash
+      hash = {}
+
+      [ :reference, :amount, :currency, :description, :extra ].each do |attribute|
+        hash[attribute] = self.send(attribute)
+      end
+
+      hash
+    end
   end
 end
