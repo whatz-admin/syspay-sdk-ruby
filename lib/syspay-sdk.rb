@@ -64,6 +64,7 @@ module SyspaySDK
     autoload :Rebill,                         "syspay-sdk/requests/rebill"
     autoload :Refund,                         "syspay-sdk/requests/refund"
     autoload :RefundInfo,                     "syspay-sdk/requests/refund_info"
+    autoload :RefundList,                     "syspay-sdk/requests/refund_list"
 
   end
 

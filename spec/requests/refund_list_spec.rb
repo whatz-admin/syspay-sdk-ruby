@@ -1,17 +1,17 @@
 require 'spec_helper'
 
-describe SyspaySDK::Requests::PaymentList do
+describe SyspaySDK::Requests::RefundList do
   it "is a SyspaySDK::Requests::BaseClass" do
     subject.should be_a(SyspaySDK::Requests::BaseClass)
   end
 
   describe "Constants" do
     it "has a METHOD class constant set to 'GET'" do
-      SyspaySDK::Requests::PaymentList::METHOD.should eq('GET')
+      SyspaySDK::Requests::RefundList::METHOD.should eq('GET')
     end
 
-    it "has a PATH class constant set to '/api/v1/merchant/payments/'" do
-      SyspaySDK::Requests::PaymentList::PATH.should eq('/api/v1/merchant/payments/')
+    it "has a PATH class constant set to '/api/v1/merchant/refunds/'" do
+      SyspaySDK::Requests::RefundList::PATH.should eq('/api/v1/merchant/refunds/')
     end
   end
 
@@ -21,8 +21,8 @@ describe SyspaySDK::Requests::PaymentList do
 
   describe "Initialize" do
     it "creates a hash of filter" do
-      payment_list = SyspaySDK::Requests::PaymentList.new
-      payment_list.filters.should be_a(Hash)
+      refund_list = SyspaySDK::Requests::RefundList.new
+      refund_list.filters.should be_a(Hash)
     end
   end
 
@@ -30,7 +30,7 @@ describe SyspaySDK::Requests::PaymentList do
 
   describe "#get_method" do
     it "returns the METHOD constant" do
-      subject.get_method.should eq(SyspaySDK::Requests::PaymentList::METHOD)
+      subject.get_method.should eq(SyspaySDK::Requests::RefundList::METHOD)
     end
   end
 
@@ -38,7 +38,7 @@ describe SyspaySDK::Requests::PaymentList do
 
   describe "#get_path" do
     it "returns the PATH constant" do
-      subject.get_path.should eq(SyspaySDK::Requests::PaymentList::PATH)
+      subject.get_path.should eq(SyspaySDK::Requests::RefundList::PATH)
     end
   end
 
@@ -82,21 +82,21 @@ describe SyspaySDK::Requests::PaymentList do
       end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
     end
 
-    it "raises a SyspaySDK::Exceptions::UnexpectedResponseError if the hash doesn't contain payments" do
+    it "raises a SyspaySDK::Exceptions::UnexpectedResponseError if the hash doesn't contain refunds" do
       lambda do
         subject.build_response({test: "test"})
       end.should raise_error(SyspaySDK::Exceptions::UnexpectedResponseError)
     end
 
-    it "raises a SyspaySDK::Exceptions::UnexpectedResponseError if payments is not an array" do
+    it "raises a SyspaySDK::Exceptions::UnexpectedResponseError if refunds is not an array" do
       lambda do
-        subject.build_response({payments: {}})
+        subject.build_response({refunds: {}})
       end.should raise_error(SyspaySDK::Exceptions::UnexpectedResponseError)
     end
 
     it "returns an Array of SyspaySDK::Entities::Payment" do
-      subject.build_response({ payments: [] }).should be_a(Array)
-      subject.build_response({ payments: [{id: 1}] }).first.should be_a(SyspaySDK::Entities::Payment)
+      subject.build_response({ refunds: [] }).should be_a(Array)
+      subject.build_response({ refunds: [{id: 1}] }).first.should be_a(SyspaySDK::Entities::Refund)
     end
   end
 end
