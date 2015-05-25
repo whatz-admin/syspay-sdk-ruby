@@ -57,6 +57,7 @@ module SyspaySDK
     autoload :IpAddresses,                    "syspay-sdk/requests/ip_addresses"
     autoload :Payment,                        "syspay-sdk/requests/payment"
     autoload :PaymentInfo,                    "syspay-sdk/requests/payment_info"
+    autoload :PaymentList,                    "syspay-sdk/requests/payment_list"
 
   end
 
