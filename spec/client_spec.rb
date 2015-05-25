@@ -56,7 +56,7 @@ describe SyspaySDK::Client do
       should respond_to(:generate_digest_for_auth_header)
   end
 
-  describe "generate_digest_for_auth_header" do
+  describe "#generate_digest_for_auth_header" do
     it "returns a digest based on the nonce, timestamp and passphrase passed in as parameters" do
       require "base64"
       require 'digest/sha1'
@@ -69,10 +69,15 @@ describe SyspaySDK::Client do
     end
   end
 
-  describe "generate_auth_header" do
+  describe "#generate_auth_header" do
     it "returns a properly formatted x-wsse Header" do
       Config.config.syspay_id = "123abc456def"
       SyspaySDK::Client.new.generate_auth_header.should match(/AuthToken MerchantAPILogin='123abc456def', PasswordDigest='.*', Nonce='.*', Created='\d*'/)
     end
+  end
+
+  it "test" do
+    payment_request = SyspaySDK::Requests::Payment.new(SyspaySDK::Requests::Payment::FLOW_API)
+    subject.request(payment_request)
   end
 end

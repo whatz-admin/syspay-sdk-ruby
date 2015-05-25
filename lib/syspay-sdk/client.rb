@@ -1,5 +1,6 @@
 require "base64"
 require 'digest'
+require 'net/http'
 
 # Base API client
 # @see https://app.syspay.com/bundles/emiuser/doc/merchant_api.html#emerchant-rest-api
@@ -9,13 +10,15 @@ module SyspaySDK
     attr_accessor :syspay_id,
     :syspay_passphrase,
     :syspay_base_url,
-    :response_body,
-    :response_headers,
-    :response_data,
+    :request_object,
+    :request_url,
     :request_body,
     :request_headers,
     :request_params,
-    :request_id
+    :request_id,
+    :response_body,
+    :response_headers,
+    :response_data
 
     # Creates a new Client object initialized with Config parameters
     def initialize
@@ -39,6 +42,46 @@ module SyspaySDK
     def generate_digest_for_auth_header nonce, timestamp, passphrase
       Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{passphrase}"))
     end
+
+    def request request
+      self.request_object = request
+
+      self.request_body = self.response_body = self.response_data = self.request_id = nil
+      self.response_headers = self.request_headers = {}
+
+      self.request_headers = [
+        "Accept: application/json",
+        "X-Wsse: #{self.generate_auth_header}"
+      ]
+
+      url = "#{self.syspay_base_url.chomp('/')}#{request.get_path}"
+      self.request_url = URI(url)
+
+      method = request.get_method.upcase
+
+      case method
+      when 'PUT':
+        self.send_put_request
+      when 'POST':
+        self.send_post_request
+      when 'GET':
+        self.send_get_request
+      when 'DELETE':
+        self.send_delete_request
+      else
+        raise SyspaySDK::Exceptions::UnhandledMethodError.new("Unhandled method : #{method}")
+      end
+    end
+
+    def send_post_request
+    end
+    def send_put_request
+    end
+    def send_delete_request
+    end
+
+    def send_get_request
+    end
   end
 end
 
@@ -51,7 +94,7 @@ end
 #      */
 #     public function request(Syspay_Merchant_Request $request)
 #     {
-#         $this->requestBody = $this->responseBody = $this->responseData = $this->requestId = null;
+#         self.requestBody = $this->responseBody = $this->responseData = $this->requestId = null;
 #         $this->responseHeaders = $this->requestHeaders = array();
 #         $headers = array(
 #             'Accept: application/json',
