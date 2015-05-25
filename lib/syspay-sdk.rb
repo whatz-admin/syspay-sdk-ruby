@@ -67,6 +67,7 @@ module SyspaySDK
     autoload :RefundList,                     "syspay-sdk/requests/refund_list"
     autoload :Subscription,                   "syspay-sdk/requests/subscription"
     autoload :SubscriptionCancellation,       "syspay-sdk/requests/subscription_cancellation"
+    autoload :SubscriptionInfo,               "syspay-sdk/requests/subscription_info"
 
   end
 

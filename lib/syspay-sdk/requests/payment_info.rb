@@ -15,7 +15,7 @@ module SyspaySDK::Requests
 
       payment = SyspaySDK::Entities::Payment::build_from_response(response[:payment])
 
-      payment.redirect = response[:redirect]
+      payment.redirect = response[:redirect] unless response[:redirect].nil?
 
       payment
     end
