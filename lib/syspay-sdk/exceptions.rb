@@ -4,6 +4,17 @@ require 'pp'
 module SyspaySDK
   module Exceptions
 
+    class RequestError < StandardError
+      def initialize(http_code, response_body)
+        @http_code = http_code
+        @response_body = response_body
+      end
+
+      def to_s
+        "The request returned a #{@http_code} error with the following body: #{@response_body}"
+      end
+    end
+
     class InvalidChecksumError < StandardError
       def initialize(message)
         @message = message

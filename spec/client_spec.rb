@@ -20,32 +20,16 @@ describe SyspaySDK::Client do
     should respond_to(:syspay_base_url)
   end
 
-  it "has a response_body" do
-    should respond_to(:response_body)
+  it "has a request_object" do
+    should respond_to(:request_object)
   end
 
-  it "has a response_headers" do
-    should respond_to(:response_headers)
+  it "has a response" do
+    should respond_to(:response)
   end
 
-  it "has a response_data" do
-    should respond_to(:response_data)
-  end
-
-  it "has a request_body" do
-    should respond_to(:request_body)
-  end
-
-  it "has a request_headers" do
-    should respond_to(:request_headers)
-  end
-
-  it "has a request_params" do
-    should respond_to(:request_params)
-  end
-
-  it "has a request_id" do
-    should respond_to(:request_id)
+  it "responds to request" do
+    should respond_to(:request)
   end
 
   it "responds to generate_auth_header" do
@@ -74,10 +58,5 @@ describe SyspaySDK::Client do
       Config.config.syspay_id = "123abc456def"
       SyspaySDK::Client.new.generate_auth_header.should match(/AuthToken MerchantAPILogin='123abc456def', PasswordDigest='.*', Nonce='.*', Created='\d*'/)
     end
-  end
-
-  it "test" do
-    payment_request = SyspaySDK::Requests::Payment.new(SyspaySDK::Requests::Payment::FLOW_API)
-    subject.request(payment_request)
   end
 end

@@ -11,14 +11,7 @@ module SyspaySDK
     :syspay_passphrase,
     :syspay_base_url,
     :request_object,
-    :request_url,
-    :request_body,
-    :request_headers,
-    :request_params,
-    :request_id,
-    :response_body,
-    :response_headers,
-    :response_data
+    :response
 
     # Creates a new Client object initialized with Config parameters
     def initialize
@@ -45,114 +38,77 @@ module SyspaySDK
 
     def request request
       self.request_object = request
+      self.response = nil
 
-      self.request_body = self.response_body = self.response_data = self.request_id = nil
-      self.response_headers = self.request_headers = {}
+      method = self.request_object.get_method.upcase
 
-      self.request_headers = [
-        "Accept: application/json",
-        "X-Wsse: #{self.generate_auth_header}"
-      ]
-
-      url = "#{self.syspay_base_url.chomp('/')}#{request.get_path}"
-      self.request_url = URI(url)
-
-      method = request.get_method.upcase
-
-      case method
-      when 'PUT':
+      self.response = case method
+      when 'PUT'
         self.send_put_request
-      when 'POST':
+      when 'POST'
         self.send_post_request
-      when 'GET':
+      when 'GET'
         self.send_get_request
-      when 'DELETE':
-        self.send_delete_request
       else
         raise SyspaySDK::Exceptions::UnhandledMethodError.new("Unhandled method : #{method}")
       end
-    end
 
-    def send_post_request
-    end
-    def send_put_request
-    end
-    def send_delete_request
+      http_code = self.response.code
+      raise SyspaySDK::Exceptions::RequestError.new(http_code, self.response) unless [200, 201].include?(http_code.to_i)
+
+      decoded_body = JSON.parse(self.response.body);
+      if decoded_body.is_a?(Hash) and
+        !decoded_body[:data].nil? and
+        decoded_body[:data].is_a?(Hash)
+        return self.request_object.build_response(decoded_body[:data]);
+      else
+        raise SyspaySDK::Exceptions::UnexpectedResponseError.new('Unable to decode response from json', self.response.body);
+      end
     end
 
     def send_get_request
+      uri = URI.parse(self.syspay_base_url)
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+
+      path = "#{self.request_object.get_path}?#{self.request_object.get_data.to_query}"
+      request = Net::HTTP::Get.new()
+
+      request["User-Agent"] = "Quinto"
+      request["X-Wsse"] = self.generate_auth_header
+      request["Content-Type"] = "application/json"
+      request["Accept"] = "application/json"
+      https.request(request)
+    end
+
+    def send_post_request
+      uri = URI.parse(self.syspay_base_url)
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+
+      request = Net::HTTP::Post.new(self.request_object.get_path)
+      request.body = self.request_object.get_data.to_json
+
+      request["User-Agent"] = "Quinto"
+      request["X-Wsse"] = self.generate_auth_header
+      request["Content-Type"] = "application/json"
+      request["Accept"] = "application/json"
+      https.request(request)
+    end
+
+    def send_put_request
+      uri = URI.parse(self.syspay_base_url)
+      https = Net::HTTP.new(uri.host, uri.port)
+      https.use_ssl = true
+
+      request = Net::HTTP::Put.new(self.request_object.get_path)
+      request.body = self.request_object.get_data.to_json
+
+      request["User-Agent"] = "Quinto"
+      request["X-Wsse"] = self.generate_auth_header
+      request["Content-Type"] = "application/json"
+      request["Accept"] = "application/json"
+      https.request(request)
     end
   end
 end
-
-#     /**
-#      * Make a request to the Syspay API
-#      * @param Syspay_Merchant_Request $request The request to send to the API
-#      *
-#      * @return mixed The response to the request
-#      * @throws Syspay_Merchant_RequestException If the request could not be processed by the API
-#      */
-#     public function request(Syspay_Merchant_Request $request)
-#     {
-#         self.requestBody = $this->responseBody = $this->responseData = $this->requestId = null;
-#         $this->responseHeaders = $this->requestHeaders = array();
-#         $headers = array(
-#             'Accept: application/json',
-#             'X-Wsse: ' . $this->generateAuthHeader($this->username, $this->secret)
-#         );
-#         $url = rtrim($this->baseUrl, '/') . '/' . ltrim($request->getPath(), '/');
-#         $ch = curl_init();
-#         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-#         curl_setopt($ch, CURLOPT_HEADER, true);
-#         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // TODO: verify ssl and provide certificate in package
-#         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-#         $method = strtoupper($request->getMethod());
-#         // Per-method special handling
-#         switch($method) {
-#             case 'PUT':
-#             case 'POST':
-#                 $body = json_encode($request->getData());
-#                 array_push($headers, 'Content-Type: application/json');
-#                 array_push($headers, 'Content-Length: ' . strlen($body));
-#                 curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-#                 $this->requestBody = $body;
-#                 break;
-#             case 'GET':
-#                 $queryParams = $request->getData();
-#                 if (is_array($queryParams)) {
-#                     $url .= '?' . http_build_query($queryParams);
-#                 }
-#                 $this->requestParams = $queryParams;
-#                 break;
-#             case 'DELETE':
-#                 break;
-#             default:
-#                 throw new Exception('Unsupported method given: ' . $method);
-#         }
-#         curl_setopt($ch, CURLOPT_URL, $url);
-#         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
-#         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-#         $this->requestHeaders = $headers;
-#         $response = curl_exec($ch);
-#         if ($response === false) {
-#             throw new Exception(curl_error($ch), curl_errno($ch));
-#         }
-#         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-#         list($headers, $body) = explode("\r\n\r\n", $response, 2);
-#         $this->responseHeaders = explode("\r\n", $headers);
-#         $this->responseBody    = $body;
-#         if (preg_match('/\nx-syspay-request-uuid: (.*?)\r?\n/i', $headers, $m)) {
-#             $this->requestId = $m[1];
-#         }
-#         if (!in_array($httpCode, array(200, 201))) {
-#             throw new Syspay_Merchant_RequestException($httpCode, $headers, $body);
-#         }
-#         $decoded = json_decode($body);
-#         if (($decoded instanceof stdClass) && isset($decoded->data) && ($decoded->data instanceof stdClass)) {
-#             $this->responseData = $decoded->data;
-#             return $request->buildResponse($decoded->data);
-#         } else {
-#             throw new Syspay_Merchant_UnexpectedResponseException('Unable to decode response from json', $body);
-#         }
-#         return false;
-#     }
