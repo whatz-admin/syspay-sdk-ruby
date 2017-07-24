@@ -1,26 +1,24 @@
 require 'spec_helper'
 
 describe SyspaySDK::Utils::AbstractClass do
-  before(:each) do
-    @klass = Class.new do
-      include SyspaySDK::Utils::AbstractClass
-      abstract_methods :foo, :bar
-    end
+  class TestAbstractClass
+    include SyspaySDK::Utils::AbstractClass
+    abstract_methods :foo, :bar
   end
 
   it "raises SyspaySDK::Exceptions::NotImplementedError when an abstract method is called" do
-    proc {
-      @klass.new.foo
-    }.should raise_error(SyspaySDK::Exceptions::NotImplementedError)
+    expect {
+      TestAbstractClass.new.foo
+    }.to raise_error(SyspaySDK::Exceptions::NotImplementedError)
   end
 
   it "can be overridden" do
-    subclass = Class.new(@klass) do
+    subclass = Class.new(TestAbstractClass) do
       def foo
         :overridden
       end
     end
 
-    subclass.new.foo.should == :overridden
+    expect(subclass.new.foo).to eq :overridden
   end
 end
