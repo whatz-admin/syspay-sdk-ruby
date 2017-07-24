@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe SyspaySDK::Redirect do
   it { should respond_to(:syspay_id) }
   it { should respond_to(:syspay_passphrase) }

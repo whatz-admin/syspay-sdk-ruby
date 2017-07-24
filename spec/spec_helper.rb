@@ -1,4 +1,6 @@
 require 'bundler/setup'
+require 'syspay-sdk'
+require 'logger'
 
 if ENV['COVERAGE']
   require 'simplecov'
@@ -9,22 +11,15 @@ if ENV['COVERAGE']
 end
 
 Bundler.require :default, :test
-SyspaySDK::Config.load(File.expand_path('../config/syspay.yml', __FILE__), 'test')
 
-require 'syspay-sdk'
+SyspaySDK::Config.load(File.expand_path('../config/syspay.yml', __FILE__), 'test')
 
 include SyspaySDK::Logging
 
-require 'logger'
-
 SyspaySDK.logger = Logger.new(STDERR)
-
-# Set logger for http
-# http_log = File.open(File.expand_path('../log/http.log', __FILE__), "w")
-# Payment.api.http.set_debug_output(http_log)
 
 RSpec.configure do |config|
   config.expect_with :rspec do |c|
-    c.syntax = :should
+    c.syntax = :expect
   end
 end
