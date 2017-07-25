@@ -2,83 +2,83 @@ require 'spec_helper'
 
 describe SyspaySDK::Entities::Plan do
   it "is a SyspaySDK::Entities::ReturnedEntity" do
-    subject.should be_a(SyspaySDK::Entities::ReturnedEntity)
+    is_expected.to be_a(SyspaySDK::Entities::ReturnedEntity)
   end
 
   describe "Constants" do
     it "has a TYPE class constant set to 'plan'" do
-      SyspaySDK::Entities::Plan::TYPE.should eq('plan')
+      expect(described_class::TYPE).to eq('plan')
     end
 
     it "has a UNIT_MINUTE class constant set to 'minute'" do
-      SyspaySDK::Entities::Plan::UNIT_MINUTE.should eq('minute')
+      expect(described_class::UNIT_MINUTE).to eq('minute')
     end
 
     it "has a UNIT_HOUR class constant set to 'hour'" do
-      SyspaySDK::Entities::Plan::UNIT_HOUR.should eq('hour')
+      expect(described_class::UNIT_HOUR).to eq('hour')
     end
 
     it "has a UNIT_DAY class constant set to 'day'" do
-      SyspaySDK::Entities::Plan::UNIT_DAY.should eq('day')
+      expect(described_class::UNIT_DAY).to eq('day')
     end
 
     it "has a UNIT_WEEK class constant set to 'week'" do
-      SyspaySDK::Entities::Plan::UNIT_WEEK.should eq('week')
+      expect(described_class::UNIT_WEEK).to eq('week')
     end
 
     it "has a UNIT_MONTH class constant set to 'month'" do
-      SyspaySDK::Entities::Plan::UNIT_MONTH.should eq('month')
+      expect(described_class::UNIT_MONTH).to eq('month')
     end
 
     it "has a UNIT_YEAR class constant set to 'year'" do
-      SyspaySDK::Entities::Plan::UNIT_YEAR.should eq('year')
+      expect(described_class::UNIT_YEAR).to eq('year')
     end
 
     it "has a TYPE_SUBSCRIPTION class constant set to 'SUBSCRIPTION'" do
-      SyspaySDK::Entities::Plan::TYPE_SUBSCRIPTION.should eq('SUBSCRIPTION')
+      expect(described_class::TYPE_SUBSCRIPTION).to eq('SUBSCRIPTION')
     end
 
     it "has a TYPE_INSTALMENT class constant set to 'INSTALMENT'" do
-      SyspaySDK::Entities::Plan::TYPE_INSTALMENT.should eq('INSTALMENT')
+      expect(described_class::TYPE_INSTALMENT).to eq('INSTALMENT')
     end
   end
 
   describe "Attributes" do
-    it { should respond_to(:id) }
-    it { should respond_to(:created) }
-    it { should respond_to(:status) }
-    it { should respond_to(:type) }
-    it { should respond_to(:name) }
-    it { should respond_to(:description) }
-    it { should respond_to(:currency) }
-    it { should respond_to(:trial_amount) }
-    it { should respond_to(:trial_period) }
-    it { should respond_to(:trial_period_unit) }
-    it { should respond_to(:trial_cycles) }
-    it { should respond_to(:initial_amount) }
-    it { should respond_to(:billing_amount) }
-    it { should respond_to(:billing_period) }
-    it { should respond_to(:billing_period_unit) }
-    it { should respond_to(:billing_cycles) }
-    it { should respond_to(:retry_map_id) }
-    it { should respond_to(:total_amount) }
+    it { is_expected.to respond_to(:id) }
+    it { is_expected.to respond_to(:created) }
+    it { is_expected.to respond_to(:status) }
+    it { is_expected.to respond_to(:type) }
+    it { is_expected.to respond_to(:name) }
+    it { is_expected.to respond_to(:description) }
+    it { is_expected.to respond_to(:currency) }
+    it { is_expected.to respond_to(:trial_amount) }
+    it { is_expected.to respond_to(:trial_period) }
+    it { is_expected.to respond_to(:trial_period_unit) }
+    it { is_expected.to respond_to(:trial_cycles) }
+    it { is_expected.to respond_to(:initial_amount) }
+    it { is_expected.to respond_to(:billing_amount) }
+    it { is_expected.to respond_to(:billing_period) }
+    it { is_expected.to respond_to(:billing_period_unit) }
+    it { is_expected.to respond_to(:billing_cycles) }
+    it { is_expected.to respond_to(:retry_map_id) }
+    it { is_expected.to respond_to(:total_amount) }
   end
 
   describe "::build_from_response" do
     it "doesn't raise an error when called" do
-      lambda do
-        SyspaySDK::Entities::Plan.build_from_response({ test: "test" })
-      end.should_not raise_error
+      expect {
+        described_class.build_from_response({ test: "test" })
+      }.to_not raise_error
     end
 
     it "returns a Plan object" do
-      SyspaySDK::Entities::Plan.build_from_response({ test: "test" }).should be_a(SyspaySDK::Entities::Plan)
+      expect(described_class.build_from_response({ test: "test" })).to be_a(described_class)
     end
 
     it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when anything but a hash is passed in" do
-      lambda do
-        SyspaySDK::Entities::Plan.build_from_response("test")
-      end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
+      expect {
+        described_class.build_from_response("test")
+      }.to raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
     end
 
     let (:response) do
@@ -103,81 +103,81 @@ describe SyspaySDK::Entities::Plan do
     end
 
     before(:each) do
-      @plan = SyspaySDK::Entities::Plan.build_from_response(response)
+      @plan = described_class.build_from_response(response)
     end
 
     it "sets instance raw attribute to response" do
-      @plan.raw.should eq(response)
+      expect(@plan.raw).to eq(response)
     end
 
     it "sets instance id attribute using value in response" do
-      @plan.id.should eq(response[:id])
+      expect(@plan.id).to eq(response[:id])
     end
 
     it "sets instance status attribute using value in response" do
-      @plan.status.should eq(response[:status])
+      expect(@plan.status).to eq(response[:status])
     end
 
     it "sets instance name attribute using value in response" do
-      @plan.name.should eq(response[:name])
+      expect(@plan.name).to eq(response[:name])
     end
 
     it "sets instance description attribute using value in response" do
-      @plan.description.should eq(response[:description])
+      expect(@plan.description).to eq(response[:description])
     end
 
     it "sets instance currency attribute using value in response" do
-      @plan.currency.should eq(response[:currency])
+      expect(@plan.currency).to eq(response[:currency])
     end
 
     it "sets instance trial_amount attribute using value in response" do
-      @plan.trial_amount.should eq(response[:trial_amount])
+      expect(@plan.trial_amount).to eq(response[:trial_amount])
     end
 
     it "sets instance trial_period attribute using value in response" do
-      @plan.trial_period.should eq(response[:trial_period])
+      expect(@plan.trial_period).to eq(response[:trial_period])
     end
 
     it "sets instance trial_period_unit attribute using value in response" do
-      @plan.trial_period_unit.should eq(response[:trial_period_unit])
+      expect(@plan.trial_period_unit).to eq(response[:trial_period_unit])
     end
 
     it "sets instance trial_cycles attribute using value in response" do
-      @plan.trial_cycles.should eq(response[:trial_cycles])
+      expect(@plan.trial_cycles).to eq(response[:trial_cycles])
     end
 
     it "sets instance billing_amount attribute using value in response" do
-      @plan.billing_amount.should eq(response[:billing_amount])
+      expect(@plan.billing_amount).to eq(response[:billing_amount])
     end
 
     it "sets instance billing_period attribute using value in response" do
-      @plan.billing_period.should eq(response[:billing_period])
+      expect(@plan.billing_period).to eq(response[:billing_period])
     end
 
     it "sets instance billing_period_unit attribute using value in response" do
-      @plan.billing_period_unit.should eq(response[:billing_period_unit])
+      expect(@plan.billing_period_unit).to eq(response[:billing_period_unit])
     end
 
     it "sets instance billing_cycles attribute using value in response" do
-      @plan.billing_cycles.should eq(response[:billing_cycles])
+      expect(@plan.billing_cycles).to eq(response[:billing_cycles])
     end
 
     it "sets instance initial_amount attribute using value in response" do
-      @plan.initial_amount.should eq(response[:initial_amount])
+      expect(@plan.initial_amount).to eq(response[:initial_amount])
     end
 
     it "sets instance retry_map_id attribute using value in response" do
-      @plan.retry_map_id.should eq(response[:retry_map_id])
+      expect(@plan.retry_map_id).to eq(response[:retry_map_id])
     end
 
     it "sets instance type attribute using value in response" do
-      @plan.type.should eq(response[:type])
+      expect(@plan.type).to eq(response[:type])
     end
 
     it "sets instance created attribute using value in response" do
       created = DateTime.new(2001,2,3)
       response[:created] = created.to_time.to_i
-      SyspaySDK::Entities::Plan.build_from_response(response).created.should eq(created)
+      expect(described_class.build_from_response(response).created).to eq(created)
     end
   end
 end

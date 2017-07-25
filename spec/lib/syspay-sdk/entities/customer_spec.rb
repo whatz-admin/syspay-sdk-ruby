@@ -1,21 +1,19 @@
-require 'spec_helper'
-
 describe SyspaySDK::Entities::Customer do
   it "is a SyspaySDK::Entities::ReturnedEntity" do
-    subject.should be_a(SyspaySDK::Entities::ReturnedEntity)
+    is_expected.to be_a(SyspaySDK::Entities::ReturnedEntity)
   end
 
   describe "Constants" do
     it "has a TYPE class constant set to 'customer'" do
-      SyspaySDK::Entities::Customer::TYPE.should eq('customer')
+      expect(described_class::TYPE).to eq('customer')
     end
   end
 
   describe "Attributes" do
-    it { should respond_to(:email) }
-    it { should respond_to(:language) }
-    it { should respond_to(:ip) }
-    it { should respond_to(:mobile) }
+    it { is_expected.to respond_to(:email) }
+    it { is_expected.to respond_to(:language) }
+    it { is_expected.to respond_to(:ip) }
+    it { is_expected.to respond_to(:mobile) }
   end
 
   let (:response) do
@@ -29,60 +27,58 @@ describe SyspaySDK::Entities::Customer do
 
   describe "::build_from_response" do
     it "doesn't raise an error when called" do
-      lambda do
-        SyspaySDK::Entities::Customer.build_from_response({ test: "test" })
-      end.should_not raise_error
+      expect {
+        described_class.build_from_response({ test: "test" })
+      }.to_not raise_error
     end
 
     it "returns a Customer object" do
-      SyspaySDK::Entities::Customer.build_from_response({ test: "test" }).should be_a(SyspaySDK::Entities::Customer)
+      expect(described_class.build_from_response({ test: "test" })).to be_a(described_class)
     end
 
     it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when anything but a hash is passed in" do
-      lambda do
-        SyspaySDK::Entities::Customer.build_from_response("test")
-      end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
+      expect {
+        described_class.build_from_response("test")
+      }.to raise_error SyspaySDK::Exceptions::BadArgumentTypeError
     end
 
     before(:each) do
-      @customer = SyspaySDK::Entities::Customer.build_from_response(response)
+      @customer = described_class.build_from_response(response)
     end
 
     it "sets instance raw attribute to response" do
-      @customer.raw.should eq(response)
+      expect(@customer.raw).to eq(response)
     end
 
     it "sets instance email attribute using value in response" do
-      @customer.email.should eq(response[:email])
+      expect(@customer.email).to eq(response[:email])
     end
 
     it "sets instance language attribute using value in response" do
-      @customer.language.should eq(response[:language])
+      expect(@customer.language).to eq(response[:language])
     end
 
     it "sets instance ip attribute using value in response" do
-      @customer.ip.should eq(response[:ip])
+      expect(@customer.ip).to eq(response[:ip])
     end
 
     it "sets instance mobile attribute using value in response" do
-      @customer.mobile.should eq(response[:mobile])
+      expect(@customer.mobile).to eq(response[:mobile])
     end
-  end
-
-  it "responds to #to_hash" do
-    subject.should respond_to(:to_hash)
   end
 
   describe "#to_hash" do
     let(:subject) {
-      SyspaySDK::Entities::Customer.build_from_response(response)
+      described_class.build_from_response(response)
     }
 
     it "returns the payment converted to a hash" do
-      subject.to_hash.should include(email: response[:email])
-      subject.to_hash.should include(language: response[:language])
-      subject.to_hash.should include(ip: response[:ip])
-      subject.to_hash.should include(mobile: response[:mobile])
+      hash = subject.to_hash
+
+      expect(hash).to include(email: response[:email])
+      expect(hash).to include(language: response[:language])
+      expect(hash).to include(ip: response[:ip])
+      expect(hash).to include(mobile: response[:mobile])
     end
   end
 end

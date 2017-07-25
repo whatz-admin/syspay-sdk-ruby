@@ -1,27 +1,21 @@
-require 'spec_helper'
-
 describe SyspaySDK::Entities::CreditCard do
   it "is a SyspaySDK::Entities::BaseClass" do
-    subject.should be_a(SyspaySDK::Entities::BaseClass)
+    is_expected.to be_a(SyspaySDK::Entities::BaseClass)
   end
 
   describe "Constants" do
     it "has a TYPE class constant set to 'credit_card'" do
-      SyspaySDK::Entities::CreditCard::TYPE.should eq('credit_card')
+      expect(described_class::TYPE).to eq('credit_card')
     end
   end
 
   describe "Attributes" do
-    it { should respond_to(:number) }
-    it { should respond_to(:cardholder) }
-    it { should respond_to(:cvc) }
-    it { should respond_to(:exp_month) }
-    it { should respond_to(:exp_year) }
-    it { should respond_to(:token) }
-  end
-
-  it "responds to #to_hash" do
-    subject.should respond_to(:to_hash)
+    it { is_expected.to respond_to(:number) }
+    it { is_expected.to respond_to(:cardholder) }
+    it { is_expected.to respond_to(:cvc) }
+    it { is_expected.to respond_to(:exp_month) }
+    it { is_expected.to respond_to(:exp_year) }
+    it { is_expected.to respond_to(:token) }
   end
 
   describe "#to_hash" do
@@ -43,17 +37,19 @@ describe SyspaySDK::Entities::CreditCard do
       subject.exp_month = data[:exp_month]
       subject.exp_year = data[:exp_year]
 
-      subject.to_hash.should include(number: data[:number])
-      subject.to_hash.should include(cardholder: data[:cardholder])
-      subject.to_hash.should include(cvc: data[:cvc])
-      subject.to_hash.should include(exp_month: data[:exp_month])
-      subject.to_hash.should include(exp_year: data[:exp_year])
+      hash = subject.to_hash
+
+      expect(hash).to include(number: data[:number])
+      expect(hash).to include(cardholder: data[:cardholder])
+      expect(hash).to include(cvc: data[:cvc])
+      expect(hash).to include(exp_month: data[:exp_month])
+      expect(hash).to include(exp_year: data[:exp_year])
     end
 
     it "returns the token in a hash when token is present" do
       subject.token = data[:token]
 
-      subject.to_hash.should eq(token: data[:token])
+      expect(subject.to_hash).to eq(token: data[:token])
     end
   end
 end

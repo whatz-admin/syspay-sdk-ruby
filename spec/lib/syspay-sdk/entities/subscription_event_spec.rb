@@ -2,54 +2,54 @@ require "spec_helper"
 
 describe SyspaySDK::Entities::SubscriptionEvent do
   it "is a SyspaySDK::Entities::ReturnedEntity" do
-    subject.should be_a(SyspaySDK::Entities::ReturnedEntity)
+    is_expected.to be_a(SyspaySDK::Entities::ReturnedEntity)
   end
 
   describe "Constants" do
     it "has a TYPE class constant set to 'subscription_event'" do
-      SyspaySDK::Entities::SubscriptionEvent::TYPE.should eq('subscription_event')
+      expect(described_class::TYPE).to eq('subscription_event')
     end
     it "has a TYPE_TRIAL class constant set to 'TRIAL'" do
-        SyspaySDK::Entities::SubscriptionEvent::TYPE_TRIAL.should eq('TRIAL')
+      expect(described_class::TYPE_TRIAL).to eq('TRIAL')
     end
 
     it "has a TYPE_FREE_TRIAL class constant set to 'FREE_TRIAL'" do
-        SyspaySDK::Entities::SubscriptionEvent::TYPE_FREE_TRIAL.should eq('FREE_TRIAL')
+      expect(described_class::TYPE_FREE_TRIAL).to eq('FREE_TRIAL')
     end
 
     it "has a TYPE_INITIAL class constant set to 'INITIAL'" do
-        SyspaySDK::Entities::SubscriptionEvent::TYPE_INITIAL.should eq('INITIAL')
+      expect(described_class::TYPE_INITIAL).to eq('INITIAL')
     end
 
     it "has a TYPE_BILL class constant set to 'BILL'" do
-        SyspaySDK::Entities::SubscriptionEvent::TYPE_BILL.should eq('BILL')
+      expect(described_class::TYPE_BILL).to eq('BILL')
     end
 
     it "has a TYPE_END class constant set to 'END'" do
-        SyspaySDK::Entities::SubscriptionEvent::TYPE_END.should eq('END')
+      expect(described_class::TYPE_END).to eq('END')
     end
   end
 
   describe "Attributes" do
-    it { should respond_to(:scheduled_date) }
-    it { should respond_to(:event_type) }
+    it { is_expected.to respond_to(:scheduled_date) }
+    it { is_expected.to respond_to(:event_type) }
   end
 
   describe "::build_from_response" do
     it "doesn't raise an error when called" do
-      lambda do
-        SyspaySDK::Entities::SubscriptionEvent.build_from_response({ test: "test" })
-      end.should_not raise_error
+      expect {
+        described_class.build_from_response({ test: "test" })
+      }.to_not raise_error
     end
 
     it "returns a SubscriptionEvent object" do
-      SyspaySDK::Entities::SubscriptionEvent.build_from_response({ test: "test" }).should be_a(SyspaySDK::Entities::SubscriptionEvent)
+      expect(described_class.build_from_response({ test: "test" })).to be_a(described_class)
     end
 
     it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when anything but a hash is passed in" do
-      lambda do
-        SyspaySDK::Entities::SubscriptionEvent.build_from_response("test")
-      end.should raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
+      expect {
+        described_class.build_from_response("test")
+      }.to raise_error(SyspaySDK::Exceptions::BadArgumentTypeError)
     end
 
     let (:response) do
@@ -57,21 +57,21 @@ describe SyspaySDK::Entities::SubscriptionEvent do
     end
 
     before(:each) do
-      @subscription_event = SyspaySDK::Entities::SubscriptionEvent.build_from_response(response)
+      @subscription_event = described_class.build_from_response(response)
     end
 
     it "sets instance raw attribute to response" do
-      @subscription_event.raw.should eq(response)
+      expect(@subscription_event.raw).to eq(response)
     end
 
     it "sets instance event_type attribute using value in response" do
-      @subscription_event.event_type.should eq(response[:event_type])
+      expect(@subscription_event.event_type).to eq(response[:event_type])
     end
 
     it "sets instance scheduled_date attribute using value in response" do
       scheduled_date = DateTime.new(2001,2,3)
       response[:scheduled_date] = scheduled_date.to_time.to_i
-      SyspaySDK::Entities::SubscriptionEvent.build_from_response(response).scheduled_date.should eq(scheduled_date)
+      expect(described_class.build_from_response(response).scheduled_date).to eq(scheduled_date)
     end
   end
 end
