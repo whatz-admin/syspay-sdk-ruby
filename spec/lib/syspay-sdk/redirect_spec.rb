@@ -64,6 +64,7 @@ describe SyspaySDK::Redirect do
         checksum: "testmerchant",
       }
     end
+
     it "calls validate_checksum when skip_auth_check is set to false" do
       decoded_result = double :decoded_result
 

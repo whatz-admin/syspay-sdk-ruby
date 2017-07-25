@@ -40,5 +40,8 @@ module SyspaySDK
 
     class MissingConfig < StandardError
     end
+
+    class UnhandledMethodError < StandardError
+    end
   end
 end

@@ -65,7 +65,6 @@ module SyspaySDK::Requests
       hash[:flow] = self.flow;
       hash[:billing_agreement] = self.billing_agreement.nil? ? false : true
       hash[:mode] = self.mode
-      hash[:mode] = self.mode
       hash[:threatmetrix_session_id] = self.threatmetrix_session_id
       hash[:method] = self.payment_method
       hash[:website] = self.website

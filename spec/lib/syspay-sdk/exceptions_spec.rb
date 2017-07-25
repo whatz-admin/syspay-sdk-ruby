@@ -16,6 +16,10 @@ describe SyspaySDK::Exceptions::RequestError do
   end
 end
 
+describe SyspaySDK::Exceptions::UnhandledMethodError do
+  it { is_expected.to be_a StandardError }
+end
+
 describe SyspaySDK::Exceptions::InvalidChecksumError do
   it { is_expected.to be_a StandardError }
 end
