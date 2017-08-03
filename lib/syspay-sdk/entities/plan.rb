@@ -60,7 +60,7 @@ module SyspaySDK::Entities
 
     def to_hash
       hash = {}
-      hash[:ype] = self.type
+      hash[:type] = self.type
       hash[:name] = self.name
       hash[:description] = self.description
       hash[:currency] = self.currency

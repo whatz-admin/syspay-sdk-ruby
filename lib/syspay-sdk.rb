@@ -1,3 +1,5 @@
+require "syspay-sdk/utils/hash_extension"
+
 module SyspaySDK
   autoload :VERSION,        "syspay-sdk/version"
   autoload :Config,         "syspay-sdk/config"

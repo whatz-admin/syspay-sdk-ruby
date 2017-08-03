@@ -22,7 +22,7 @@ describe SyspaySDK::Client do
       nonce = rand()
       timestamp = Time.now.to_i
 
-      result = Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{subject.syspay_passphrase}"))
+      result = Base64.strict_encode64(Digest::SHA1.digest("#{nonce}#{timestamp}#{subject.syspay_passphrase}"))
 
       expect(subject.send :generate_digest_for_auth_header, nonce, timestamp).to eq(result)
     end
@@ -36,19 +36,22 @@ describe SyspaySDK::Client do
       random_number = 123456
       timestamp = 789101112
       nonce = "abcdef"
+      b64nonce = "ghijkl"
       digest = "digested"
 
       expect(Time).to receive_message_chain(:now, :to_i).and_return timestamp
       expect(SyspaySDK::Config.config).to receive(:syspay_id).and_return syspay_id
 
       expect(subject).to receive(:rand).and_return random_number
-      expect(Digest::MD5).to receive(:hexdigest).with(random_number.to_s).and_return nonce
+      expect(Digest::MD5).to receive(:digest).with(random_number.to_s).and_return nonce
+      expect(Base64).to receive(:strict_encode64).with(nonce).and_return b64nonce
+
       expect(subject).to receive(:generate_digest_for_auth_header).with(nonce, timestamp).and_return digest
 
       expect(
         subject.send :generate_auth_header
       ).to eq(
-        "AuthToken MerchantAPILogin='#{syspay_id}', PasswordDigest='#{digest}', Nonce='#{nonce}', Created='#{timestamp}'"
+        "AuthToken MerchantAPILogin=\"#{syspay_id}\", PasswordDigest=\"#{digest}\", Nonce=\"#{b64nonce}\", Created=\"#{timestamp}\""
       )
     end
   end
@@ -115,12 +118,19 @@ describe SyspaySDK::Client do
 
         before do
           allow(response).to receive(:code).and_return 404
+          allow(response).to receive(:body).and_return "response_body"
+          allow(response).to receive(:[]).and_return "123456"
         end
 
         it "raises a SyspaySDK::Exceptions::RequestError with the http code and response" do
-          expect {
+          begin
             subject.request request_object
-          }.to raise_error SyspaySDK::Exceptions::RequestError
+          rescue Exception => e
+            expect(e).to be_a SyspaySDK::Exceptions::RequestError
+            expect(e.instance_variable_get :@http_code).to eq(404)
+            expect(e.instance_variable_get :@response_body).to eq("response_body")
+            expect(e.instance_variable_get :@uuid).to eq("123456")
+          end
         end
       end
     end
@@ -166,6 +176,7 @@ describe SyspaySDK::Client do
 
     describe "#parse_response" do
       let(:body)            { double :body }
+      let(:code)            { double :code }
       let(:data)            { double :data }
       let(:response_object) { double :response_object }
 
@@ -177,8 +188,10 @@ describe SyspaySDK::Client do
 
       before do
         allow(response).to receive(:body).and_return body
+        allow(response).to receive(:code).and_return code
         allow(JSON).to receive(:parse).and_return decoded_body
         allow(request_object).to receive(:build_response).and_return response_object
+        allow(request_object).to receive(:get_data).and_return data
       end
 
       it { is_expected.not_to respond_to(:parse_response) }
@@ -189,7 +202,13 @@ describe SyspaySDK::Client do
       end
 
       it "builds the response object and returns it" do
-        expect(subject.send :parse_response, request_object, response).to eq response_object
+        expect(subject.send :parse_response, request_object, response).to eq({
+          response_object:  response_object,
+          request_data:     data,
+          response_data:    body,
+          response_code:    code
+        })
+
         expect(request_object).to have_received(:build_response).with data
       end
     end

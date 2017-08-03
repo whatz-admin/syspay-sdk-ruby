@@ -2,13 +2,14 @@ module SyspaySDK
   module Exceptions
 
     class RequestError < StandardError
-      def initialize(http_code, response_body)
+      def initialize(uuid, http_code, response_body)
+        @uuid           = uuid
         @http_code      = http_code
         @response_body  = response_body
       end
 
       def to_s
-        "The request returned a #{@http_code} error with the following body: #{@response_body}"
+        "The request #{@uuid} returned a #{@http_code} error with the following body: #{@response_body}"
       end
     end
 

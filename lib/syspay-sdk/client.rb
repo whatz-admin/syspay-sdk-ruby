@@ -22,7 +22,7 @@ module SyspaySDK
       http_code = response.code
 
       unless [200, 201].include?(http_code.to_i)
-        raise SyspaySDK::Exceptions::RequestError.new(http_code, response)
+        raise SyspaySDK::Exceptions::RequestError.new(response['x-syspay-request-uuid'], http_code, response.body)
       end
 
       parse_response request_object, response
@@ -57,16 +57,17 @@ module SyspaySDK
 
     def generate_auth_header
       timestamp = Time.now.to_i
-      nonce     = Digest::MD5.hexdigest(rand().to_s)
+      nonce     = Digest::MD5.digest(rand(1..50000).to_s)
+      b64nonce  = Base64.strict_encode64(nonce)
 
       digest = generate_digest_for_auth_header(nonce, timestamp)
 
-      "AuthToken MerchantAPILogin='#{syspay_id}', PasswordDigest='#{digest}', Nonce='#{nonce}', Created='#{timestamp}'"
+      "AuthToken MerchantAPILogin=\"#{syspay_id}\", PasswordDigest=\"#{digest}\", Nonce=\"#{b64nonce}\", Created=\"#{timestamp}\""
     end
 
     def generate_digest_for_auth_header nonce, timestamp
       Base64.strict_encode64(
-        Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{syspay_passphrase}")
+        Digest::SHA1.digest("#{nonce}#{timestamp}#{syspay_passphrase}")
       )
     end
 
@@ -80,9 +81,14 @@ module SyspaySDK
     end
 
     def parse_response request_object, response
-      decoded_body = JSON.parse(response.body);
+      decoded_body = JSON.parse(response.body).recursive_symbolize_keys;
 
-      request_object.build_response(decoded_body[:data]);
+      {
+        response_object: request_object.build_response(decoded_body[:data]),
+        request_data: request_object.get_data,
+        response_data: response.body,
+        response_code: response.code
+      }
     end
   end
 end
