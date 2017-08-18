@@ -10,8 +10,8 @@ describe SyspaySDK::Requests::BillingAgreementList do
       expect(described_class::METHOD).to eq('GET')
     end
 
-    it "has a PATH class constant set to '/api/v1/merchant/billing-agreements'" do
-      expect(described_class::PATH).to eq('/api/v1/merchant/billing-agreements')
+    it "has a PATH class constant set to '/api/v1/merchant/billing-agreements/'" do
+      expect(described_class::PATH).to eq('/api/v1/merchant/billing-agreements/')
     end
   end
 

@@ -1,7 +1,7 @@
 module SyspaySDK::Requests
   class BillingAgreementList < SyspaySDK::Requests::BaseClass
     METHOD = "GET"
-    PATH = "/api/v1/merchant/billing-agreements"
+    PATH = "/api/v1/merchant/billing-agreements/"
 
     attr_accessor :filters
 

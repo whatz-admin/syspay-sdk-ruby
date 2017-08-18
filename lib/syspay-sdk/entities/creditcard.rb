@@ -1,6 +1,6 @@
 module SyspaySDK::Entities
   class CreditCard < SyspaySDK::Entities::BaseClass
-    TYPE = "credit_card"
+    TYPE = "creditcard"
 
     attr_accessor :number, :cardholder, :cvc, :exp_month, :exp_year, :token
 

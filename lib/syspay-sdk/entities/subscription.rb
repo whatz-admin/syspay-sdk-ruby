@@ -6,6 +6,7 @@ module SyspaySDK::Entities
     STATUS_ACTIVE = 'ACTIVE'
     STATUS_CANCELLED = 'CANCELLED'
     STATUS_ENDED = 'ENDED'
+    STATUS_TERMINATED = 'TERMINATED'
 
     PHASE_NEW = 'NEW'
     PHASE_TRIAL = 'TRIAL'
@@ -56,9 +57,9 @@ module SyspaySDK::Entities
       subscription.ems_url = response[:ems_url]
       subscription.end_reason = response[:end_reason]
 
-      subscription.created = (response[:created].nil? or response[:created] == "") ? nil : Time.at(response[:created]).to_date
-      subscription.start_date = (response[:start_date].nil? or response[:start_date] == "") ? nil : Time.at(response[:start_date]).to_date
-      subscription.end_date = (response[:end_date].nil? or response[:end_date] == "") ? nil : Time.at(response[:end_date]).to_date
+      subscription.created = (response[:created].nil? or response[:created] == "") ? nil : Time.at(response[:created].to_i).to_date
+      subscription.start_date = (response[:start_date].nil? or response[:start_date] == "") ? nil : Time.at(response[:start_date].to_i).to_date
+      subscription.end_date = (response[:end_date].nil? or response[:end_date] == "") ? nil : Time.at(response[:end_date].to_i).to_date
 
       subscription.payment_method = SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
       subscription.customer = SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?

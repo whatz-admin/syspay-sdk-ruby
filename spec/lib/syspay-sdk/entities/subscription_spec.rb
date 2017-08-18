@@ -10,21 +10,28 @@ describe SyspaySDK::Entities::Subscription do
       expect(described_class::TYPE).to eq('subscription')
     end
 
-    it "has a STATUS_PENDING class constant set to 'PENDING'" do
-      expect(described_class::STATUS_PENDING).to eq('PENDING')
+    describe "STATUS" do
+      it "has a STATUS_PENDING class constant set to 'PENDING'" do
+        expect(described_class::STATUS_PENDING).to eq('PENDING')
+      end
+
+      it "has a STATUS_ACTIVE class constant set to 'ACTIVE'" do
+        expect(described_class::STATUS_ACTIVE).to eq('ACTIVE')
+      end
+
+      it "has a STATUS_CANCELLED class constant set to 'CANCELLED'" do
+        expect(described_class::STATUS_CANCELLED).to eq('CANCELLED')
+      end
+
+      it "has a STATUS_ENDED class constant set to 'ENDED'" do
+        expect(described_class::STATUS_ENDED).to eq('ENDED')
+      end
+
+      it "has a STATUS_TERMINATED class constant set to 'TERMINATED'" do
+        expect(described_class::STATUS_TERMINATED).to eq('TERMINATED')
+      end
     end
 
-    it "has a STATUS_ACTIVE class constant set to 'ACTIVE'" do
-      expect(described_class::STATUS_ACTIVE).to eq('ACTIVE')
-    end
-
-    it "has a STATUS_CANCELLED class constant set to 'CANCELLED'" do
-      expect(described_class::STATUS_CANCELLED).to eq('CANCELLED')
-    end
-
-    it "has a STATUS_ENDED class constant set to 'ENDED'" do
-      expect(described_class::STATUS_ENDED).to eq('ENDED')
-    end
 
     it "has a PHASE_NEW class constant set to 'NEW'" do
       expect(described_class::PHASE_NEW).to eq('NEW')

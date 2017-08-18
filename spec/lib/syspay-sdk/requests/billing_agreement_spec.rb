@@ -86,7 +86,7 @@ describe SyspaySDK::Requests::BillingAgreement do
     it { is_expected.to respond_to(:allowed_retries) }
     it { is_expected.to respond_to(:payment) }
     it { is_expected.to respond_to(:customer) }
-    it { is_expected.to respond_to(:credit_card) }
+    it { is_expected.to respond_to(:creditcard) }
     it { is_expected.to respond_to(:bank_code) }
     it { is_expected.to respond_to(:reference) }
     it { is_expected.to respond_to(:currency) }
@@ -205,11 +205,11 @@ describe SyspaySDK::Requests::BillingAgreement do
         expect(subject.get_data).to include(ems_url: "test")
       end
 
-      it "contains a hash for the credit_card" do
-        credit_card = SyspaySDK::Entities::CreditCard.new
-        credit_card.number = 159
-        subject.credit_card = credit_card
-        expect(subject.get_data).to include(credit_card: credit_card.to_hash)
+      it "contains a hash for the creditcard" do
+        creditcard = SyspaySDK::Entities::CreditCard.new
+        creditcard.number = 159
+        subject.creditcard = creditcard
+        expect(subject.get_data).to include(creditcard: creditcard.to_hash)
       end
 
       it "contains a hash for the customer" do

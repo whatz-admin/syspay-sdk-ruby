@@ -29,9 +29,9 @@ describe SyspaySDK::Requests::Subscription do
     it { is_expected.to respond_to(:flow) }
     it { is_expected.to respond_to(:subscription) }
     it { is_expected.to respond_to(:customer) }
-    it { is_expected.to respond_to(:payment_method) }
+    it { is_expected.to respond_to(:method) }
     it { is_expected.to respond_to(:threatmetrix_session_id) }
-    it { is_expected.to respond_to(:credit_card) }
+    it { is_expected.to respond_to(:creditcard) }
     it { is_expected.to respond_to(:use_subscription) }
     it { is_expected.to respond_to(:use_billing_agreement) }
   end
@@ -104,9 +104,9 @@ describe SyspaySDK::Requests::Subscription do
         expect(subject.get_data).to include(customer: customer.to_hash)
       end
 
-      it "contains the payment_method" do
-        subject.payment_method = "payment_method"
-        expect(subject.get_data).to include(payment_method: "payment_method")
+      it "contains the method" do
+        subject.method = "method"
+        expect(subject.get_data).to include(method: "method")
       end
 
       it "contains the threatmetrix_session_id" do
@@ -114,11 +114,11 @@ describe SyspaySDK::Requests::Subscription do
         expect(subject.get_data).to include(threatmetrix_session_id: 1)
       end
 
-      it "contains a hash for the credit_card" do
-        credit_card = SyspaySDK::Entities::CreditCard.new
-        credit_card.number = "1234"
-        subject.credit_card = credit_card
-        expect(subject.get_data).to include(credit_card: credit_card.to_hash)
+      it "contains a hash for the creditcard" do
+        creditcard = SyspaySDK::Entities::CreditCard.new
+        creditcard.number = "1234"
+        subject.creditcard = creditcard
+        expect(subject.get_data).to include(creditcard: creditcard.to_hash)
       end
 
       it "contains the use_subscription" do

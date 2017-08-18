@@ -33,7 +33,7 @@ module SyspaySDK::Requests
     :allowed_retries,
     :payment,
     :customer,
-    :credit_card,
+    :creditcard,
     :bank_code,
     :reference,
     :currency,
@@ -71,7 +71,7 @@ module SyspaySDK::Requests
       hash[:agent] = self.agent
       hash[:redirect_url] = self.redirect_url
       hash[:ems_url] = self.ems_url
-      hash[:credit_card] = self.credit_card.to_hash unless self.credit_card.nil?
+      hash[:creditcard] = self.creditcard.to_hash unless self.creditcard.nil?
       hash[:customer] = self.customer.to_hash unless self.customer.nil?
       hash[:bank_code] = self.bank_code
       hash[:reference] = self.reference

@@ -10,7 +10,7 @@ module SyspaySDK::Requests
     end
 
     def get_path
-      "#{PATH}#{self.plan_id}"
+      "#{PATH}#{plan_id}"
     end
 
     def build_response response
@@ -19,5 +19,11 @@ module SyspaySDK::Requests
 
       SyspaySDK::Entities::Plan::build_from_response(response[:plan])
     end
+
+    def get_data
+      {
+        plan_id: plan_id
+      }
+     end
   end
 end

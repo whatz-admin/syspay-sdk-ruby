@@ -75,20 +75,16 @@ describe SyspaySDK::Requests::Payment do
 
   describe "Attributes" do
     it { is_expected.to respond_to(:flow) }
-    it { is_expected.to respond_to(:mode) }
-    it { is_expected.to respond_to(:payment_method) }
+    it { is_expected.to respond_to(:method) }
     it { is_expected.to respond_to(:threatmetrix_session_id) }
     it { is_expected.to respond_to(:billing_agreement) }
     it { is_expected.to respond_to(:ems_url) }
     it { is_expected.to respond_to(:redirect_url) }
     it { is_expected.to respond_to(:website) }
     it { is_expected.to respond_to(:agent) }
-    it { is_expected.to respond_to(:allowed_retries) }
     it { is_expected.to respond_to(:payment) }
     it { is_expected.to respond_to(:customer) }
-    it { is_expected.to respond_to(:credit_card) }
-    it { is_expected.to respond_to(:notify) }
-    it { is_expected.to respond_to(:bank_code) }
+    it { is_expected.to respond_to(:creditcard) }
   end
 
   describe "Initialize" do
@@ -175,19 +171,14 @@ describe SyspaySDK::Requests::Payment do
         expect(subject.get_data).to include(billing_agreement: false)
       end
 
-      it "contains the mode" do
-        subject.mode = described_class::MODE_BOTH
-        expect(subject.get_data).to include(mode: described_class::MODE_BOTH)
-      end
-
       it "contains the threatmetrix_session_id" do
         subject.threatmetrix_session_id = 1
         expect(subject.get_data).to include(threatmetrix_session_id: 1)
       end
 
-      it "contains the payment_method" do
-        subject.payment_method = "test"
-        expect(subject.get_data).to include(payment_method: "test")
+      it "contains the method" do
+        subject.method = "test"
+        expect(subject.get_data).to include(method: "test")
       end
 
       it "contains the website" do
@@ -210,11 +201,11 @@ describe SyspaySDK::Requests::Payment do
         expect(subject.get_data).to include(ems_url: "test")
       end
 
-      it "contains a hash for the credit_card" do
-        credit_card = SyspaySDK::Entities::CreditCard.new
-        credit_card.number = 159
-        subject.credit_card = credit_card
-        expect(subject.get_data).to include(credit_card: credit_card.to_hash)
+      it "contains a hash for the creditcard" do
+        creditcard = SyspaySDK::Entities::CreditCard.new
+        creditcard.number = 159
+        subject.creditcard = creditcard
+        expect(subject.get_data).to include(creditcard: creditcard.to_hash)
       end
 
       it "contains a hash for the customer" do
@@ -230,22 +221,6 @@ describe SyspaySDK::Requests::Payment do
         subject.payment = payment
         expect(subject.get_data).to include(payment: payment.to_hash)
       end
-
-      it "contains the bank_code" do
-        subject.bank_code = "test"
-        expect(subject.get_data).to include(bank_code: "test")
-      end
-
-      it "contains the allowed_retries" do
-        subject.allowed_retries = "test"
-        expect(subject.get_data).to include(allowed_retries: "test")
-      end
-
-      it "contains the notify" do
-        subject.notify = "test"
-        expect(subject.get_data).to include(notify: "test")
-      end
-
     end
   end
 end

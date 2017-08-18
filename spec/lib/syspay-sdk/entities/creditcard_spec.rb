@@ -4,8 +4,8 @@ describe SyspaySDK::Entities::CreditCard do
   end
 
   describe "Constants" do
-    it "has a TYPE class constant set to 'credit_card'" do
-      expect(described_class::TYPE).to eq('credit_card')
+    it "has a TYPE class constant set to 'creditcard'" do
+      expect(described_class::TYPE).to eq('creditcard')
     end
   end
 
@@ -30,7 +30,7 @@ describe SyspaySDK::Entities::CreditCard do
       }
     end
 
-    it "returns the credit_card converted to a hash when token is not present" do
+    it "returns the creditcard converted to a hash when token is not present" do
       subject.number = data[:number]
       subject.cardholder = data[:cardholder]
       subject.cvc = data[:cvc]

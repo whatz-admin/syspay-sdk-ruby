@@ -28,6 +28,15 @@ describe SyspaySDK::Requests::SubscriptionCancellation do
       expect(subscription_cancellation.subscription_id).to be_nil
     end
   end
+  describe "#get_data" do
+    it "returns a hash containing the subscription_id" do
+      subject.subscription_id = 123
+
+      expect(subject.get_data).to eq({
+        subscription_id: 123
+      })
+    end
+  end
 
   describe "#get_method" do
     it "returns the METHOD constant" do

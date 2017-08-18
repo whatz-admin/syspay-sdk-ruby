@@ -20,5 +20,11 @@ module SyspaySDK::Requests
 
       SyspaySDK::Entities::Subscription::build_from_response(response[:subscription])
     end
+
+    def get_data
+      {
+        subscription_id: self.subscription_id
+      }
+    end
   end
 end

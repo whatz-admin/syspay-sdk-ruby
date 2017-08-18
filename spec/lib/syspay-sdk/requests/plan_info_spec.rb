@@ -35,6 +35,16 @@ describe SyspaySDK::Requests::PlanInfo do
     end
   end
 
+  describe "#get_data" do
+    it "returns a hash containing the plan_id" do
+      subject.plan_id = 123
+
+      expect(subject.get_data).to eq({
+        plan_id: 123
+      })
+    end
+  end
+
   describe "#get_path" do
     it "returns the PATH constant" do
       expect(subject.get_path).to eq(described_class::PATH)
