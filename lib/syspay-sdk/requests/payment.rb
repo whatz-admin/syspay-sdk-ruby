@@ -22,20 +22,16 @@ module SyspaySDK::Requests
     METHOD_POSTFINANCE = 'POSTFINANCE'
 
     attr_accessor :flow,
-    :mode,
-    :payment_method,
+    :method,
     :threatmetrix_session_id,
     :billing_agreement,
     :ems_url,
     :redirect_url,
     :website,
     :agent,
-    :allowed_retries,
     :payment,
     :customer,
-    :credit_card,
-    :notify,
-    :bank_code
+    :creditcard
 
     def initialize flow
       raise SyspaySDK::Exceptions::InvalidArgumentError.new('Invalid flow: #{flow}') unless [ FLOW_API, FLOW_BUYER, FLOW_SELLER ].include?(flow)
@@ -60,19 +56,15 @@ module SyspaySDK::Requests
       hash = {}
       hash[:flow] = self.flow;
       hash[:billing_agreement] = self.billing_agreement.nil? ? false : true
-      hash[:mode] = self.mode
       hash[:threatmetrix_session_id] = self.threatmetrix_session_id
-      hash[:payment_method] = self.payment_method
+      hash[:method] = self.method
       hash[:website] = self.website
       hash[:agent] = self.agent
       hash[:redirect_url] = self.redirect_url
       hash[:ems_url] = self.ems_url
-      hash[:credit_card] = self.credit_card.to_hash unless self.credit_card.nil?
+      hash[:creditcard] = self.creditcard.to_hash unless self.creditcard.nil?
       hash[:customer] = self.customer.to_hash unless self.customer.nil?
       hash[:payment] = self.payment.to_hash unless self.payment.nil?
-      hash[:bank_code] = self.bank_code
-      hash[:allowed_retries] = self.allowed_retries
-      hash[:notify] = self.notify
       hash
     end
   end

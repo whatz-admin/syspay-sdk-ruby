@@ -14,8 +14,8 @@ module SyspaySDK::Entities
       chargeback.currency = response[:currency]
       chargeback.reason_code = response[:reason_code]
 
-      chargeback.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time]).to_date
-      chargeback.bank_time = (response[:bank_time].nil? or response[:bank_time] == "") ? nil : Time.at(response[:bank_time]).to_date
+      chargeback.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time].to_i).to_date
+      chargeback.bank_time = (response[:bank_time].nil? or response[:bank_time] == "") ? nil : Time.at(response[:bank_time].to_i).to_date
 
       chargeback.payment = SyspaySDK::Entities::Payment.build_from_response(response[:payment]) unless response[:payment].nil?
 

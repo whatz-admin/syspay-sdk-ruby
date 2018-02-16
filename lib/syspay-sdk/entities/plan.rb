@@ -9,6 +9,8 @@ module SyspaySDK::Entities
     UNIT_MONTH = 'month'
     UNIT_YEAR = 'year'
 
+    TIME_UNITS = [UNIT_MINUTE, UNIT_HOUR, UNIT_DAY, UNIT_WEEK, UNIT_MONTH, UNIT_YEAR]
+
     TYPE_SUBSCRIPTION = 'SUBSCRIPTION'
     TYPE_INSTALMENT = 'INSTALMENT'
 
@@ -52,7 +54,7 @@ module SyspaySDK::Entities
       plan.retry_map_id = response[:retry_map_id]
       plan.type = response[:type]
 
-      plan.created = (response[:created].nil? or response[:created] == "") ? nil : Time.at(response[:created]).to_date
+      plan.created = (response[:created].nil? or response[:created] == "") ? nil : Time.at(response[:created].to_i).to_date
 
       plan.raw = response
       plan
@@ -60,7 +62,7 @@ module SyspaySDK::Entities
 
     def to_hash
       hash = {}
-      hash[:ype] = self.type
+      hash[:type] = self.type
       hash[:name] = self.name
       hash[:description] = self.description
       hash[:currency] = self.currency

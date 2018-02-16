@@ -29,6 +29,15 @@ module SyspaySDK::Entities
 
     TYPE = 'payment'
 
+    STATUS_OPEN = 'OPEN'
+    STATUS_SUCCESS = 'SUCCESS'
+    STATUS_FAILED = 'FAILED'
+    STATUS_CANCELLED = 'CANCELLED'
+    STATUS_AUTHORIZED = 'AUTHORIZED'
+    STATUS_VOIDED = 'VOIDED'
+    STATUS_WAITING = 'WAITING'
+    STATUS_ERROR = 'ERROR'
+
     FAILURE_CARD_FLAGGED = 'card_flagged'
     FAILURE_DECLINED = 'declined'
     FAILURE_DUPLICATED = 'duplicated'
@@ -41,6 +50,16 @@ module SyspaySDK::Entities
     FAILURE_OTHER = 'other'
     FAILURE_TECHNICAL_ERROR = 'technical_error'
     FAILURE_UNSUPPORTED = 'unsupported'
+
+    TYPE_ONESHOT = 'ONESHOT'
+    TYPE_ONESHOT_RETRY = 'ONESHOT_RETRY'
+    TYPE_BILLING_AGREEMENT_INITIAL = 'BILLING_AGREEMENT_INITIAL'
+    TYPE_BILLING_AGREEMENT_INITIAL_RETRY = 'BILLING_AGREEMENT_INITIAL_RETRY'
+    TYPE_BILLING_AGREEMENT_REBILL = 'BILLING_AGREEMENT_REBILL'
+    TYPE_SUBSCRIPTION_TRIAL = 'SUBSCRIPTION_TRIAL'
+    TYPE_SUBSCRIPTION_INITIAL = 'SUBSCRIPTION_INITIAL'
+    TYPE_SUBSCRIPTION_BILL = 'SUBSCRIPTION_BILL'
+    TYPE_SUBSCRIPTION_MANUAL_REBILL = 'SUBSCRIPTION_MANUAL_REBILL'
 
     def self.build_from_response response
       raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
@@ -63,8 +82,8 @@ module SyspaySDK::Entities
       payment.merchant_login = response[:merchant_login]
       payment.merchant_id = response[:merchant_id]
 
-      payment.settlement_date = (response[:settlement_date].nil? or response[:settlement_date] == "") ? nil : Time.at(response[:settlement_date]).to_date
-      payment.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time]).to_date
+      payment.settlement_date = (response[:settlement_date].nil? or response[:settlement_date] == "") ? nil : Time.at(response[:settlement_date].to_i).to_date
+      payment.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time].to_i).to_date
 
 
       payment.billing_agreement = SyspaySDK::Entities::BillingAgreement.build_from_response(response[:billing_agreement]) unless response[:billing_agreement].nil?

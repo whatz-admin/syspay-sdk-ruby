@@ -33,7 +33,7 @@ module SyspaySDK::Requests
     :allowed_retries,
     :payment,
     :customer,
-    :credit_card,
+    :creditcard,
     :bank_code,
     :reference,
     :currency,
@@ -65,14 +65,13 @@ module SyspaySDK::Requests
       hash[:flow] = self.flow;
       hash[:billing_agreement] = self.billing_agreement.nil? ? false : true
       hash[:mode] = self.mode
-      hash[:mode] = self.mode
       hash[:threatmetrix_session_id] = self.threatmetrix_session_id
       hash[:method] = self.payment_method
       hash[:website] = self.website
       hash[:agent] = self.agent
       hash[:redirect_url] = self.redirect_url
       hash[:ems_url] = self.ems_url
-      hash[:credit_card] = self.credit_card.to_hash unless self.credit_card.nil?
+      hash[:creditcard] = self.creditcard.to_hash unless self.creditcard.nil?
       hash[:customer] = self.customer.to_hash unless self.customer.nil?
       hash[:bank_code] = self.bank_code
       hash[:reference] = self.reference

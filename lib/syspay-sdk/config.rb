@@ -8,8 +8,7 @@ module SyspaySDK
     end
 
     def set_config(env, override_configurations = {})
-      @config =
-      case env
+      @config = case env
       when Config
         env
       when Hash
@@ -83,9 +82,9 @@ module SyspaySDK
 
       @@config_cache = {}
 
-      def load(file_name, default_env = default_environment)
+      def load(filename, default_env = default_environment)
         @@config_cache        = {}
-        @@configurations      = read_configurations(file_name)
+        @@configurations      = read_configurations(filename)
         @@default_environment = default_env
         config
       end
@@ -104,9 +103,11 @@ module SyspaySDK
         rescue Errno::ENOENT
           self.configurations = { default_environment => options }
         end
+
         block.call(self.config) if block
         self.config
       end
+
       alias_method :set_config, :configure
 
       def config(env = default_environment, override_configuration = {})
@@ -114,6 +115,7 @@ module SyspaySDK
           override_configuration = env
           env = default_environment
         end
+
         if override_configuration.nil? or override_configuration.empty?
           default_config(env)
         else
@@ -149,9 +151,9 @@ module SyspaySDK
 
       private
 
-      def read_configurations(file_name = "config/syspay.yml")
-        erb = ERB.new(File.read(file_name))
-        erb.filename = file_name
+      def read_configurations(filename = "config/syspay.yml")
+        erb = ERB.new(File.read(filename))
+        erb.filename = filename
         YAML.load(erb.result)
       end
     end

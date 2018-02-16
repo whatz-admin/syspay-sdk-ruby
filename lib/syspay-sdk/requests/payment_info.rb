@@ -19,5 +19,12 @@ module SyspaySDK::Requests
 
       payment
     end
+
+
+    def get_data
+      hash = {}
+      hash[:payment_id] = self.payment_id;
+      hash
+    end
   end
 end

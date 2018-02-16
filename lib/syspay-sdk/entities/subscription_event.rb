@@ -17,7 +17,7 @@ module SyspaySDK::Entities
 
       subscription_event.event_type = response[:event_type]
 
-      subscription_event.scheduled_date = (response[:scheduled_date].nil? or response[:scheduled_date] == "") ? nil : Time.at(response[:scheduled_date]).to_date
+      subscription_event.scheduled_date = (response[:scheduled_date].nil? or response[:scheduled_date] == "") ? nil : Time.at(response[:scheduled_date].to_i).to_date
 
       subscription_event.raw = response
       subscription_event

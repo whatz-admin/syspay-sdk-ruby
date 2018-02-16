@@ -10,9 +10,9 @@ module SyspaySDK::Requests
     attr_accessor :flow,
     :subscription,
     :customer,
-    :payment_method,
+    :method,
     :threatmetrix_session_id,
-    :credit_card,
+    :creditcard,
     :use_subscription,
     :use_billing_agreement
 
@@ -29,11 +29,11 @@ module SyspaySDK::Requests
     def get_data
       hash = {}
 
-      [ :flow, :payment_method, :threatmetrix_session_id, :use_subscription, :use_billing_agreement ].each do |attribute|
+      [ :flow, :method, :threatmetrix_session_id, :use_subscription, :use_billing_agreement ].each do |attribute|
         hash[attribute] = self.send(attribute)
       end
 
-      hash[:credit_card] = self.credit_card.to_hash unless self.credit_card.nil?
+      hash[:creditcard] = self.creditcard.to_hash unless self.creditcard.nil?
       hash[:customer] = self.customer.to_hash unless self.customer.nil?
       hash[:subscription] = self.subscription.to_hash unless self.subscription.nil?
 

@@ -2,113 +2,93 @@ require "base64"
 require 'digest'
 require 'net/http'
 
-# Base API client
-# @see https://app.syspay.com/bundles/emiuser/doc/merchant_api.html#emerchant-rest-api
-
 module SyspaySDK
   class Client
-    attr_accessor :syspay_id,
-    :syspay_passphrase,
-    :syspay_base_url,
-    :request_object,
-    :response
+    attr_accessor :syspay_id, :syspay_passphrase, :syspay_base_url
 
-    # Creates a new Client object initialized with Config parameters
     def initialize
-      self.syspay_id = SyspaySDK::Config.config.syspay_id
-      self.syspay_passphrase = SyspaySDK::Config.config.syspay_passphrase
-      self.syspay_base_url = SyspaySDK::Config.config.syspay_base_url
+      @syspay_id          = SyspaySDK::Config.config.syspay_id
+      @syspay_passphrase  = SyspaySDK::Config.config.syspay_passphrase
+      @syspay_base_url    = SyspaySDK::Config.config.syspay_base_url
     end
 
-    # Generates the x-wsse header
-    def generate_auth_header
-      timestamp = Time.now.to_i
+    def request request_object
+      request = build_request_for request_object
 
-      nonce = Digest::MD5.hexdigest(rand().to_s)
-      b64nonce = Base64.strict_encode64(nonce)
+      add_headers_to_request request
 
-      digest = generate_digest_for_auth_header(nonce, timestamp, self.syspay_passphrase)
+      response = get_https_object.request(request)
 
-      "AuthToken MerchantAPILogin='#{self.syspay_id}', PasswordDigest='#{digest}', Nonce='#{nonce}', Created='#{timestamp}'"
+      http_code = response.code
+
+      unless [200, 201].include?(http_code.to_i)
+        raise SyspaySDK::Exceptions::RequestError.new(response['x-syspay-request-uuid'], http_code, response.body)
+      end
+
+      parse_response request_object, response
     end
 
-    def generate_digest_for_auth_header nonce, timestamp, passphrase
-      Base64.strict_encode64(Digest::SHA1.hexdigest("#{nonce}#{timestamp}#{passphrase}"))
-    end
+    private
 
-    def request request
-      self.request_object = request
-      self.response = nil
+    def build_request_for request_object
+      method = request_object.get_method.upcase
 
-      method = self.request_object.get_method.upcase
-
-      self.response = case method
+      case method
       when 'PUT'
-        self.send_put_request
+        request = Net::HTTP::Put.new(request_object.get_path)
+        request.body = request_object.get_data.to_json
+        request
       when 'POST'
-        self.send_post_request
+        request = Net::HTTP::Post.new(request_object.get_path)
+        request.body = request_object.get_data.to_json
+        request
       when 'GET'
-        self.send_get_request
+        Net::HTTP::Get.new("#{request_object.get_path}?#{request_object.get_data.to_query}")
       else
         raise SyspaySDK::Exceptions::UnhandledMethodError.new("Unhandled method : #{method}")
       end
-
-      http_code = self.response.code
-      raise SyspaySDK::Exceptions::RequestError.new(http_code, self.response) unless [200, 201].include?(http_code.to_i)
-
-      decoded_body = JSON.parse(self.response.body);
-      if decoded_body.is_a?(Hash) and
-        !decoded_body[:data].nil? and
-        decoded_body[:data].is_a?(Hash)
-        return self.request_object.build_response(decoded_body[:data]);
-      else
-        raise SyspaySDK::Exceptions::UnexpectedResponseError.new('Unable to decode response from json', self.response.body);
-      end
     end
 
-    def send_get_request
-      uri = URI.parse(self.syspay_base_url)
+    def add_headers_to_request request
+      request["Accept"]       = "application/json"
+      request["X-Wsse"]       = generate_auth_header
+      request["Content-Type"] = "application/json"
+    end
+
+    def generate_auth_header
+      timestamp = Time.now.to_i
+      nonce     = Digest::MD5.digest(rand(1..50000).to_s)
+      b64nonce  = Base64.strict_encode64(nonce)
+
+      digest = generate_digest_for_auth_header(nonce, timestamp)
+
+      "AuthToken MerchantAPILogin=\"#{syspay_id}\", PasswordDigest=\"#{digest}\", Nonce=\"#{b64nonce}\", Created=\"#{timestamp}\""
+    end
+
+    def generate_digest_for_auth_header nonce, timestamp
+      Base64.strict_encode64(
+        Digest::SHA1.digest("#{nonce}#{timestamp}#{syspay_passphrase}")
+      )
+    end
+
+    def get_https_object
+      uri   = URI.parse(syspay_base_url)
+
       https = Net::HTTP.new(uri.host, uri.port)
       https.use_ssl = true
 
-      path = "#{self.request_object.get_path}?#{self.request_object.get_data.to_query}"
-      request = Net::HTTP::Get.new()
-
-      request["User-Agent"] = "Quinto"
-      request["X-Wsse"] = self.generate_auth_header
-      request["Content-Type"] = "application/json"
-      request["Accept"] = "application/json"
-      https.request(request)
+      https
     end
 
-    def send_post_request
-      uri = URI.parse(self.syspay_base_url)
-      https = Net::HTTP.new(uri.host, uri.port)
-      https.use_ssl = true
+    def parse_response request_object, response
+      decoded_body = JSON.parse(response.body).recursive_symbolize_keys;
 
-      request = Net::HTTP::Post.new(self.request_object.get_path)
-      request.body = self.request_object.get_data.to_json
-
-      request["User-Agent"] = "Quinto"
-      request["X-Wsse"] = self.generate_auth_header
-      request["Content-Type"] = "application/json"
-      request["Accept"] = "application/json"
-      https.request(request)
-    end
-
-    def send_put_request
-      uri = URI.parse(self.syspay_base_url)
-      https = Net::HTTP.new(uri.host, uri.port)
-      https.use_ssl = true
-
-      request = Net::HTTP::Put.new(self.request_object.get_path)
-      request.body = self.request_object.get_data.to_json
-
-      request["User-Agent"] = "Quinto"
-      request["X-Wsse"] = self.generate_auth_header
-      request["Content-Type"] = "application/json"
-      request["Accept"] = "application/json"
-      https.request(request)
+      {
+        response_object: request_object.build_response(decoded_body[:data]),
+        request_data: request_object.get_data,
+        response_data: response.body,
+        response_code: response.code
+      }
     end
   end
 end

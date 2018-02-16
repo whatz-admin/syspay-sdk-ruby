@@ -1,3 +1,5 @@
+require "syspay-sdk/utils/hash_extension"
+
 module SyspaySDK
   autoload :VERSION,        "syspay-sdk/version"
   autoload :Config,         "syspay-sdk/config"
@@ -34,7 +36,7 @@ module SyspaySDK
     autoload :AstroPayBank,       "syspay-sdk/entities/astro_pay_bank"
     autoload :BillingAgreement,   "syspay-sdk/entities/billing_agreement"
     autoload :Chargeback,         "syspay-sdk/entities/chargeback"
-    autoload :CreditCard,         "syspay-sdk/entities/credit_card"
+    autoload :CreditCard,         "syspay-sdk/entities/creditcard"
     autoload :Customer,           "syspay-sdk/entities/customer"
     autoload :Eterminal,          "syspay-sdk/entities/eterminal"
     autoload :PaymentMethod,      "syspay-sdk/entities/payment_method"
