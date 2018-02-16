@@ -8,7 +8,7 @@ module SyspaySDK::Entities
     TYPE_POSTFINANCE = 'POSTFINANCE'
     TYPE_IDEAL = 'IDEAL'
 
-    attr_accessor :type, :display
+    attr_accessor :type, :display, :cardholder, :exp_month, :exp_year
 
     def self.build_from_response response
       raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
@@ -16,6 +16,9 @@ module SyspaySDK::Entities
       payment_method = self.new
       payment_method.type = response[:type]
       payment_method.display = response[:display]
+      payment_method.cardholder = response[:cardholder]
+      payment_method.exp_month = response[:exp_month]
+      payment_method.exp_year = response[:exp_year]
 
       payment_method.raw = response
       payment_method

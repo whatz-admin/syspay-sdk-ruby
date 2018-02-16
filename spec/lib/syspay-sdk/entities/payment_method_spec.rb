@@ -32,6 +32,9 @@ describe SyspaySDK::Entities::PaymentMethod do
   describe "Attributes" do
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:display) }
+    it { is_expected.to respond_to(:cardholder) }
+    it { is_expected.to respond_to(:exp_month) }
+    it { is_expected.to respond_to(:exp_year) }
   end
 
   describe "::build_from_response" do
@@ -54,7 +57,10 @@ describe SyspaySDK::Entities::PaymentMethod do
     let (:response) do
       {
         type: "type",
-        display: "display"
+        display: "display",
+        cardholder: 'cardholder',
+        exp_month: 'exp_month',
+        exp_year: 'exp_year'
       }
     end
 
@@ -73,5 +79,18 @@ describe SyspaySDK::Entities::PaymentMethod do
     it "sets instance display attribute using value in response" do
       expect(@payment_method.display).to eq(response[:display])
     end
+
+    it 'sets instance cardholder attribute using value in response' do
+      expect(@payment_method.cardholder).to eq(response[:cardholder])
+    end
+
+    it 'sets instance exp_month attribute using value in response' do
+      expect(@payment_method.exp_month).to eq(response[:exp_month])
+    end
+
+    it 'sets instance exp_year attribute using value in response' do
+      expect(@payment_method.exp_year).to eq(response[:exp_year])
+    end
+
   end
 end
