@@ -35,6 +35,7 @@ module SyspaySDK
                   :syspay_passphrase,
                   :syspay_threatmetrix_code,
                   :syspay_js_key,
+                  :syspay_org_id,
                   :syspay_base_url
 
     def initialize(options)
@@ -72,7 +73,10 @@ module SyspaySDK
         @config_cache        = {}
         @configurations      = read_configurations(filename)
         @default_environment = default_env
-        config
+        config.required!(
+          :syspay_mode, :syspay_id, :syspay_passphrase, :syspay_threatmetrix_code,
+          :syspay_js_key, :syspay_org_id, :syspay_base_url
+        )
       end
 
       def default_environment
@@ -95,6 +99,7 @@ module SyspaySDK
         end
 
         yield(config) if block
+
         config
       end
 

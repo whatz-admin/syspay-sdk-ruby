@@ -4,6 +4,7 @@ test: &default
   syspay_passphrase: Uqiojsdjoqjdjqjdioqdoqsdjo2dsqds
   syspay_threatmetrix_code: 123
   syspay_js_key: Queeghah2eedsqdsqdsqdsqdqfggfuay
+  syspay_org_id: dsrerzcds
   syspay_base_url: https://app-sandbox.syspay.com
 
 development:

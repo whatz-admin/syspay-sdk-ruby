@@ -1,5 +1,5 @@
 require 'bundler/setup'
-require 'syspay_sdk'
+require 'syspay-sdk'
 require 'logger'
 require 'simplecov'
 

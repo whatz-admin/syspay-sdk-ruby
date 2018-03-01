@@ -79,6 +79,10 @@ describe SyspaySDK::Config do
     expect do
       config.required!(:syspay_passphrase, :syspay_mode)
     end.to raise_error 'Required configuration(syspay_passphrase, syspay_mode)'
+
+    expect do
+      config.required!(:syspay_org_id)
+    end.to raise_error 'Required configuration(syspay_org_id)'
   end
 
   it 'returns default environment configuration' do
