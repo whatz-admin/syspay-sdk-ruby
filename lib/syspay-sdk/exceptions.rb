@@ -1,6 +1,5 @@
 module SyspaySDK
   module Exceptions
-
     class RequestError < StandardError
       def initialize(uuid, http_code, response_body)
         @uuid           = uuid

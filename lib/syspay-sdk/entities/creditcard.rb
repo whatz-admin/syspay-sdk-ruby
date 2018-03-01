@@ -1,21 +1,23 @@
-module SyspaySDK::Entities
-  class CreditCard < SyspaySDK::Entities::BaseClass
-    TYPE = "creditcard"
+module SyspaySDK
+  module Entities
+    class CreditCard < SyspaySDK::Entities::BaseClass
+      TYPE = 'creditcard'.freeze
 
-    attr_accessor :number, :cardholder, :cvc, :exp_month, :exp_year, :token
+      attr_accessor :number, :cardholder, :cvc, :exp_month, :exp_year, :token
 
-    def to_hash
-      hash = {}
+      def to_hash
+        hash = {}
 
-      if self.token.nil?
-        [ :number, :cardholder, :cvc, :exp_month, :exp_year ].each do |attribute|
-          hash[attribute] = self.send(attribute)
+        if token.nil?
+          %i[number cardholder cvc exp_month exp_year].each do |attribute|
+            hash[attribute] = send(attribute)
+          end
+        else
+          hash[:token] = token
         end
-      else
-        hash[:token] = self.token
-      end
 
-      hash
+        hash
+      end
     end
   end
 end

@@ -1,7 +1,7 @@
 class Hash
   def recursive_symbolize_keys
     {}.tap do |h|
-      self.each { |key, value| h[key.to_sym] = map_value(value) }
+      each { |key, value| h[key.to_sym] = map_value(value) }
     end
   end
 

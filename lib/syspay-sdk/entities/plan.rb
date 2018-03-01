@@ -1,83 +1,76 @@
-module SyspaySDK::Entities
-  class Plan < SyspaySDK::Entities::ReturnedEntity
-    TYPE = "plan"
+module SyspaySDK
+  module Entities
+    class Plan < SyspaySDK::Entities::ReturnedEntity
+      TYPE = 'plan'.freeze
 
-    UNIT_MINUTE = 'minute'
-    UNIT_HOUR = 'hour'
-    UNIT_DAY = 'day'
-    UNIT_WEEK = 'week'
-    UNIT_MONTH = 'month'
-    UNIT_YEAR = 'year'
+      UNIT_MINUTE = 'minute'.freeze
+      UNIT_HOUR = 'hour'.freeze
+      UNIT_DAY = 'day'.freeze
+      UNIT_WEEK = 'week'.freeze
+      UNIT_MONTH = 'month'.freeze
+      UNIT_YEAR = 'year'.freeze
 
-    TIME_UNITS = [UNIT_MINUTE, UNIT_HOUR, UNIT_DAY, UNIT_WEEK, UNIT_MONTH, UNIT_YEAR]
+      TIME_UNITS = [UNIT_MINUTE, UNIT_HOUR, UNIT_DAY, UNIT_WEEK, UNIT_MONTH, UNIT_YEAR].freeze
 
-    TYPE_SUBSCRIPTION = 'SUBSCRIPTION'
-    TYPE_INSTALMENT = 'INSTALMENT'
+      TYPE_SUBSCRIPTION = 'SUBSCRIPTION'.freeze
+      TYPE_INSTALMENT = 'INSTALMENT'.freeze
 
-    attr_accessor :id,
-    :created,
-    :status,
-    :type,
-    :name,
-    :description,
-    :currency,
-    :trial_amount,
-    :trial_period,
-    :trial_period_unit,
-    :trial_cycles,
-    :initial_amount,
-    :billing_amount,
-    :billing_period,
-    :billing_period_unit,
-    :billing_cycles,
-    :retry_map_id,
-    :total_amount
+      attr_accessor :id,
+                    :created,
+                    :status,
+                    :type,
+                    :name,
+                    :description,
+                    :currency,
+                    :trial_amount,
+                    :trial_period,
+                    :trial_period_unit,
+                    :trial_cycles,
+                    :initial_amount,
+                    :billing_amount,
+                    :billing_period,
+                    :billing_period_unit,
+                    :billing_cycles,
+                    :retry_map_id,
+                    :total_amount
 
-    def self.build_from_response response
-      raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
-      plan = self.new
+      def assign_attributes(response)
+        %i[
+          id status name description currency trial_amount trial_period
+          trial_period_unit trial_cycles billing_amount billing_period
+          billing_period_unit billing_cycles initial_amount retry_map_id type
+        ].each do |attribute|
+          send(:"#{attribute}=", response[attribute])
+        end
+      end
 
-      plan.id = response[:id]
-      plan.status = response[:status]
-      plan.name = response[:name]
-      plan.description = response[:description]
-      plan.currency = response[:currency]
-      plan.trial_amount = response[:trial_amount]
-      plan.trial_period = response[:trial_period]
-      plan.trial_period_unit = response[:trial_period_unit]
-      plan.trial_cycles = response[:trial_cycles]
-      plan.billing_amount = response[:billing_amount]
-      plan.billing_period = response[:billing_period]
-      plan.billing_period_unit = response[:billing_period_unit]
-      plan.billing_cycles = response[:billing_cycles]
-      plan.initial_amount = response[:initial_amount]
-      plan.retry_map_id = response[:retry_map_id]
-      plan.type = response[:type]
+      def self.build_from_response(response)
+        raise SyspaySDK::Exceptions::BadArgumentTypeError, 'response must be a Hash' unless response.is_a?(Hash)
 
-      plan.created = (response[:created].nil? or response[:created] == "") ? nil : Time.at(response[:created].to_i).to_date
+        plan = new
 
-      plan.raw = response
-      plan
-    end
+        plan.assign_attributes(response)
 
-    def to_hash
-      hash = {}
-      hash[:type] = self.type
-      hash[:name] = self.name
-      hash[:description] = self.description
-      hash[:currency] = self.currency
-      hash[:trial_amount] = self.trial_amount
-      hash[:trial_period] = self.trial_period
-      hash[:trial_period_unit] = self.trial_period_unit
-      hash[:trial_cycles] = self.trial_cycles
-      hash[:initial_amount] = self.initial_amount
-      hash[:billing_amount] = self.billing_amount
-      hash[:billing_period] = self.billing_period
-      hash[:billing_period_unit] = self.billing_period_unit
-      hash[:billing_cycles] = self.billing_cycles
-      hash[:retry_map_id] = self.retry_map_id
-      hash[:total_amount] = self.total_amount
-      hash
+        unless response[:created].nil? || response[:created] == ''
+          plan.created = Time.at(response[:created].to_i).to_date
+        end
+
+        plan.raw = response
+        plan
+      end
+
+      def to_hash
+        hash = {}
+
+        %i[
+          type name description currency trial_amount trial_period
+          trial_period_unit trial_cycles initial_amount billing_amount
+          billing_period billing_period_unit billing_cycles retry_map_id
+          total_amount
+        ].each { |attribute| hash[attribute] = send(attribute) }
+
+        hash
+      end
     end
   end
 end

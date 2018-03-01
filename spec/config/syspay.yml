@@ -1,12 +1,10 @@
 test: &default
-  # syspay_mode can be 'production' or 'sandbox'
   syspay_mode: sandbox
-
   syspay_id: 123456789
   syspay_passphrase: Uqiojsdjoqjdjqjdioqdoqsdjo2dsqds
   syspay_threatmetrix_code: 123
   syspay_js_key: Queeghah2eedsqdsqdsqdsqdqfggfuay
-  syspay_base_url: "https://app-sandbox.syspay.com"
+  syspay_base_url: https://app-sandbox.syspay.com
 
 development:
   <<: *default
@@ -14,4 +12,4 @@ development:
 production:
   <<: *default
   syspay_mode: production
-  syspay_base_url: "https://app.syspay.com"
+  syspay_base_url: https://app.syspay.com

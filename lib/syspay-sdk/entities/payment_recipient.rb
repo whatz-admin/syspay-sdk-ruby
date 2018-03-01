@@ -1,20 +1,22 @@
-module SyspaySDK::Entities
-  class PaymentRecipient < SyspaySDK::Entities::BaseClass
-    TYPE = 'payment_recipient'
+module SyspaySDK
+  module Entities
+    class PaymentRecipient < SyspaySDK::Entities::BaseClass
+      TYPE = 'payment_recipient'.freeze
 
-    CALC_TYPE_FIXED = 'fixed'
-    CALC_TYPE_PERCENT = 'percent'
+      CALC_TYPE_FIXED = 'fixed'.freeze
+      CALC_TYPE_PERCENT = 'percent'.freeze
 
-    attr_accessor :user_id, :account_id, :calc_type, :value, :currency, :settlement_delay
+      attr_accessor :user_id, :account_id, :calc_type, :value, :currency, :settlement_delay
 
-    def to_hash
-      hash = {}
+      def to_hash
+        hash = {}
 
-      [ :user_id, :account_id, :calc_type, :value, :currency, :settlement_delay ].each do |attribute|
-        hash[attribute] = self.send(attribute)
+        %i[user_id account_id calc_type value currency settlement_delay].each do |attribute|
+          hash[attribute] = send(attribute)
+        end
+
+        hash
       end
-
-      hash
     end
   end
 end

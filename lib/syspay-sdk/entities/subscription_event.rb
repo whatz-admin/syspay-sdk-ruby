@@ -1,26 +1,30 @@
-module SyspaySDK::Entities
-  class SubscriptionEvent < SyspaySDK::Entities::ReturnedEntity
-    TYPE = 'subscription_event'
+module SyspaySDK
+  module Entities
+    class SubscriptionEvent < SyspaySDK::Entities::ReturnedEntity
+      TYPE = 'subscription_event'.freeze
 
-    TYPE_TRIAL = 'TRIAL'
-    TYPE_FREE_TRIAL = 'FREE_TRIAL'
-    TYPE_INITIAL = 'INITIAL'
-    TYPE_BILL = 'BILL'
-    TYPE_END = 'END'
+      TYPE_TRIAL = 'TRIAL'.freeze
+      TYPE_FREE_TRIAL = 'FREE_TRIAL'.freeze
+      TYPE_INITIAL = 'INITIAL'.freeze
+      TYPE_BILL = 'BILL'.freeze
+      TYPE_END = 'END'.freeze
 
-    attr_accessor :event_type, :scheduled_date
+      attr_accessor :event_type, :scheduled_date
 
-    def self.build_from_response response
-      raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
+      def self.build_from_response(response)
+        raise SyspaySDK::Exceptions::BadArgumentTypeError, 'response must be a Hash' unless response.is_a?(Hash)
 
-      subscription_event = self.new
+        subscription_event = new
 
-      subscription_event.event_type = response[:event_type]
+        subscription_event.event_type = response[:event_type]
 
-      subscription_event.scheduled_date = (response[:scheduled_date].nil? or response[:scheduled_date] == "") ? nil : Time.at(response[:scheduled_date].to_i).to_date
+        unless response[:scheduled_date].nil? || response[:scheduled_date] == ''
+          subscription_event.scheduled_date = Time.at(response[:scheduled_date].to_i).to_date
+        end
 
-      subscription_event.raw = response
-      subscription_event
+        subscription_event.raw = response
+        subscription_event
+      end
     end
   end
 end

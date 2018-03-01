@@ -7,13 +7,13 @@ describe SyspaySDK::Exceptions::RequestError do
 
   it { is_expected.to be_a StandardError }
 
-  it "is initialized with an http error code and the response body" do
-    expect(subject.instance_variable_get :@uuid).to eq(uuid)
-    expect(subject.instance_variable_get :@http_code).to eq(http_code)
-    expect(subject.instance_variable_get :@response_body).to eq(response_body)
+  it 'is initialized with an http error code and the response body' do
+    expect(subject.instance_variable_get(:@uuid)).to eq(uuid)
+    expect(subject.instance_variable_get(:@http_code)).to eq(http_code)
+    expect(subject.instance_variable_get(:@response_body)).to eq(response_body)
   end
 
-  it "prints out a specific message" do
+  it 'prints out a specific message' do
     expect(subject.to_s).to eq("The request #{uuid} returned a #{http_code} error with the following body: #{response_body}")
   end
 end

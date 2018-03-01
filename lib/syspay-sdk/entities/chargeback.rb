@@ -1,26 +1,37 @@
-module SyspaySDK::Entities
-  class Chargeback < SyspaySDK::Entities::ReturnedEntity
-    TYPE = "chargeback"
+module SyspaySDK
+  module Entities
+    class Chargeback < SyspaySDK::Entities::ReturnedEntity
+      TYPE = 'chargeback'.freeze
 
-    attr_accessor :id, :status, :amount, :currency, :reason_code, :payment, :processing_time, :bank_time
+      attr_accessor :id, :status, :amount, :currency, :reason_code, :payment, :processing_time, :bank_time
 
-    def self.build_from_response response
-      raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
-      chargeback = self.new
+      def self.build_payment(response)
+        SyspaySDK::Entities::Payment.build_from_response(response[:payment]) unless response[:payment].nil?
+      end
 
-      chargeback.id = response[:id]
-      chargeback.status = response[:status]
-      chargeback.amount = response[:amount]
-      chargeback.currency = response[:currency]
-      chargeback.reason_code = response[:reason_code]
+      def self.assign_attributes(chargeback, response)
+        %i[id status amount currency reason_code].each do |attribute|
+          chargeback.send(:"#{attribute}=", response[attribute])
+        end
 
-      chargeback.processing_time = (response[:processing_time].nil? or response[:processing_time] == "") ? nil : Time.at(response[:processing_time].to_i).to_date
-      chargeback.bank_time = (response[:bank_time].nil? or response[:bank_time] == "") ? nil : Time.at(response[:bank_time].to_i).to_date
+        %i[processing_time bank_time].each do |attribute|
+          unless response[attribute].nil? || response[attribute] == ''
+            chargeback.send(:"#{attribute}=", Time.at(response[attribute].to_i).to_date)
+          end
+        end
+      end
 
-      chargeback.payment = SyspaySDK::Entities::Payment.build_from_response(response[:payment]) unless response[:payment].nil?
+      def self.build_from_response(response)
+        raise SyspaySDK::Exceptions::BadArgumentTypeError, 'response must be a Hash' unless response.is_a?(Hash)
 
-      chargeback.raw = response
-      chargeback
+        chargeback = new
+        chargeback.raw = response
+
+        assign_attributes(chargeback, response)
+
+        chargeback.payment = build_payment(response)
+        chargeback
+      end
     end
   end
 end

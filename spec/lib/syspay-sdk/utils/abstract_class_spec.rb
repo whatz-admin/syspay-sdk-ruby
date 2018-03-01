@@ -6,13 +6,13 @@ describe SyspaySDK::Utils::AbstractClass do
     abstract_methods :foo, :bar
   end
 
-  it "raises SyspaySDK::Exceptions::NotImplementedError when an abstract method is called" do
-    expect {
+  it 'raises SyspaySDK::Exceptions::NotImplementedError when an abstract method is called' do
+    expect do
       TestAbstractClass.new.foo
-    }.to raise_error(SyspaySDK::Exceptions::NotImplementedError)
+    end.to raise_error(SyspaySDK::Exceptions::NotImplementedError)
   end
 
-  it "can be overridden" do
+  it 'can be overridden' do
     subclass = Class.new(TestAbstractClass) do
       def foo
         :overridden

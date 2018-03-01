@@ -1,9 +1,9 @@
-require "bundler/gem_tasks"
+require 'bundler/gem_tasks'
 
-desc "Run tests"
+desc 'Run tests'
 task :rspec do
-  cmd = "bundle exec rspec -f d"
+  cmd = 'bundle exec rspec -f d'
   system(cmd) || raise("#{cmd} failed")
 end
 
-task :default => :rspec
+task default: :rspec

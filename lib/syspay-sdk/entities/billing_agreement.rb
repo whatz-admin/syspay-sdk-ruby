@@ -1,38 +1,57 @@
-module SyspaySDK::Entities
-  class BillingAgreement < SyspaySDK::Entities::ReturnedEntity
+module SyspaySDK
+  module Entities
+    class BillingAgreement < SyspaySDK::Entities::ReturnedEntity
+      TYPE = 'billing_agreement'.freeze
 
-    TYPE = 'billing_agreement'
+      STATUS_PENDING = 'PENDING'.freeze
+      STATUS_ACTIVE = 'ACTIVE'.freeze
+      STATUS_CANCELLED = 'CANCELLED'.freeze
+      STATUS_ENDED = 'ENDED'.freeze
 
-    STATUS_PENDING = 'PENDING'
-    STATUS_ACTIVE = 'ACTIVE'
-    STATUS_CANCELLED = 'CANCELLED'
-    STATUS_ENDED = 'ENDED'
+      END_REASON_UNSUBSCRIBED_MERCHANT = 'UNSUBSCRIBED_MERCHANT'.freeze
+      END_REASON_UNSUBSCRIBED_ADMIN = 'UNSUBSCRIBED_ADMIN'.freeze
+      END_REASON_SUSPENDED_EXPIRED = 'SUSPENDED_EXPIRED'.freeze
+      END_REASON_SUSPENDED_CHARGEBACK = 'SUSPENDED_CHARGEBACK'.freeze
 
-    END_REASON_UNSUBSCRIBED_MERCHANT = 'UNSUBSCRIBED_MERCHANT'
-    END_REASON_UNSUBSCRIBED_ADMIN = 'UNSUBSCRIBED_ADMIN'
-    END_REASON_SUSPENDED_EXPIRED = 'SUSPENDED_EXPIRED'
-    END_REASON_SUSPENDED_CHARGEBACK = 'SUSPENDED_CHARGEBACK'
+      attr_accessor :id,
+                    :status,
+                    :currency,
+                    :extra,
+                    :end_reason,
+                    :payment_method,
+                    :customer,
+                    :expiration_date,
+                    :redirect,
+                    :description
 
-    attr_accessor :id, :status, :currency, :extra, :end_reason, :payment_method, :customer, :expiration_date, :redirect, :description
+      def self.build_from_response(response)
+        raise SyspaySDK::Exceptions::BadArgumentTypeError, 'response must be a Hash' unless response.is_a?(Hash)
 
-    def self.build_from_response response
-      raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
+        billing_agreement = new
 
-      billing_agreement = self.new
+        %i[id status currency extra end_reason].each do |attribute|
+          billing_agreement.send(:"#{attribute}=", response[attribute])
+        end
 
-      billing_agreement.id = response[:id]
-      billing_agreement.status = response[:status]
-      billing_agreement.currency = response[:currency]
-      billing_agreement.extra = response[:extra]
-      billing_agreement.end_reason = response[:end_reason]
+        billing_agreement.expiration_date = build_expiration_date(response)
+        billing_agreement.payment_method = build_payment_method(response)
+        billing_agreement.customer = build_customer(response)
 
-      billing_agreement.expiration_date = (response[:expiration_date].nil? or response[:expiration_date] == "") ? nil : Time.at(response[:expiration_date].to_i).to_date
+        billing_agreement.raw = response
+        billing_agreement
+      end
 
-      billing_agreement.payment_method = SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
-      billing_agreement.customer = SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?
+      def self.build_expiration_date(response)
+        Time.at(response[:expiration_date].to_i).to_date unless response[:expiration_date].nil? || (response[:expiration_date] == '')
+      end
 
-      billing_agreement.raw = response
-      billing_agreement
+      def self.build_payment_method(response)
+        SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
+      end
+
+      def self.build_customer(response)
+        SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?
+      end
     end
   end
 end

@@ -1,9 +1,9 @@
 describe SyspaySDK::Entities::PaymentRecipient do
-  it "is a SyspaySDK::Entities::BaseClass" do
+  it 'is a SyspaySDK::Entities::BaseClass' do
     is_expected.to be_a(SyspaySDK::Entities::BaseClass)
   end
 
-  describe "Constants" do
+  describe 'Constants' do
     it "has a TYPE class constant set to 'payment_recipient'" do
       expect(described_class::TYPE).to eq('payment_recipient')
     end
@@ -17,7 +17,7 @@ describe SyspaySDK::Entities::PaymentRecipient do
     end
   end
 
-  describe "Attributes" do
+  describe 'Attributes' do
     it { is_expected.to respond_to(:user_id) }
     it { is_expected.to respond_to(:account_id) }
     it { is_expected.to respond_to(:calc_type) }
@@ -26,8 +26,8 @@ describe SyspaySDK::Entities::PaymentRecipient do
     it { is_expected.to respond_to(:settlement_delay) }
   end
 
-  describe "#to_hash" do
-    it "returns the PaymentRecipient converted to a hash" do
+  describe '#to_hash' do
+    it 'returns the PaymentRecipient converted to a hash' do
       recipient = described_class.new
 
       params = {
@@ -35,7 +35,7 @@ describe SyspaySDK::Entities::PaymentRecipient do
         account_id: 1,
         calc_type: described_class::CALC_TYPE_FIXED,
         value: 1,
-        currency: "EUR",
+        currency: 'EUR',
         settlement_delay: 1
       }
 

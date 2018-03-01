@@ -1,24 +1,22 @@
 require 'bundler/setup'
-require 'syspay-sdk'
+require 'syspay_sdk'
 require 'logger'
+require 'simplecov'
 
-if ENV['COVERAGE']
-  require 'simplecov'
-
-  SimpleCov.start do
-    add_filter "/spec/"
-  end
-end
+SimpleCov.start
 
 Bundler.require :default, :test
 
-SyspaySDK::Config.load(File.expand_path('../config/syspay.yml', __FILE__), 'test')
-
-include SyspaySDK::Logging
-
-SyspaySDK.logger = Logger.new(STDERR)
+SyspaySDK::Config.load(
+  File.expand_path('../config/syspay.yml', __FILE__),
+  'test'
+)
 
 RSpec.configure do |config|
+  include SyspaySDK::Logging
+
+  SyspaySDK.logger = Logger.new(STDERR)
+
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end

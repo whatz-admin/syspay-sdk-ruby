@@ -1,83 +1,102 @@
-module SyspaySDK::Entities
-  class Subscription < SyspaySDK::Entities::ReturnedEntity
-    TYPE = 'subscription'
+module SyspaySDK
+  module Entities
+    class Subscription < SyspaySDK::Entities::ReturnedEntity
+      TYPE = 'subscription'.freeze
 
-    STATUS_PENDING = 'PENDING'
-    STATUS_ACTIVE = 'ACTIVE'
-    STATUS_CANCELLED = 'CANCELLED'
-    STATUS_ENDED = 'ENDED'
-    STATUS_TERMINATED = 'TERMINATED'
+      STATUS_PENDING = 'PENDING'.freeze
+      STATUS_ACTIVE = 'ACTIVE'.freeze
+      STATUS_CANCELLED = 'CANCELLED'.freeze
+      STATUS_ENDED = 'ENDED'.freeze
+      STATUS_TERMINATED = 'TERMINATED'.freeze
 
-    PHASE_NEW = 'NEW'
-    PHASE_TRIAL = 'TRIAL'
-    PHASE_BILLING = 'BILLING'
-    PHASE_RETRY = 'RETRY'
-    PHASE_LAST = 'LAST'
-    PHASE_CLOSED = 'CLOSED'
+      PHASE_NEW = 'NEW'.freeze
+      PHASE_TRIAL = 'TRIAL'.freeze
+      PHASE_BILLING = 'BILLING'.freeze
+      PHASE_RETRY = 'RETRY'.freeze
+      PHASE_LAST = 'LAST'.freeze
+      PHASE_CLOSED = 'CLOSED'.freeze
 
-    END_REASON_UNSUBSCRIBED_MERCHANT = 'UNSUBSCRIBED_MERCHANT'
-    END_REASON_UNSUBSCRIBED_ADMIN = 'UNSUBSCRIBED_ADMIN'
-    END_REASON_SUSPENDED_ATTEMPTS = 'SUSPENDED_ATTEMPTS'
-    END_REASON_SUSPENDED_EXPIRED = 'SUSPENDED_EXPIRED'
-    END_REASON_SUSPENDED_CHARGEBACK = 'SUSPENDED_CHARGEBACK'
-    END_REASON_COMPLETE = 'COMPLETE'
+      END_REASON_UNSUBSCRIBED_MERCHANT = 'UNSUBSCRIBED_MERCHANT'.freeze
+      END_REASON_UNSUBSCRIBED_ADMIN = 'UNSUBSCRIBED_ADMIN'.freeze
+      END_REASON_SUSPENDED_ATTEMPTS = 'SUSPENDED_ATTEMPTS'.freeze
+      END_REASON_SUSPENDED_EXPIRED = 'SUSPENDED_EXPIRED'.freeze
+      END_REASON_SUSPENDED_CHARGEBACK = 'SUSPENDED_CHARGEBACK'.freeze
+      END_REASON_COMPLETE = 'COMPLETE'.freeze
 
-    attr_accessor :id,
-    :created,
-    :start_date,
-    :end_date,
-    :status,
-    :phase,
-    :end_reason,
-    :payment_method,
-    :website,
-    :ems_url,
-    :redirect_url,
-    :plan,
-    :customer,
-    :plan_id,
-    :plan_type,
-    :extra,
-    :reference,
-    :redirect,
-    :next_event
+      attr_accessor :id,
+                    :created,
+                    :start_date,
+                    :end_date,
+                    :status,
+                    :phase,
+                    :end_reason,
+                    :payment_method,
+                    :website,
+                    :ems_url,
+                    :redirect_url,
+                    :plan,
+                    :customer,
+                    :plan_id,
+                    :plan_type,
+                    :extra,
+                    :reference,
+                    :redirect,
+                    :next_event
 
-    def self.build_from_response response
-      raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
+      def assign_attributes(response)
+        %i[
+          id plan_id plan_type reference
+          status phase extra ems_url end_reason
+        ].each { |attribute| send(:"#{attribute}=", response[attribute]) }
 
-      subscription = self.new
-
-      subscription.id = response[:id]
-      subscription.plan_id = response[:plan_id]
-      subscription.plan_type = response[:plan_type]
-      subscription.reference = response[:reference]
-      subscription.status = response[:status]
-      subscription.phase = response[:phase]
-      subscription.extra = response[:extra]
-      subscription.ems_url = response[:ems_url]
-      subscription.end_reason = response[:end_reason]
-
-      subscription.created = (response[:created].nil? or response[:created] == "") ? nil : Time.at(response[:created].to_i).to_date
-      subscription.start_date = (response[:start_date].nil? or response[:start_date] == "") ? nil : Time.at(response[:start_date].to_i).to_date
-      subscription.end_date = (response[:end_date].nil? or response[:end_date] == "") ? nil : Time.at(response[:end_date].to_i).to_date
-
-      subscription.payment_method = SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
-      subscription.customer = SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?
-      subscription.plan = SyspaySDK::Entities::Plan.build_from_response(response[:plan]) unless response[:plan].nil?
-      subscription.next_event = SyspaySDK::Entities::SubscriptionEvent.build_from_response(response[:next_event]) unless response[:next_event].nil?
-
-      subscription.raw = response
-      subscription
-    end
-
-    def to_hash
-      hash = {}
-
-      [ :ems_url, :redirect_url, :plan, :plan_id, :extra, :reference ].each do |attribute|
-        hash[attribute] = self.send(attribute)
+        %i[created start_date end_date].each do |attribute|
+          unless response[attribute].nil? || (response[attribute] == '')
+            send(:"#{attribute}=", Time.at(response[attribute].to_i).to_date)
+          end
+        end
       end
 
-      hash
+      def self.build_payment_method(response)
+        SyspaySDK::Entities::PaymentMethod.build_from_response(response[:payment_method]) unless response[:payment_method].nil?
+      end
+
+      def self.build_customer(response)
+        SyspaySDK::Entities::Customer.build_from_response(response[:customer]) unless response[:customer].nil?
+      end
+
+      def self.build_plan(response)
+        SyspaySDK::Entities::Plan.build_from_response(response[:plan]) unless response[:plan].nil?
+      end
+
+      def self.build_next_event(response)
+        SyspaySDK::Entities::SubscriptionEvent.build_from_response(response[:next_event]) unless response[:next_event].nil?
+      end
+
+      def self.build_from_response(response)
+        raise SyspaySDK::Exceptions::BadArgumentTypeError, 'response must be a Hash' unless response.is_a?(Hash)
+
+        subscription = new
+
+        subscription.assign_attributes(response)
+
+        subscription.payment_method = build_payment_method(response)
+        subscription.customer = build_customer(response)
+        subscription.plan = build_plan(response)
+        subscription.next_event = build_next_event(response)
+
+        subscription.raw = response
+        subscription
+      end
+
+      def to_hash
+        hash = {}
+
+        %i[ems_url redirect_url plan plan_id extra reference].each do |attribute|
+          hash[attribute] = send(attribute)
+        end
+
+        hash
+      end
     end
   end
 end

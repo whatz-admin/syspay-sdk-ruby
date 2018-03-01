@@ -1,26 +1,27 @@
-module SyspaySDK::Entities
-  class Customer < SyspaySDK::Entities::ReturnedEntity
+module SyspaySDK
+  module Entities
+    class Customer < SyspaySDK::Entities::ReturnedEntity
+      TYPE = 'customer'.freeze
 
-    TYPE = 'customer'
+      attr_accessor :email, :language, :ip, :mobile
 
-    attr_accessor :email, :language, :ip, :mobile
+      def self.build_from_response(response)
+        raise SyspaySDK::Exceptions::BadArgumentTypeError, 'response must be a Hash' unless response.is_a?(Hash)
 
-    def self.build_from_response response
-      raise SyspaySDK::Exceptions::BadArgumentTypeError.new("response must be a Hash") unless response.is_a?(Hash)
+        customer = new
 
-      customer = self.new
+        customer.email = response[:email]
+        customer.language = response[:language]
+        customer.ip = response[:ip]
+        customer.mobile = response[:mobile]
 
-      customer.email = response[:email]
-      customer.language = response[:language]
-      customer.ip = response[:ip]
-      customer.mobile = response[:mobile]
+        customer.raw = response
+        customer
+      end
 
-      customer.raw = response
-      customer
-    end
-
-    def to_hash
-      { email: self.email, language: self.language, ip: self.ip, mobile: self.mobile }
+      def to_hash
+        { email: email, language: language, ip: ip, mobile: mobile }
+      end
     end
   end
 end

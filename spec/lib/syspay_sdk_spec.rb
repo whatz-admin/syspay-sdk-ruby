@@ -1,8 +1,8 @@
 describe SyspaySDK do
-  describe "Static methods" do
-    describe "configure" do
-      it "calls Config.configure with the same arguments" do
-        block = Proc.new { |test| false }
+  describe 'Static methods' do
+    describe 'configure' do
+      it 'calls Config.configure with the same arguments' do
+        block = proc { |_test| false }
         options = { foo: 'bar' }
 
         expect(SyspaySDK::Config).to receive(:configure).with(options, &block)
@@ -11,8 +11,8 @@ describe SyspaySDK do
       end
     end
 
-    describe "load" do
-      it "calls Config.load with the same arguments" do
+    describe 'load' do
+      it 'calls Config.load with the same arguments' do
         args = { foo: 'bar' }
 
         expect(SyspaySDK::Config).to receive(:load).with args
@@ -21,8 +21,8 @@ describe SyspaySDK do
       end
     end
 
-    describe "logger" do
-      it "calls Config.logger with the same arguments" do
+    describe 'logger' do
+      it 'calls Config.logger with the same arguments' do
         logger = double :logger
 
         expect(SyspaySDK::Config).to receive(:logger).and_return logger
@@ -31,8 +31,8 @@ describe SyspaySDK do
       end
     end
 
-    describe "logger=" do
-      it "calls Config.logger= with the same arguments" do
+    describe 'logger=' do
+      it 'calls Config.logger= with the same arguments' do
         logger = double :logger
 
         expect(SyspaySDK::Config).to receive(:logger=).with logger

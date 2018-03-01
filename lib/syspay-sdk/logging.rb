@@ -6,11 +6,11 @@ module SyspaySDK
       @logger ||= Logging.logger
     end
 
-    def log_event(message, &block)
+    def log_event(message)
       start_time = Time.now
-      block.call
+      yield
     ensure
-      logger.info sprintf("[%.3fs] %s", Time.now - start_time, message)
+      logger.info format('[%<time>.3fs] %<message>s', time: Time.now - start_time, message: message)
     end
 
     class << self
@@ -18,9 +18,7 @@ module SyspaySDK
         @logger ||= Logger.new(STDERR)
       end
 
-      def logger=(logger)
-        @logger = logger
-      end
+      attr_writer :logger
     end
   end
 end

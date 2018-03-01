@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'erb'
 require 'yaml'
 
@@ -8,43 +10,35 @@ module SyspaySDK
     end
 
     def set_config(env, override_configurations = {})
-      @config = case env
-      when Config
-        env
-      when Hash
-        begin
+      return @config = env if env.is_a? Config
+
+      if env.is_a? Hash
+        return @config = begin
           config.dup.merge!(env)
-        rescue Errno::ENOENT => error
+        rescue Errno::ENOENT
           Config.new(env)
         end
-      else
-        Config.config(env, override_configurations)
       end
+
+      @config = Config.config(env, override_configurations)
     end
 
-    alias_method :config=, :set_config
+    alias config= set_config
   end
 
   class Config
     include Logging
     include Exceptions
 
-    attr_accessor :syspay_mode, :syspay_id, :syspay_passphrase, :syspay_threatmetrix_code, :syspay_js_key, :syspay_base_url
+    attr_accessor :syspay_mode,
+                  :syspay_id,
+                  :syspay_passphrase,
+                  :syspay_threatmetrix_code,
+                  :syspay_js_key,
+                  :syspay_base_url
 
     def initialize(options)
       merge!(options)
-    end
-
-    def logfile=(filename)
-      logger.warn '`logfile=` is deprecated, Please use `SyspaySDK::Config.logger = Logger.new(STDERR)`'
-    end
-
-    def redirect_url=(redirect_url)
-      logger.warn '`redirect_url=` is deprecated.'
-    end
-
-    def dev_central_url=(dev_central_url)
-      logger.warn '`dev_central_url=` is deprecated.'
     end
 
     def ssl_options
@@ -52,18 +46,8 @@ module SyspaySDK
     end
 
     def ssl_options=(options)
-      options = Hash[options.map{|key, value| [key.to_sym, value] }]
+      options = Hash[options.map { |key, value| [key.to_sym, value] }]
       @ssl_options = ssl_options.merge(options).freeze
-    end
-
-    def ca_file=(ca_file)
-      logger.warn '`ca_file=` is deprecated, Please configure `ca_file=` under `ssl_options`'
-      self.ssl_options = { :ca_file => ca_file }
-    end
-
-    def http_verify_mode=(verify_mode)
-      logger.warn '`http_verify_mode=` is deprecated, Please configure `verify_mode=` under `ssl_options`'
-      self.ssl_options = { :verify_mode => verify_mode }
     end
 
     def merge!(options)
@@ -74,41 +58,47 @@ module SyspaySDK
     end
 
     def required!(*names)
-      names = names.select{|name| send(name).nil? }
-      raise MissingConfig.new("Required configuration(#{names.join(", ")})") if names.any?
+      names = names.select { |name| send(name).nil? }
+
+      return unless names.any?
+
+      raise MissingConfig, "Required configuration(#{names.join(', ')})"
     end
 
     class << self
-
-      @@config_cache = {}
+      @config_cache = {}
 
       def load(filename, default_env = default_environment)
-        @@config_cache        = {}
-        @@configurations      = read_configurations(filename)
-        @@default_environment = default_env
+        @config_cache        = {}
+        @configurations      = read_configurations(filename)
+        @default_environment = default_env
         config
       end
 
       def default_environment
-        @@default_environment ||= ENV['SYSPAY_ENV'] || ENV['RACK_ENV'] || ENV['RAILS_ENV'] || "development"
+        @default_environment ||=
+          ENV['SYSPAY_ENV'] ||
+          ENV['RACK_ENV'] ||
+          ENV['RAILS_ENV'] ||
+          'development'
       end
 
       def default_environment=(env)
-        @@default_environment = env.to_s
+        @default_environment = env.to_s
       end
 
       def configure(options = {}, &block)
         begin
-          self.config.merge!(options)
+          config.merge!(options)
         rescue Errno::ENOENT
           self.configurations = { default_environment => options }
         end
 
-        block.call(self.config) if block
-        self.config
+        yield(config) if block
+        config
       end
 
-      alias_method :set_config, :configure
+      alias set_config configure
 
       def config(env = default_environment, override_configuration = {})
         if env.is_a? Hash
@@ -116,7 +106,7 @@ module SyspaySDK
           env = default_environment
         end
 
-        if override_configuration.nil? or override_configuration.empty?
+        if override_configuration.nil? || override_configuration.empty?
           default_config(env)
         else
           default_config(env).dup.merge!(override_configuration)
@@ -125,11 +115,12 @@ module SyspaySDK
 
       def default_config(env = nil)
         env = (env || default_environment).to_s
-        if configurations[env]
-          @@config_cache[env] ||= new(configurations[env])
-        else
-          raise Exceptions::MissingConfig.new("Configuration[#{env}] NotFound")
+
+        unless configurations[env]
+          raise Exceptions::MissingConfig, "Configuration[#{env}] NotFound"
         end
+
+        @config_cache[env] ||= new(configurations[env])
       end
 
       def logger=(logger)
@@ -141,20 +132,20 @@ module SyspaySDK
       end
 
       def configurations
-        @@configurations ||= read_configurations
+        @configurations ||= read_configurations
       end
 
       def configurations=(configs)
-        @@config_cache   = {}
-        @@configurations = configs && Hash[configs.map{|k,v| [k.to_s, v] }]
+        @config_cache   = {}
+        @configurations = configs && Hash[configs.map { |k, v| [k.to_s, v] }]
       end
 
       private
 
-      def read_configurations(filename = "config/syspay.yml")
+      def read_configurations(filename = 'config/syspay.yml')
         erb = ERB.new(File.read(filename))
         erb.filename = filename
-        YAML.load(erb.result)
+        YAML.safe_load(erb.result, [], [], true)
       end
     end
   end

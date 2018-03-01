@@ -5,11 +5,11 @@ module Syspay
         source_root File.expand_path('../templates', __FILE__)
 
         def copy_config_file
-          copy_file "syspay.yml", "config/syspay.yml"
+          copy_file 'syspay.yml', 'config/syspay.yml'
         end
 
         def copy_initializer_file
-          copy_file "syspay.rb",  "config/initializers/syspay.rb"
+          copy_file 'syspay.rb',  'config/initializers/syspay.rb'
         end
       end
     end

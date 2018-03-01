@@ -1,13 +1,15 @@
-module SyspaySDK::Entities
-  class BaseClass
-    include SyspaySDK::Utils::AbstractClass
+module SyspaySDK
+  module Entities
+    class BaseClass
+      include SyspaySDK::Utils::AbstractClass
 
-    abstract_methods :to_hash
+      abstract_methods :to_hash
 
-    attr_accessor :raw
+      attr_accessor :raw
 
-    def get_type
-      self.class::TYPE
+      def type
+        self.class::TYPE
+      end
     end
   end
 end

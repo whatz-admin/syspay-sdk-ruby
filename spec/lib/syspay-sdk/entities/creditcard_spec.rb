@@ -1,15 +1,15 @@
 describe SyspaySDK::Entities::CreditCard do
-  it "is a SyspaySDK::Entities::BaseClass" do
+  it 'is a SyspaySDK::Entities::BaseClass' do
     is_expected.to be_a(SyspaySDK::Entities::BaseClass)
   end
 
-  describe "Constants" do
+  describe 'Constants' do
     it "has a TYPE class constant set to 'creditcard'" do
       expect(described_class::TYPE).to eq('creditcard')
     end
   end
 
-  describe "Attributes" do
+  describe 'Attributes' do
     it { is_expected.to respond_to(:number) }
     it { is_expected.to respond_to(:cardholder) }
     it { is_expected.to respond_to(:cvc) }
@@ -18,19 +18,19 @@ describe SyspaySDK::Entities::CreditCard do
     it { is_expected.to respond_to(:token) }
   end
 
-  describe "#to_hash" do
+  describe '#to_hash' do
     let(:data) do
       {
-        number: "number",
-        cardholder: "cardholder",
-        cvc: "cvc",
-        exp_month: "exp_month",
-        exp_year: "exp_year",
-        token: "token"
+        number: 'number',
+        cardholder: 'cardholder',
+        cvc: 'cvc',
+        exp_month: 'exp_month',
+        exp_year: 'exp_year',
+        token: 'token'
       }
     end
 
-    it "returns the creditcard converted to a hash when token is not present" do
+    it 'returns the creditcard converted to a hash when token is not present' do
       subject.number = data[:number]
       subject.cardholder = data[:cardholder]
       subject.cvc = data[:cvc]
@@ -46,7 +46,7 @@ describe SyspaySDK::Entities::CreditCard do
       expect(hash).to include(exp_year: data[:exp_year])
     end
 
-    it "returns the token in a hash when token is present" do
+    it 'returns the token in a hash when token is present' do
       subject.token = data[:token]
 
       expect(subject.to_hash).to eq(token: data[:token])

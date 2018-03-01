@@ -1,15 +1,17 @@
-module SyspaySDK::Requests
-  class BaseClass
-    include SyspaySDK::Utils::AbstractClass
+module SyspaySDK
+  module Requests
+    class BaseClass
+      include SyspaySDK::Utils::AbstractClass
 
-    abstract_methods :build_response, :get_data
+      abstract_methods :build_response, :data
 
-    def get_method
-      self.class::METHOD
-    end
+      def http_method
+        self.class::METHOD
+      end
 
-    def get_path
-      self.class::PATH
+      def path
+        self.class::PATH
+      end
     end
   end
 end

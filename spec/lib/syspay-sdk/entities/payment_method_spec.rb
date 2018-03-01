@@ -1,9 +1,9 @@
 describe SyspaySDK::Entities::PaymentMethod do
-  it "is a SyspaySDK::Entities::ReturnedEntity" do
+  it 'is a SyspaySDK::Entities::ReturnedEntity' do
     is_expected.to be_a(SyspaySDK::Entities::ReturnedEntity)
   end
 
-  describe "Constants" do
+  describe 'Constants' do
     it "has a TYPE class constant set to 'payment_method'" do
       expect(described_class::TYPE).to eq('payment_method')
     end
@@ -29,7 +29,7 @@ describe SyspaySDK::Entities::PaymentMethod do
     end
   end
 
-  describe "Attributes" do
+  describe 'Attributes' do
     it { is_expected.to respond_to(:type) }
     it { is_expected.to respond_to(:display) }
     it { is_expected.to respond_to(:cardholder) }
@@ -37,27 +37,27 @@ describe SyspaySDK::Entities::PaymentMethod do
     it { is_expected.to respond_to(:exp_year) }
   end
 
-  describe "::build_from_response" do
+  describe '::build_from_response' do
     it "doesn't raise an error when called" do
-      expect {
-        described_class.build_from_response({ test: "test" })
-      }.to_not raise_error
+      expect do
+        described_class.build_from_response(test: 'test')
+      end.to_not raise_error
     end
 
-    it "returns a PaymentMethod object" do
-      expect(described_class.build_from_response({ test: "test" })).to be_a(described_class)
+    it 'returns a PaymentMethod object' do
+      expect(described_class.build_from_response(test: 'test')).to be_a(described_class)
     end
 
-    it "raises a SyspaySDK::Exceptions::BadArgumentTypeError when anything but a hash is passed in" do
-      expect {
-        described_class.build_from_response("test")
-      }.to raise_error SyspaySDK::Exceptions::BadArgumentTypeError
+    it 'raises a SyspaySDK::Exceptions::BadArgumentTypeError when anything but a hash is passed in' do
+      expect do
+        described_class.build_from_response('test')
+      end.to raise_error SyspaySDK::Exceptions::BadArgumentTypeError
     end
 
-    let (:response) do
+    let(:response) do
       {
-        type: "type",
-        display: "display",
+        type: 'type',
+        display: 'display',
         cardholder: 'cardholder',
         exp_month: 'exp_month',
         exp_year: 'exp_year'
@@ -68,15 +68,15 @@ describe SyspaySDK::Entities::PaymentMethod do
       @payment_method = described_class.build_from_response(response)
     end
 
-    it "sets instance raw attribute to response" do
+    it 'sets instance raw attribute to response' do
       expect(@payment_method.raw).to eq(response)
     end
 
-    it "sets instance type attribute using value in response" do
+    it 'sets instance type attribute using value in response' do
       expect(@payment_method.type).to eq(response[:type])
     end
 
-    it "sets instance display attribute using value in response" do
+    it 'sets instance display attribute using value in response' do
       expect(@payment_method.display).to eq(response[:display])
     end
 
@@ -91,6 +91,5 @@ describe SyspaySDK::Entities::PaymentMethod do
     it 'sets instance exp_year attribute using value in response' do
       expect(@payment_method.exp_year).to eq(response[:exp_year])
     end
-
   end
 end
