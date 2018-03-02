@@ -36,6 +36,7 @@ module SyspaySDK
                   :syspay_threatmetrix_code,
                   :syspay_js_key,
                   :syspay_org_id,
+                  :syspay_retry_map_id,
                   :syspay_base_url
 
     def initialize(options)
@@ -75,7 +76,7 @@ module SyspaySDK
         @default_environment = default_env
         config.required!(
           :syspay_mode, :syspay_id, :syspay_passphrase, :syspay_threatmetrix_code,
-          :syspay_js_key, :syspay_org_id, :syspay_base_url
+          :syspay_js_key, :syspay_org_id, :syspay_base_url, :syspay_retry_map_id
         )
       end
 
