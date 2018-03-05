@@ -109,6 +109,34 @@ describe SyspaySDK::Entities::Subscription do
     it { is_expected.to respond_to(:next_event) }
   end
 
+  describe '.to_hash' do
+    it 'returns ems_url redirect_url plan_id extra reference within a hash' do
+      expect(subject.to_hash.keys).to match_array([:ems_url, :redirect_url, :plan_id, :extra, :reference])
+    end
+
+    context 'when extra in an object' do
+      it "converts it into a json string" do
+        extra = { test: 'value'}
+
+        subject.extra = extra
+
+        expect(subject.to_hash[:extra]).to be_a(String)
+        expect(subject.to_hash[:extra]).to eq(extra.to_json)
+      end
+    end
+
+    context  'when extra in a string' do
+      it "is returned unchanged" do
+        extra = 'value'
+
+        subject.extra = extra
+
+        expect(subject.to_hash[:extra]).to be_a(String)
+        expect(subject.to_hash[:extra]).to eq(extra)
+      end
+    end
+  end
+
   describe '::build_from_response' do
     it "doesn't raise an error when called" do
       expect do

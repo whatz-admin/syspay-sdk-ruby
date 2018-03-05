@@ -91,9 +91,11 @@ module SyspaySDK
       def to_hash
         hash = {}
 
-        %i[ems_url redirect_url plan plan_id extra reference].each do |attribute|
+        %i[ems_url redirect_url plan_id reference].each do |attribute|
           hash[attribute] = send(attribute)
         end
+
+        hash[:extra] = extra.is_a?(Hash) ? extra.to_json : extra
 
         hash
       end

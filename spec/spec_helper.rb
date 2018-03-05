@@ -15,6 +15,10 @@ SyspaySDK::Config.load(
 RSpec.configure do |config|
   include SyspaySDK::Logging
 
+  config.filter_run focus: true
+
+  config.run_all_when_everything_filtered = true
+
   SyspaySDK.logger = Logger.new(STDERR)
 
   config.expect_with :rspec do |c|
