@@ -1,14 +1,15 @@
 require 'syspay-sdk/utils/hash_extension'
 
 module SyspaySDK
-  autoload :VERSION,        'syspay-sdk/version'
+  autoload :Checksum,       'syspay-sdk/checksum'
+  autoload :Client,         'syspay-sdk/client'
   autoload :Config,         'syspay-sdk/config'
   autoload :Configuration,  'syspay-sdk/config'
-  autoload :Logging,        'syspay-sdk/logging'
   autoload :Exceptions,     'syspay-sdk/exceptions'
-  autoload :Client,         'syspay-sdk/client'
-  autoload :Request,        'syspay-sdk/request'
+  autoload :Logging,        'syspay-sdk/logging'
   autoload :Redirect,       'syspay-sdk/redirect'
+  autoload :Request,        'syspay-sdk/request'
+  autoload :VERSION,        'syspay-sdk/version'
 
   class << self
     def configure(options = {}, &block)
