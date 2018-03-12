@@ -43,5 +43,18 @@ module SyspaySDK
 
     class UnhandledMethodError < StandardError
     end
+
+    class EMSError < StandardError
+      attr_reader :error_code
+
+      def initialize(message, error_code)
+        @message = message
+        @error_code = error_code
+      end
+
+      def to_s
+        "#{@message}. Error code : #{@error_code}"
+      end
+    end
   end
 end

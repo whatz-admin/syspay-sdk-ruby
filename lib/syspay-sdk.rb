@@ -5,6 +5,7 @@ module SyspaySDK
   autoload :Client,         'syspay-sdk/client'
   autoload :Config,         'syspay-sdk/config'
   autoload :Configuration,  'syspay-sdk/config'
+  autoload :EMS,            'syspay-sdk/ems'
   autoload :Exceptions,     'syspay-sdk/exceptions'
   autoload :Logging,        'syspay-sdk/logging'
   autoload :Redirect,       'syspay-sdk/redirect'

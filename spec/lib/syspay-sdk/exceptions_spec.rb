@@ -49,3 +49,22 @@ end
 describe SyspaySDK::Exceptions::MissingConfig do
   it { is_expected.to be_a StandardError }
 end
+
+describe SyspaySDK::Exceptions::EMSError do
+  let(:message) { 'message' }
+  let(:error_code) { 1234 }
+
+  subject { described_class.new message, error_code }
+
+  it { is_expected.to be_a StandardError }
+  it { is_expected.to respond_to(:error_code) }
+
+  it 'is initialized with a message and an error code' do
+    expect(subject.instance_variable_get(:@message)).to eq(message)
+    expect(subject.instance_variable_get(:@error_code)).to eq(error_code)
+  end
+
+  it 'prints out a specific message' do
+    expect(subject.to_s).to eq("#{message}. Error code : #{error_code}")
+  end
+end

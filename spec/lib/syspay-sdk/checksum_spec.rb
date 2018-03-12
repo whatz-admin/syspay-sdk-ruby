@@ -5,7 +5,7 @@ describe SyspaySDK::Checksum do
 
   describe '.get(data, passphrase)' do
     it 'returns a SHA1 digest of concatenated data and passphrase' do
-      expect(Digest::SHA1).to receive(:digest).with("#{data}#{passphrase}").and_return(checksum)
+      expect(Digest::SHA1).to receive(:hexdigest).with("#{data}#{passphrase}").and_return(checksum)
 
       expect(described_class.get(data, passphrase)).to eq(checksum)
     end
