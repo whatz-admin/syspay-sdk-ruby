@@ -23,15 +23,32 @@ describe SyspaySDK::EMS do
   it { is_expected.to respond_to(:id) }
   it { is_expected.to respond_to(:date) }
 
-  describe 'Error codes' do
-    it 'defines a CODE_MISSING_HEADER error code' do
-      expect(described_class::CODE_INVALID_MERCHANT).to eq(0)
+  describe 'Constants' do
+    describe 'Error codes' do
+      it 'defines a CODE_MISSING_HEADER error code' do
+        expect(described_class::CODE_INVALID_MERCHANT).to eq(0)
+      end
+      it 'defines a CODE_INVALID_CHECKSUM error code' do
+        expect(described_class::CODE_INVALID_CHECKSUM).to eq(1)
+      end
+      it 'defines a CODE_INVALID_CONTENT error code' do
+        expect(described_class::CODE_INVALID_CONTENT).to eq(2)
+      end
     end
-    it 'defines a CODE_INVALID_CHECKSUM error code' do
-      expect(described_class::CODE_INVALID_CHECKSUM).to eq(1)
-    end
-    it 'defines a CODE_INVALID_CONTENT error code' do
-      expect(described_class::CODE_INVALID_CONTENT).to eq(2)
+
+    describe 'Header names' do
+      it 'defines a EVENT_ID_HEADER' do
+        expect(described_class::EVENT_ID_HEADER).to eq('X-Event-Id')
+      end
+      it 'defines a EVENT_DATE_HEADER' do
+        expect(described_class::EVENT_DATE_HEADER).to eq('X-Event-Date')
+      end
+      it 'defines a CHECKSUM_HEADER' do
+        expect(described_class::CHECKSUM_HEADER).to eq('X-Checksum')
+      end
+      it 'defines a MERCHANT_HEADER' do
+        expect(described_class::MERCHANT_HEADER).to eq('X-Merchant')
+      end
     end
   end
 
