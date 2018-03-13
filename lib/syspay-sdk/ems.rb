@@ -10,7 +10,7 @@ module SyspaySDK
     CHECKSUM_HEADER = 'X-Checksum'
     MERCHANT_HEADER = 'X-Merchant'
 
-    attr_reader :id, :date
+    attr_reader :id, :date, :type
 
     def initialize(id:, date:, checksum:, merchant:, type:, data:, skip_checksum: false)
       raise SyspaySDK::Exceptions::EMSError.new('Missing merchant', CODE_INVALID_MERCHANT) if merchant.nil?

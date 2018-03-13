@@ -22,6 +22,7 @@ describe SyspaySDK::EMS do
 
   it { is_expected.to respond_to(:id) }
   it { is_expected.to respond_to(:date) }
+  it { is_expected.to respond_to(:type) }
 
   describe 'Constants' do
     describe 'Error codes' do
