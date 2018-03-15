@@ -50,7 +50,7 @@ module SyspaySDK
 
         %i[settlement_date processing_time].each do |attribute|
           unless response[attribute].nil? || response[attribute] == ''
-            send(:"#{attribute}=", Time.at(response[attribute].to_i).to_date)
+            send(:"#{attribute}=", Time.at(response[attribute].to_i))
           end
         end
       end

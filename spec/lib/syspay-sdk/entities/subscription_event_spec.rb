@@ -69,9 +69,10 @@ describe SyspaySDK::Entities::SubscriptionEvent do
     end
 
     it 'sets instance scheduled_date attribute using value in response' do
-      scheduled_date = Date.new(2001, 2, 3)
-      response[:scheduled_date] = scheduled_date.to_time.to_i
-      expect(described_class.build_from_response(response).scheduled_date).to eq(scheduled_date)
+      scheduled_date = Time.now
+      response[:scheduled_date] = scheduled_date.to_i
+      expect(described_class.build_from_response(response).scheduled_date).to be_a(Time)
+      expect(described_class.build_from_response(response).scheduled_date).to eq(Time.at(scheduled_date.to_i))
     end
   end
 end

@@ -76,15 +76,17 @@ describe SyspaySDK::Entities::Chargeback do
     end
 
     it 'sets instance processing_time attribute using value in response' do
-      processing_time = Date.new(2001, 2, 3)
-      response[:processing_time] = processing_time.to_time.to_i
-      expect(described_class.build_from_response(response).processing_time).to eq(processing_time)
+      processing_time = Time.now
+      response[:processing_time] = processing_time.to_i
+      expect(described_class.build_from_response(response).processing_time).to be_a(Time)
+      expect(described_class.build_from_response(response).processing_time).to eq(Time.at(processing_time.to_i))
     end
 
     it 'sets instance bank_time attribute using value in response' do
-      bank_time = Date.new(2001, 2, 3)
-      response[:bank_time] = bank_time.to_time.to_i
-      expect(described_class.build_from_response(response).bank_time).to eq(bank_time)
+      bank_time = Time.now
+      response[:bank_time] = bank_time.to_i
+      expect(described_class.build_from_response(response).bank_time).to be_a(Time)
+      expect(described_class.build_from_response(response).bank_time).to eq(Time.at(bank_time.to_i))
     end
 
     it 'sets instance payment attribute using value in response' do

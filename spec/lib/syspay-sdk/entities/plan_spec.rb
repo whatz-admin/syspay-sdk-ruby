@@ -188,9 +188,10 @@ describe SyspaySDK::Entities::Plan do
     end
 
     it 'sets instance created attribute using value in response' do
-      created = Date.new(2001, 2, 3)
-      response[:created] = created.to_time.to_i
-      expect(described_class.build_from_response(response).created).to eq(created)
+      created = Time.now
+      response[:created] = created.to_i
+      expect(described_class.build_from_response(response).created).to be_a(Time)
+      expect(described_class.build_from_response(response).created).to eq(Time.at(created.to_i))
     end
   end
 end

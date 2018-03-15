@@ -42,7 +42,7 @@ module SyspaySDK
       end
 
       def self.build_expiration_date(response)
-        Time.at(response[:expiration_date].to_i).to_date unless response[:expiration_date].nil? || (response[:expiration_date] == '')
+        Time.at(response[:expiration_date].to_i) unless response[:expiration_date].nil? || (response[:expiration_date] == '')
       end
 
       def self.build_payment_method(response)

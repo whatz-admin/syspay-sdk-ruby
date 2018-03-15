@@ -52,7 +52,7 @@ module SyspaySDK
         plan.assign_attributes(response)
 
         unless response[:created].nil? || response[:created] == ''
-          plan.created = Time.at(response[:created].to_i).to_date
+          plan.created = Time.at(response[:created].to_i)
         end
 
         plan.raw = response

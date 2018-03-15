@@ -262,15 +262,17 @@ describe SyspaySDK::Entities::Payment do
     end
 
     it 'sets instance settlement_date attribute using value in response' do
-      settlement_date = Date.new(2001, 2, 3)
-      response[:settlement_date] = settlement_date.to_time.to_i
-      expect(described_class.build_from_response(response).settlement_date).to eq(settlement_date)
+      settlement_date = Time.now
+      response[:settlement_date] = settlement_date.to_i
+      expect(described_class.build_from_response(response).settlement_date).to be_a(Time)
+      expect(described_class.build_from_response(response).settlement_date).to eq(Time.at(settlement_date.to_i))
     end
 
     it 'sets instance processing_time attribute using value in response' do
-      processing_time = Date.new(2001, 2, 3)
-      response[:processing_time] = processing_time.to_time.to_i
-      expect(described_class.build_from_response(response).processing_time).to eq(processing_time)
+      processing_time = Time.now
+      response[:processing_time] = processing_time.to_i
+      expect(described_class.build_from_response(response).processing_time).to be_a(Time)
+      expect(described_class.build_from_response(response).processing_time).to eq(Time.at(processing_time.to_i))
     end
 
     it 'sets instance subscription attribute using value in response' do

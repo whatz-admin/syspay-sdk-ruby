@@ -19,7 +19,7 @@ module SyspaySDK
         subscription_event.event_type = response[:event_type]
 
         unless response[:scheduled_date].nil? || response[:scheduled_date] == ''
-          subscription_event.scheduled_date = Time.at(response[:scheduled_date].to_i).to_date
+          subscription_event.scheduled_date = Time.at(response[:scheduled_date].to_i)
         end
 
         subscription_event.raw = response

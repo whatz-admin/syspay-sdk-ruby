@@ -16,7 +16,7 @@ module SyspaySDK
 
         %i[processing_time bank_time].each do |attribute|
           unless response[attribute].nil? || response[attribute] == ''
-            chargeback.send(:"#{attribute}=", Time.at(response[attribute].to_i).to_date)
+            chargeback.send(:"#{attribute}=", Time.at(response[attribute].to_i))
           end
         end
       end

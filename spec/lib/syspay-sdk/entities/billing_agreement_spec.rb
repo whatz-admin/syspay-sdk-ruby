@@ -103,9 +103,10 @@ describe SyspaySDK::Entities::BillingAgreement do
     end
 
     it 'sets instance expiration_date attribute using value in response' do
-      expiration_date = Date.new(2001, 2, 3)
-      response[:expiration_date] = expiration_date.to_time.to_i
-      expect(described_class.build_from_response(response).expiration_date).to eq(expiration_date)
+      expiration_date = Time.now
+      response[:expiration_date] = expiration_date.to_i
+      expect(described_class.build_from_response(response).expiration_date).to be_a(Time)
+      expect(described_class.build_from_response(response).expiration_date).to eq(Time.at(expiration_date.to_i))
     end
 
     it 'sets instance payment_method attribute using value in response' do

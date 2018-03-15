@@ -21,7 +21,7 @@ module SyspaySDK
 
         return if response[:processing_time].nil? || response[:processing_time] == ''
 
-        self.processing_time = Time.at(response[:processing_time].to_i).to_date
+        self.processing_time = Time.at(response[:processing_time].to_i)
       end
 
       def self.build_from_response(response)
