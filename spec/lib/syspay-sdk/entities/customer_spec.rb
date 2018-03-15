@@ -10,6 +10,7 @@ describe SyspaySDK::Entities::Customer do
   end
 
   describe 'Attributes' do
+    it { is_expected.to respond_to(:id) }
     it { is_expected.to respond_to(:email) }
     it { is_expected.to respond_to(:language) }
     it { is_expected.to respond_to(:ip) }
@@ -18,6 +19,7 @@ describe SyspaySDK::Entities::Customer do
 
   let(:response) do
     {
+      id: 'id',
       email: 'code',
       language: 'name',
       ip: 'url',
@@ -50,6 +52,10 @@ describe SyspaySDK::Entities::Customer do
       expect(@customer.raw).to eq(response)
     end
 
+    it 'sets instance id attribute using value in response' do
+      expect(@customer.id).to eq(response[:id])
+    end
+
     it 'sets instance email attribute using value in response' do
       expect(@customer.email).to eq(response[:email])
     end
@@ -75,6 +81,7 @@ describe SyspaySDK::Entities::Customer do
     it 'returns the payment converted to a hash' do
       hash = subject.to_hash
 
+      expect(hash).to include(id: response[:id])
       expect(hash).to include(email: response[:email])
       expect(hash).to include(language: response[:language])
       expect(hash).to include(ip: response[:ip])

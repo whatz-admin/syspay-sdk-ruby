@@ -41,23 +41,23 @@ module SyspaySDK
       raise SyspaySDK::Exceptions::EMSError.new('Unable to get data from content', CODE_INVALID_CONTENT) if @data.nil?
 
       case @type
-      when 'payment'
+      when SyspaySDK::Entities::Payment::TYPE
         raise SyspaySDK::Exceptions::EMSError.new('Payment event received with no payment data', CODE_INVALID_CONTENT) if @data[:payment].nil?
 
         SyspaySDK::Entities::Payment.build_from_response(@data[:payment])
-      when 'refund'
+      when SyspaySDK::Entities::Refund::TYPE
         raise SyspaySDK::Exceptions::EMSError.new('Refund event received with no refund data', CODE_INVALID_CONTENT) if @data[:refund].nil?
 
         SyspaySDK::Entities::Refund.build_from_response(@data[:refund])
-      when 'chargeback'
+      when SyspaySDK::Entities::Chargeback::TYPE
         raise SyspaySDK::Exceptions::EMSError.new('Chargeback event received with no chargeback data', CODE_INVALID_CONTENT) if @data[:chargeback].nil?
 
         SyspaySDK::Entities::Chargeback.build_from_response(@data[:chargeback])
-      when 'billing_agreement'
+      when SyspaySDK::Entities::BillingAgreement::TYPE
         raise SyspaySDK::Exceptions::EMSError.new('BillingAgreement event received with no billing_agreement data', CODE_INVALID_CONTENT) if @data[:billing_agreement].nil?
 
         SyspaySDK::Entities::BillingAgreement.build_from_response(@data[:billing_agreement])
-      when 'subscription'
+      when SyspaySDK::Entities::Subscription::TYPE
         raise SyspaySDK::Exceptions::EMSError.new('Subscription event received with no subscription data', CODE_INVALID_CONTENT) if @data[:subscription].nil?
 
         SyspaySDK::Entities::Subscription.build_from_response(@data[:subscription])
