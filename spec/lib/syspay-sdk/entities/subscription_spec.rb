@@ -81,8 +81,8 @@ describe SyspaySDK::Entities::Subscription do
         expect(described_class::END_REASON_SUSPENDED_CHARGEBACK).to eq('SUSPENDED_CHARGEBACK')
       end
 
-      it "has a END_REASON_COMPLETE class constant set to 'COMPLETE'" do
-        expect(described_class::END_REASON_COMPLETE).to eq('COMPLETE')
+      it "has a END_REASON_SUSPENDED_BLACKLIST_CARD class constant set to 'SUSPENDED_BLACKLIST_CARD'" do
+        expect(described_class::END_REASON_SUSPENDED_BLACKLIST_CARD).to eq('SUSPENDED_BLACKLIST_CARD')
       end
     end
   end
