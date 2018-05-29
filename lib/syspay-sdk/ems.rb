@@ -18,7 +18,7 @@ module SyspaySDK
       raise SyspaySDK::Exceptions::EMSError.new('Invalid checksum', CODE_INVALID_CHECKSUM) if checksum.nil?
 
       @id = id
-      @date = Time.at(date)
+      @date = Time.at(date.to_i)
       @checksum = checksum
       @merchant = merchant
       @type = type

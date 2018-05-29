@@ -15,7 +15,7 @@ describe SyspaySDK::EMS do
       merchant: merchant,
       type: type,
       id: id,
-      date: date,
+      date: date.to_s,
       skip_checksum: skip_checksum
     )
   end
