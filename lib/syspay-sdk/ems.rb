@@ -14,7 +14,7 @@ module SyspaySDK
 
     def initialize(id:, date:, checksum:, merchant:, type:, data:, skip_checksum: false)
       raise SyspaySDK::Exceptions::EMSError.new('Missing merchant', CODE_INVALID_MERCHANT) if merchant.nil?
-      raise SyspaySDK::Exceptions::EMSError.new('Invalid merchant', CODE_INVALID_MERCHANT) if merchant != SyspaySDK::Config.config.syspay_id
+      raise SyspaySDK::Exceptions::EMSError.new('Invalid merchant', CODE_INVALID_MERCHANT) if merchant.to_s != SyspaySDK::Config.config.syspay_id.to_s
       raise SyspaySDK::Exceptions::EMSError.new('Invalid checksum', CODE_INVALID_CHECKSUM) if checksum.nil?
 
       @id = id

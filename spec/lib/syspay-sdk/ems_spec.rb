@@ -97,6 +97,24 @@ describe SyspaySDK::EMS do
       end
     end
 
+    context 'When the merchant parameter matches as a string' do
+      let(:merchant) { '123456' }
+
+      it "doesn't raises an EMSError with code CODE_UNKNOWN_MERCHANT" do
+        expect do
+          described_class.new(
+            data: data,
+            checksum: checksum,
+            merchant: SyspaySDK::Config.config.syspay_id.to_s,
+            type: type,
+            id: id,
+            date: date,
+            skip_checksum: true
+          )
+        end.not_to raise_error(SyspaySDK::Exceptions::EMSError, "Invalid merchant. Error code : #{SyspaySDK::EMS::CODE_INVALID_MERCHANT}")
+      end
+    end
+
     context 'When the checksum parameter is nil' do
       let(:checksum) { nil }
 
