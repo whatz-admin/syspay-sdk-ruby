@@ -6,11 +6,13 @@ describe SyspaySDK::EMS do
   let(:type) { 'payment' }
   let(:date) { Time.now.to_i }
   let(:data) { double(:data) }
+  let(:raw_data) { double(:raw_data) }
   let(:skip_checksum) { false }
 
   subject do
     described_class.new(
       data: data,
+      raw_data: raw_data,
       checksum: checksum,
       merchant: merchant,
       type: type,
@@ -57,6 +59,7 @@ describe SyspaySDK::EMS do
     it 'properly assigns the params' do
       expect(subject).to be_a(described_class)
       expect(subject.instance_variable_get(:@data)).to eq(data)
+      expect(subject.instance_variable_get(:@raw_data)).to eq(raw_data)
       expect(subject.instance_variable_get(:@checksum)).to eq(checksum)
       expect(subject.instance_variable_get(:@merchant)).to eq(merchant)
       expect(subject.instance_variable_get(:@passphrase)).to eq(passphrase)
@@ -68,6 +71,7 @@ describe SyspaySDK::EMS do
     it 'accepts an optional skip_checksum argument' do
       ems = described_class.new(
         data: data,
+        raw_data: raw_data,
         checksum: checksum,
         merchant: merchant,
         type: type,
@@ -86,6 +90,7 @@ describe SyspaySDK::EMS do
         expect do
           described_class.new(
             data: data,
+            raw_data: raw_data,
             checksum: checksum,
             merchant: merchant,
             type: type,
@@ -104,6 +109,7 @@ describe SyspaySDK::EMS do
         expect do
           described_class.new(
             data: data,
+            raw_data: raw_data,
             checksum: checksum,
             merchant: SyspaySDK::Config.config.syspay_id.to_s,
             type: type,
@@ -122,6 +128,7 @@ describe SyspaySDK::EMS do
         expect do
           described_class.new(
             data: data,
+            raw_data: raw_data,
             checksum: checksum,
             merchant: merchant,
             type: type,
@@ -137,7 +144,7 @@ describe SyspaySDK::EMS do
   describe '.verify!' do
     context 'When the utility returns false' do
       before do
-        expect(SyspaySDK::Checksum).to receive(:check).with(data, passphrase, checksum).and_return(false)
+        expect(SyspaySDK::Checksum).to receive(:check).with(raw_data, passphrase, checksum).and_return(false)
       end
 
       it 'raises an error' do
@@ -166,7 +173,7 @@ describe SyspaySDK::EMS do
 
     context 'When skip_checksum is false' do
       before do
-        allow(SyspaySDK::Checksum).to receive(:check).with(data, passphrase, checksum).and_return(true)
+        allow(SyspaySDK::Checksum).to receive(:check).with(raw_data, passphrase, checksum).and_return(true)
       end
 
       it 'invokes verify!' do

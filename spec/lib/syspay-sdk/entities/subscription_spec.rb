@@ -164,7 +164,8 @@ describe SyspaySDK::Entities::Subscription do
         phase: 'phase',
         extra: 'extra',
         ems_url: 'ems_url',
-        end_reason: 'end_reason'
+        end_reason: 'end_reason',
+        redirect_url: 'redirect_url'
       }
     end
 
@@ -206,6 +207,10 @@ describe SyspaySDK::Entities::Subscription do
 
     it 'sets instance ems_url attribute using value in response' do
       expect(@subscription.ems_url).to eq(response[:ems_url])
+    end
+
+    it 'sets instance redirect_url attribute using value in response' do
+      expect(@subscription.redirect_url).to eq(response[:redirect_url])
     end
 
     it 'sets instance end_reason attribute using value in response' do

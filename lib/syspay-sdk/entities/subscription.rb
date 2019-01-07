@@ -46,7 +46,7 @@ module SyspaySDK
       def assign_attributes(response)
         %i[
           id plan_id plan_type reference
-          status phase extra ems_url end_reason
+          status phase extra ems_url redirect_url end_reason
         ].each { |attribute| send(:"#{attribute}=", response[attribute]) }
 
         %i[created start_date end_date].each do |attribute|
