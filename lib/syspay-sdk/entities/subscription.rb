@@ -96,6 +96,7 @@ module SyspaySDK
         end
 
         hash[:extra] = extra.is_a?(Hash) ? extra.to_json : extra
+        hash[:redirect] = redirect
 
         hash
       end

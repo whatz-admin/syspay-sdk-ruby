@@ -110,8 +110,8 @@ describe SyspaySDK::Entities::Subscription do
   end
 
   describe '.to_hash' do
-    it 'returns ems_url redirect_url plan_id extra reference within a hash' do
-      expect(subject.to_hash.keys).to match_array([:ems_url, :redirect_url, :plan_id, :extra, :reference])
+    it 'returns ems_url redirect_url plan_id extra reference and redirect within a hash' do
+      expect(subject.to_hash.keys).to match_array([:ems_url, :redirect_url, :plan_id, :extra, :reference, :redirect])
     end
 
     context 'when extra in an object' do
