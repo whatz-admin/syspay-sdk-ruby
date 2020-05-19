@@ -24,6 +24,12 @@ module SyspaySDK
 
         subscription
       end
+      
+      def data
+        {
+          subscription_id: subscription_id
+        }
+      end
     end
   end
 end
